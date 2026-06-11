@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+@import 'styleguide/styles/index.css';
+
+@source "../node_modules/styleguide/dist";

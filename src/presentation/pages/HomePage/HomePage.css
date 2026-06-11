@@ -1,0 +1,7 @@
+@reference "@/main.css";
+
+.home-page {
+  .hp__title {
+    @apply text-3xl font-bold;
+  }
+}
