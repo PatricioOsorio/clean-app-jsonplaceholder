@@ -29,6 +29,7 @@ La forma cruda de los datos tal como llegan del API. Vive en **infrastructure**,
 Interfaz que define el contrato de acceso a datos. Domain lo declara. Infrastructure lo implementa.
 
 Métodos típicos para posts:
+
 - `getAll(): Promise<Post[]>`
 - `getById(id: number): Promise<Post>`
 - `create(post: CreatePostInput): Promise<Post>`
@@ -71,6 +72,7 @@ domain/
 ## Pistas socráticas
 
 Si te trabas:
+
 - ¿La entity `Post` debería tener el campo `userId` o `user`? ¿Cuál es más útil para el negocio?
 - Un use case recibe `IPostRepository` en su constructor — ¿quién se lo pasa? ¿El use case debería saberlo?
 - ¿`GetPostsUseCase` y `GetPostUseCase` son dos clases o un método de la misma clase? Piensa en S de SOLID.

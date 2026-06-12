@@ -74,6 +74,7 @@ infrastructure/
 ## Pistas socráticas
 
 Si te trabas:
+
 - ¿La instancia de Axios debería ser un singleton o crearse en cada repositorio? ¿Por qué?
 - ¿`PostRepository` debería recibir la instancia de Axios por constructor o importarla directo? ¿Cuál viola D de SOLID?
 - ¿El mapper debería ser un método del repositorio o una función aparte? ¿Cuál es más fácil de testear?

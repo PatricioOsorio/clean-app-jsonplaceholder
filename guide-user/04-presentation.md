@@ -77,6 +77,7 @@ presentation/
 ## Pistas socráticas
 
 Si te trabas:
+
 - ¿El hook debe importar `GetPostsUseCase` directamente? ¿O lo obtiene de otra forma?
 - Si `useDependencies()` lanza error fuera del provider, ¿dónde está el bug?
 - ¿`usePost(id)` debe habilitarse si `id` es undefined? TanStack Query tiene una opción para eso.

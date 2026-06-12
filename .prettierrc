@@ -4,9 +4,6 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "printWidth": 100,
-  "plugins": [
-    "prettier-plugin-organize-attributes",
-    "prettier-plugin-tailwindcss"
-  ],
+  "plugins": ["prettier-plugin-organize-attributes", "prettier-plugin-tailwindcss"],
   "attributeGroups": ["^(id|name|key|ref)$", "$DEFAULT", "^class(Name)?$"]
 }

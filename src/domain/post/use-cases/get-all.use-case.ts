@@ -10,6 +10,7 @@ export class GetAllUseCase {
   async execute(): Promise<IPost[]> {
     const posts = await this.postRepo.getAll();
 
+    // ? CHECK: This maybe the ui responsibility
     if (!posts) throw new Error('No posts found');
 
     if (posts.length === 0) throw new Error('No posts available');

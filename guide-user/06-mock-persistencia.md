@@ -25,6 +25,7 @@ En este caso: `MockPostRepository` y `LocalStoragePostRepository` implementan `I
 ### Mock Repository
 
 Implementación que devuelve datos estáticos hardcodeados. Útil para:
+
 - Desarrollo sin red
 - Testing de UI sin servidor
 - Simular escenarios de error
@@ -32,6 +33,7 @@ Implementación que devuelve datos estáticos hardcodeados. Útil para:
 ### LocalStorage Repository
 
 Implementación que persiste y lee de `localStorage`. Útil para:
+
 - Simular persistencia en el cliente
 - Aprender cómo DI permite swap transparente
 
@@ -69,6 +71,7 @@ Presentation no sabe nada de este cambio.
 **Parte C — Store con Zustand (opcional):**
 
 Si quieres explorar Zustand como capa de estado cliente:
+
 1. Crea un store `usePostStore` para posts "favoritos" o posts "drafts" (algo que no existe en el API).
 2. Este store NO reemplaza el repositorio — es estado UI local. ¿Dónde vive en el diagrama de capas?
 
@@ -77,6 +80,7 @@ Si quieres explorar Zustand como capa de estado cliente:
 ## Pistas socráticas
 
 Si te trabas:
+
 - Si cambias la implementación en el container y presentation se rompe, ¿qué violación hay?
 - `MockPostRepository.create()` debe simular el comportamiento del API real: ¿qué devuelve `POST /posts` en JSONPlaceholder?
 - Si `LocalStoragePostRepository` guarda en JSON, ¿qué pasa si el schema del `Post` entity cambia?

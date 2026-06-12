@@ -9,7 +9,9 @@ Ejemplo práctico para entender el flujo completo de datos y responsabilidades e
 Lógica y reglas de negocio puras. Sin frameworks ni dependencias externas.
 
 ### Entidad
+
 `domain/entities/Book.ts`
+
 ```typescript
 export interface Book {
   id: string;
@@ -19,7 +21,9 @@ export interface Book {
 ```
 
 ### Puerto / Port (Interfaz)
+
 `domain/ports/IBookRepository.ts`
+
 ```typescript
 import { Book } from '../entities/Book';
 
@@ -31,7 +35,9 @@ export interface IBookRepository {
 ```
 
 ### Caso de Uso / Use Case (Reglas de Negocio)
+
 `domain/use-cases/BorrowBookUseCase.ts`
+
 ```typescript
 import { IBookRepository } from '../ports/IBookRepository';
 
@@ -42,13 +48,13 @@ export class BorrowBookUseCase {
     // 1. Regla de negocio: Verificar límite de préstamos
     const activeLoans = await this.bookRepo.getUserActiveLoansCount(userId);
     if (activeLoans >= 3) {
-      throw new Error("Límite de préstamos excedido (máximo 3)");
+      throw new Error('Límite de préstamos excedido (máximo 3)');
     }
 
     // 2. Regla de negocio: Verificar disponibilidad
     const book = await this.bookRepo.findById(bookId);
     if (!book || !book.isAvailable) {
-      throw new Error("Libro no disponible");
+      throw new Error('Libro no disponible');
     }
 
     // 3. Ejecutar acción
@@ -65,17 +71,21 @@ export class BorrowBookUseCase {
 Detalles técnicos, adaptadores, llamadas de red y contenedores de dependencias.
 
 ### DTO (Data Transfer Object)
+
 `infrastructure/dtos/ApiBookDTO.ts`
+
 ```typescript
 export interface ApiBookDTO {
-  book_id: string;      // Formato externo (snake_case)
+  book_id: string; // Formato externo (snake_case)
   book_title: string;
   status: 'free' | 'borrowed';
 }
 ```
 
 ### Mapper (Adaptador de Estructura de Datos)
+
 `infrastructure/mappers/BookMapper.ts`
+
 ```typescript
 import { Book } from '../../domain/entities/Book';
 import { ApiBookDTO } from '../dtos/ApiBookDTO';
@@ -85,14 +95,16 @@ export class BookMapper {
     return {
       id: dto.book_id,
       title: dto.book_title,
-      isAvailable: dto.status === 'free'
+      isAvailable: dto.status === 'free',
     };
   }
 }
 ```
 
 ### Adaptador / Adapter (Repositorio Concreto)
+
 `infrastructure/repositories/ApiBookRepository.ts`
+
 ```typescript
 import axios from 'axios';
 import { IBookRepository } from '../../domain/ports/IBookRepository';
@@ -104,7 +116,7 @@ export class ApiBookRepository implements IBookRepository {
   async findById(id: string): Promise<Book | null> {
     const response = await axios.get<ApiBookDTO>(`/api/books/${id}`);
     if (!response.data) return null;
-    
+
     // Mapea DTO técnico de API a Entidad limpia de dominio
     return BookMapper.toDomain(response.data);
   }
@@ -122,7 +134,9 @@ export class ApiBookRepository implements IBookRepository {
 ```
 
 ### Inyección de Dependencias
+
 `infrastructure/di/container.ts`
+
 ```typescript
 import { container } from 'tsyringe';
 import { ApiBookRepository } from '../repositories/ApiBookRepository';
@@ -138,7 +152,9 @@ container.register('IBookRepository', { useClass: ApiBookRepository });
 React, Hooks, UI, manejo del estado de UI.
 
 ### Custom Hook (TanStack Query)
+
 `presentation/hooks/useBorrowBook.ts`
+
 ```typescript
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { container } from 'tsyringe';
@@ -150,17 +166,19 @@ export function useBorrowBook() {
   const borrowUseCase = container.resolve(BorrowBookUseCase);
 
   return useMutation({
-    mutationFn: ({ bookId, userId }: { bookId: string; userId: string }) => 
+    mutationFn: ({ bookId, userId }: { bookId: string; userId: string }) =>
       borrowUseCase.execute(bookId, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] });
-    }
+    },
   });
 }
 ```
 
 ### Componente React
+
 `presentation/components/BookDetail.tsx`
+
 ```typescript
 import React from 'react';
 import { useBorrowBook } from '../hooks/useBorrowBook';
@@ -179,8 +197,8 @@ export const BookDetail = ({ bookId, userId }: { bookId: string; userId: string 
   };
 
   return (
-    <button 
-      onClick={handleBorrow} 
+    <button
+      onClick={handleBorrow}
       disabled={borrowMutation.isPending}
     >
       {borrowMutation.isPending ? 'Procesando...' : 'Pedir Prestado'}

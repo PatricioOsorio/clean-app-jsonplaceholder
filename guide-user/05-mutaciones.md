@@ -67,6 +67,7 @@ Tu domain ya debe tener tipos distintos para cada uno (`UpdatePostInput` vs `Par
 ## Pistas socráticas
 
 Si te trabas:
+
 - ¿El hook de mutación debe recibir el ID del post como argumento del hook o de `.mutate()`?
 - Cuando eliminas un post y navegas de vuelta a la lista, ¿cómo sabe TanStack Query que debe refrescar?
 - ¿`invalidateQueries({ queryKey: ['posts'] })` invalida también `['posts', id]`? Pruébalo.

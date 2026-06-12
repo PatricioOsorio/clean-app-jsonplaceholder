@@ -53,6 +53,7 @@ Componente React que usa el container para resolver `IDependencies` y lo pone en
 ## Pistas socráticas
 
 Si te trabas:
+
 - ¿Por qué `reflect-metadata` debe importarse antes que todo? ¿Qué hace ese import?
 - ¿`IDependencies` debería vivir en `domain` o en `di/`? ¿Qué importa esa interfaz?
 - El container es de infrastructure o de di — ¿importa eso? ¿Qué regla de dependencias aplica?

@@ -54,23 +54,33 @@ Este patrón es la base del **Dependency Inversion Principle** y permite interca
 ## SOLID aplicado al proyecto
 
 ### S — Single Responsibility
+
 Cada clase tiene una razón para cambiar.
+
 - Aplicado: `GetPostsUseCase` solo obtiene la lista de posts. No formatea, no filtra por UI, no hace fetch directamente.
 
 ### O — Open/Closed
+
 Extender sin modificar.
+
 - Aplicado: para agregar filtrado por userId, creas `GetPostsByUserUseCase` — no modificas `GetPostsUseCase`.
 
 ### L — Liskov Substitution
+
 Las implementaciones deben ser intercambiables.
+
 - Aplicado: `MockPostRepository` y `AxiosPostRepository` implementan la misma `IPostRepository`. Presentation no nota la diferencia.
 
 ### I — Interface Segregation
+
 Interfaces pequeñas y enfocadas.
+
 - Aplicado: `IPostRepository` solo tiene métodos de posts. No mezcla comentarios ni usuarios.
 
 ### D — Dependency Inversion
+
 Depende de abstracciones, no de concretos.
+
 - Aplicado: `GetPostsUseCase` recibe `IPostRepository`, no `AxiosPostRepository`. tsyringe inyecta la implementación.
 
 ---
@@ -88,6 +98,7 @@ No hay código en este módulo. La tarea es conceptual:
 ## Pistas socráticas
 
 Si te trabas en la tarea:
+
 - ¿Qué pasaría si cambias Axios por `fetch` nativo? ¿Cuántos archivos tendrías que tocar?
 - ¿TanStack Query puede funcionar sin React? ¿Eso te dice algo sobre en qué capa vive?
 - ¿Un use case debería saber que hay una pantalla que lo consume?

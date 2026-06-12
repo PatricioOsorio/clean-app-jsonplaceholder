@@ -14,13 +14,13 @@ Dominar un patrón requiere repetición en contextos distintos. Users tiene rela
 
 ## Recursos disponibles en JSONPlaceholder
 
-| Recurso | Endpoint principal | Nested |
-|---------|-------------------|--------|
-| Users | `/users` `/users/:id` | `/users/:id/posts` `/users/:id/albums` `/users/:id/todos` |
-| Comments | `/comments` `/comments/:id` | `/posts/:id/comments` |
-| Todos | `/todos` `/todos/:id` | `/users/:id/todos` |
-| Albums | `/albums` `/albums/:id` | `/users/:id/albums` |
-| Photos | `/photos` `/photos/:id` | `/albums/:id/photos` |
+| Recurso  | Endpoint principal          | Nested                                                    |
+| -------- | --------------------------- | --------------------------------------------------------- |
+| Users    | `/users` `/users/:id`       | `/users/:id/posts` `/users/:id/albums` `/users/:id/todos` |
+| Comments | `/comments` `/comments/:id` | `/posts/:id/comments`                                     |
+| Todos    | `/todos` `/todos/:id`       | `/users/:id/todos`                                        |
+| Albums   | `/albums` `/albums/:id`     | `/users/:id/albums`                                       |
+| Photos   | `/photos` `/photos/:id`     | `/albums/:id/photos`                                      |
 
 ---
 
@@ -46,6 +46,7 @@ GET /comments?postId=1 ← todos los comentarios del post 1
 ### Nested routes en el router
 
 Para mostrar comentarios de un post:
+
 ```
 /posts/:postId/comments
 ```
@@ -59,6 +60,7 @@ Para mostrar comentarios de un post:
 Elige al menos 2 recursos para implementar end-to-end (domain → infra → presentation):
 
 **Opción A — Users + Posts por User (relación 1:N)**
+
 1. Entity `User` en domain
 2. `IUserRepository` con `getAll()`, `getById(id)`, `getPostsByUser(userId)`
 3. Use cases correspondientes
@@ -67,12 +69,14 @@ Elige al menos 2 recursos para implementar end-to-end (domain → infra → pres
 6. Página de detalle de usuario con sus posts
 
 **Opción B — Comments como recurso nested de Posts**
+
 1. Entity `Comment` en domain
 2. `ICommentRepository` con `getByPost(postId)`, `create(comment)`
 3. En `PostDetailPage`: muestra los comentarios del post
 4. Formulario para agregar comentario
 
 **Opción C — Todos (CRUD completo + filtrado por user)**
+
 1. Entity `Todo` con `completed: boolean`
 2. Use case para toggle (`PatchTodoUseCase` con `{ completed: !todo.completed }`)
 3. Página de todos con filtro por estado (completado/pendiente) — ese filtro es de UI, ¿dónde vive?
@@ -92,6 +96,7 @@ Si te trabas en algo específico, pide una pista. Pero intenta resolverlo primer
 ## Checkpoint
 
 Para cada recurso implementado:
+
 - Domain: entity + interface + use cases, cero dependencias externas
 - Infrastructure: DTO + mapper + repository + registro en container
 - Presentation: hooks TanStack Query + páginas + rutas lazy
