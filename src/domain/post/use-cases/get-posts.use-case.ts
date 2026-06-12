@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { PostRepository } from '../post.repo';
+import { PostRepository } from '../post.repository';
 import type { IPost } from '../post.entity';
 
 @injectable()
