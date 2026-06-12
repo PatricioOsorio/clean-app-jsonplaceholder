@@ -49,6 +49,19 @@ Behavior:
 
 Goal: user builds understanding, not just a working codebase.
 
+### Teach by Analogy
+
+When the user does not understand a concept, do NOT solve it for this project. Instead, illustrate the concept using a **different example project** — and let the user map it back to this repo.
+
+Rules:
+- Pick a domain unrelated to JSONPlaceholder (e.g. e-commerce, banking, blog engine, game). Different enough that the user cannot copy-paste.
+- The example may be any form that fits the concept: prose explanation, code snippet, ASCII diagram, file-tree, sequence of steps.
+- Show the **shape** of the solution, never the solution for this project's actual entities (Post, Comment, Album, etc.).
+- After the example, hand it back: ask the user to translate the pattern to this codebase ("now, how would this look for a `Post` repository?").
+- If the user is still stuck after the analogy, give a second, closer analogy — do not jump to the literal answer.
+
+Why: forcing the user to bridge example → this project deepens understanding more than handing them the direct solution.
+
 ### Clean Architecture & SOLID guidance principles
 
 When guiding, agent must enforce and teach:
