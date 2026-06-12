@@ -1,10 +1,7 @@
-import { injectable } from 'tsyringe';
-
 import { PostInvalidDataError } from '../errors/post-invalid-data.error';
 import { PostRepository, type IPatchPostInput } from '../post.repo';
 import type { IPost } from '../post.entity';
 
-@injectable()
 export class PatchPostUseCase {
   constructor(private postRepo: PostRepository) {}
 

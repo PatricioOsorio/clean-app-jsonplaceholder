@@ -1,8 +1,6 @@
-import { injectable } from 'tsyringe';
 import { PostRepository } from '../post.repo';
 import { PostInvalidDataError } from '../errors/post-invalid-data.error';
 
-@injectable()
 export class DeletePostUseCase {
   constructor(private postRepo: PostRepository) {}
 
