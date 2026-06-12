@@ -1,7 +1,7 @@
 export abstract class DomainError extends Error {
   constructor(message: string) {
     super(message);
-    
+
     // child name auto-assign
     this.name = this.constructor.name;
 

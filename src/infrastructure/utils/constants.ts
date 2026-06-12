@@ -27,6 +27,5 @@ export const ENV = {
   VITE_BASEPATH,
   VITE_API_BASE_URL,
   IS_LOCAL: VITE_ENVIRONMENT === 'local',
-  IS_STAGING: VITE_ENVIRONMENT === 'staging',
   IS_PROD: VITE_ENVIRONMENT === 'production',
 } as const;

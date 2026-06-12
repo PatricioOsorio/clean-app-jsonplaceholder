@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 
 import { PostNotFoundError } from '../errors/post-not-found.error';
-import { PostRepository } from '../post.repository';
+import { PostRepository } from '../post.repo';
 import type { IPost } from '../post.entity';
 
 @injectable()

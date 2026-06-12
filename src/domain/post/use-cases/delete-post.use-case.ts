@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { PostRepository } from '../post.repository';
+import { PostRepository } from '../post.repo';
 import { PostInvalidDataError } from '../errors/post-invalid-data.error';
 
 @injectable()

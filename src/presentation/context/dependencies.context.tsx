@@ -1,8 +1,8 @@
 import React, { createContext, use, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 
-import { DEPENDENCIES_TOKEN } from '@infrastructure/di/dependencies';
-import type { IDependencies } from '@infrastructure/di/dependencies';
+import { DEPENDENCIES_TOKEN } from '@/infrastructure/di/dependencies.types';
+import type { IDependencies } from '@/infrastructure/di/dependencies.types';
 import { container } from '@infrastructure/di/container';
 
 const DependenciesContext = createContext<IDependencies | null>(null);
