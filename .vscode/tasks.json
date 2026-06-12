@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ! ===== AI AGENTS =====
+    {
+      "label": "🤖 Claude Code",
+      "type": "shell",
+      "command": "claude",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      }
+    },
+    {
+      "label": "🛸 Antigravity",
+      "type": "shell",
+      "command": "agy",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    }
+  ]
+}
