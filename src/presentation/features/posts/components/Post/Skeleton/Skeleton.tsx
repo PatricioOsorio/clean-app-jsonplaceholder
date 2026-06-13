@@ -1,3 +1,5 @@
+import { Skeleton } from '@presentation/shared/components/Skeleton';
+
 import type { IPostSkeletonProps } from './Skeleton.interfaces';
 import './Skeleton.css';
 
@@ -6,12 +8,13 @@ export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
     <>
       {Array.from({ length: items }).map((_, i) => (
         <article {...rootProps} key={`skeleton-${i}`} className="post-skeleton-container">
-          <div className="psc__title" />
-          <div className="psc__line psc__line--full" />
-          <div className="psc__line psc__line--partial" />
+          <Skeleton.Text className="h-6 w-3/4" />
+          <Skeleton.Text className="w-full" />
+          <Skeleton.Text className="w-5/6" />
+
           <div className="psc__footer">
-            <div className="psc__badge psc__badge--sm" />
-            <div className="psc__badge psc__badge--xs" />
+            <Skeleton.Text className="w-16" />
+            <Skeleton.Text className="w-10" />
           </div>
         </article>
       ))}

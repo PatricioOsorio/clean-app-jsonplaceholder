@@ -2,24 +2,4 @@
 
 .post-detail-skeleton-container {
   @apply flex flex-col gap-4;
-
-  .pdsc__title {
-    @apply bg-muted h-10 w-5/6 animate-pulse rounded-lg;
-  }
-
-  .pdsc__meta {
-    @apply bg-muted h-4 w-1/3 animate-pulse rounded-md;
-  }
-
-  .pdsc__line {
-    @apply bg-muted h-4 animate-pulse rounded-md;
-
-    &.pdsc__line--full {
-      @apply w-full;
-    }
-
-    &.pdsc__line--partial {
-      @apply w-3/4;
-    }
-  }
 }
