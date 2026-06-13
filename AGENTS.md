@@ -2,6 +2,12 @@
 
 This file provides guidance to agents when working with code in this repository.
 
+### Language
+
+- All model responses MUST be written in **Spanish**
+- Keep code, technical concepts, and terminology in **English** (e.g. class names, `repository`, `use case`, `dependency injection`, Clean Architecture / SOLID terms)
+- Do not translate technical terms to Spanish; mix Spanish prose with English technical vocabulary
+
 ## Communication Style
 
 Default mode for all AI assistants in this project: **caveman** (full intensity).

@@ -2,31 +2,18 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostProps } from './Post.interfaces';
 
+import { PostEmpty } from './Empty/Empty';
+import { PostSkeleton } from './Skeleton/Skeleton';
 import './Post.css';
 
 export const Post = ({ rootProps, id, title, content, idUser, isLoading, isEmpty }: IPostProps) => {
   const renderContent = () => {
     if (isLoading) {
-      return (
-        <div className="pc__skeleton-container">
-          <div className="pc__skeleton-title" />
-          <div className="pc__skeleton-line pc__skeleton-line--full" />
-          <div className="pc__skeleton-line pc__skeleton-line--partial" />
-          <div className="pc__skeleton-footer">
-            <div className="pc__skeleton-badge pc__skeleton-badge--sm" />
-            <div className="pc__skeleton-badge pc__skeleton-badge--xs" />
-          </div>
-        </div>
-      );
+      return <PostSkeleton items={1} />;
     }
 
     if (isEmpty) {
-      return (
-        <div className="pc__empty-state">
-          <h3 className="pc__empty-title">No publications found</h3>
-          <p className="pc__empty-desc">Check back later or try fetching the posts again.</p>
-        </div>
-      );
+      return <PostEmpty />;
     }
 
     return (
@@ -43,16 +30,11 @@ export const Post = ({ rootProps, id, title, content, idUser, isLoading, isEmpty
   };
 
   return (
-    <article
-      {...rootProps}
-      className={cn(
-        'post-container',
-        isLoading && 'post-container--loading',
-        isEmpty && 'post-container--empty',
-        rootProps?.className,
-      )}
-    >
+    <article {...rootProps} className={cn('post-container', rootProps?.className)}>
       {renderContent()}
     </article>
   );
 };
+
+Post.Skeleton = PostSkeleton;
+Post.Empty = PostEmpty;

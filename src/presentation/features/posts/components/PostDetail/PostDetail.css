@@ -46,41 +46,4 @@
   .pdc__text {
     @apply text-muted-foreground text-base leading-relaxed whitespace-pre-wrap sm:text-lg;
   }
-
-  .pdc__empty {
-    @apply flex flex-col items-center justify-center gap-2 py-12 text-center;
-  }
-
-  .pdc__empty-title {
-    @apply text-foreground text-xl font-bold;
-  }
-
-  .pdc__empty-desc {
-    @apply text-muted-foreground max-w-sm text-sm;
-  }
-
-  /* Skeleton States */
-  .pdc__skeleton-container {
-    @apply flex flex-col gap-4;
-  }
-
-  .pdc__skeleton-title {
-    @apply bg-muted h-10 w-5/6 animate-pulse rounded-lg;
-  }
-
-  .pdc__skeleton-meta {
-    @apply bg-muted h-4 w-1/3 animate-pulse rounded-md;
-  }
-
-  .pdc__skeleton-line {
-    @apply bg-muted h-4 animate-pulse rounded-md;
-
-    &.pdc__skeleton-line--full {
-      @apply w-full;
-    }
-
-    &.pdc__skeleton-line--partial {
-      @apply w-3/4;
-    }
-  }
 }

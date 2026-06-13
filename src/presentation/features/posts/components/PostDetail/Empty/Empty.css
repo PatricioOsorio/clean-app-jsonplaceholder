@@ -1,0 +1,13 @@
+@reference "@styles/app.css";
+
+.post-detail-empty-container {
+  @apply flex flex-col items-center justify-center gap-2 py-12 text-center;
+
+  .pdec__title {
+    @apply text-foreground text-xl font-bold;
+  }
+
+  .pdec__desc {
+    @apply text-muted-foreground max-w-sm text-sm;
+  }
+}

@@ -1,0 +1,37 @@
+@reference "@styles/app.css";
+
+.post-skeleton-container {
+  @apply border-border bg-card text-card-foreground flex flex-col gap-4 rounded-xl border p-6 shadow-xs pointer-events-none;
+
+  .psc__title {
+    @apply bg-muted h-6 w-3/4 animate-pulse rounded-md;
+  }
+
+  .psc__line {
+    @apply bg-muted h-4 animate-pulse rounded-md;
+
+    &.psc__line--full {
+      @apply w-full;
+    }
+
+    &.psc__line--partial {
+      @apply w-5/6;
+    }
+  }
+
+  .psc__footer {
+    @apply border-border flex items-center justify-between border-t pt-3;
+  }
+
+  .psc__badge {
+    @apply bg-muted h-4 animate-pulse rounded-md;
+
+    &.psc__badge--sm {
+      @apply w-16;
+    }
+
+    &.psc__badge--xs {
+      @apply w-10;
+    }
+  }
+}

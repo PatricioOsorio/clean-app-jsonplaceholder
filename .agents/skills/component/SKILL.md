@@ -1,109 +1,307 @@
 ---
 name: component
 description: >
-  Generate, refactor, or edit React components following the teslo-shop component pattern (4 files: tsx + interfaces + css + index barrel).
-  Use whenever working with any component in this project — creating new ones, refactoring existing ones, or editing component structure.
-  Trigger on: "create X component", "new component", "refactor Y", "edit component", "add component", or any task that results in producing or modifying a component folder.
-  Do NOT skip this skill just because a component "looks simple" — the pattern is mandatory for all components in this project.
+  Generate, refactor, or edit React components following this project's presentation-layer
+  pattern (tsx + interfaces + css + index barrel, with Empty/Skeleton sub-components and an
+  IMV model contract living in the feature's models/ folder).
+  Use whenever working with any component under src/presentation — creating new ones, refactoring
+  existing ones, or editing component structure.
+  Trigger on: "create X component", "new component", "refactor Y", "edit component", "add component",
+  or any task that produces or modifies a component folder.
+  Do NOT skip this skill just because a component "looks simple" — the pattern is mandatory for all
+  components in this project.
 ---
 
 # React Component Pattern
 
-Always generate all 4 files. Never skip any.
+Every component shares a **core**: `Component.tsx` + `Component.interfaces.ts` + `Component.css` +
+`index.ts` (capital `I` barrel), each root element spreads `rootProps` and merges classes with
+`cn('<name>-container', rootProps?.className)`, CSS nested under one `-container` root. Everything
+else — model contracts, `Empty`/`Skeleton` sub-components, loading/empty handling — is **archetype-
+specific**. Pick the archetype first, then apply only its rules. Don't bolt an `Empty/` folder or a
+`.mv.ts` model onto a component that doesn't need one.
 
-## File Structure
+## Pick the archetype first
+
+| Archetype | What it is | Reference | Model | `Empty`/`Skeleton` | Loading/empty render |
+|-----------|-----------|-----------|-------|--------------------|----------------------|
+| **Leaf / card** | One data item, owns its own loading + empty states | `features/posts/components/Post` | `Partial<IMV>` in props | **own subdirs**, attached as `Component.Skeleton`/`.Empty` statics | `renderContent()` helper |
+| **Composite / list** | Renders many leaves | `features/posts/components/Posts` | local `IVM { items?: IMV[] }` | **none** — reuses the leaf's `Leaf.Skeleton`/`Leaf.Empty` statics | inline `{isLoading && …}` in JSX |
+| **Detail** | One full record, bespoke layout | `features/posts/components/PostDetail` | local `IVM { item?: IMV }` | **none** — inlines its own skeleton/empty markup | `renderContent()` helper |
+| **Presentational / shared** | Static chrome, no data, no states | `shared/components/Footer`, `Navigation`, `Loading` | **none** | **none** | none — just renders |
+
+The sections below cover every piece. **Apply only the rows your archetype needs.** A leaf uses §1–7.
+A presentational component uses just the core (§2 minus the model/mixins, §3 minus `renderContent`,
+§6, §7) — `IProps extends IWithRootProps<tag>` and nothing else (see `Footer.interfaces.ts`).
+
+## File Structure (leaf / card — the maximal form)
 
 ```
 ComponentName/
 ├── ComponentName.tsx
 ├── ComponentName.interfaces.ts
 ├── ComponentName.css
-└── index.ts
+├── index.ts                  ← capital I, this is the barrel
+├── Empty/                     ← leaf only
+│   ├── Empty.tsx
+│   ├── Empty.interfaces.ts
+│   └── Empty.css
+└── Skeleton/                  ← leaf only
+    ├── Skeleton.tsx
+    ├── Skeleton.interfaces.ts
+    └── Skeleton.css
 ```
+
+Composite, detail, and presentational components drop the `Empty/` and `Skeleton/` subdirs — they
+keep only the 4 core files.
+
+Notes:
+- Sub-components (`Empty`, `Skeleton`) belong to the **leaf** that owns those states. They live in
+  their own subdirectories with their own 3 files (`.tsx` + `.interfaces.ts` + `.css`), get **no**
+  `index.ts`, and the parent barrel re-exports their interfaces. Composite/list components reuse them
+  via the leaf's statics (`Post.Skeleton`, `Post.Empty`) rather than redefining them.
+- The **data contract (`IMV`)** lives with the feature's models, never in the component folder:
+  `src/presentation/features/<feature>/models/<name>/<name>.mv.ts`. Presentational/shared components
+  carry no data, so they have no `IMV` at all.
 
 ---
 
-## 1. ComponentName.interfaces.ts
+## 1. The model contract: `IMV` (lives in models/, not in the component)
+
+The minimal UI data shape is defined once in the feature's models folder and imported by the
+component's interfaces. Example — `models/post/post.mv.ts`:
 
 ```typescript
-import type { IWithRootProps } from '@/shared/interfaces/component.interfaces';
-// other import types as needed
-
-export interface IComponentNameVM {
-  // Minimum UI primitive contract: strings, numbers, arrays, plain objects
-  // No React types, no library imports — pure data shape only
-}
-
-export interface IComponentNameProps extends IWithRootProps<'section'>, IComponentNameVM {
-  // React-specific additions: ReactNode, event handlers, refs, library types
+export interface IPostMV {
+  id: number;
+  title: string;
+  content: string;
+  idUser?: number;
 }
 ```
 
 **Rules:**
-
-- `IVM` = data contract only. If a type requires importing from React or a library, it does NOT belong here.
-- `IProps` = `IWithRootProps<tag>` + `IVM` + any React/lib deps needed to render.
-- Infer the correct semantic HTML tag for `IWithRootProps<tag>` from the component's purpose (`article`, `section`, `aside`, `nav`, `div`, `ul`, `li`, etc.).
-- All imports must use `import type`.
+- `IMV` = data contract only: strings, numbers, arrays, plain objects. No React types, no library imports.
+- Suffix is `.mv.ts` (model-view). The interface is `I<Name>MV`.
+- The component imports it — it never redefines the shape locally.
 
 ---
 
-## 2. ComponentName.tsx
+## 2. ComponentName.interfaces.ts
+
+The interfaces file is thin: it composes the root props, the model contract, and the loading/empty
+mixins. It does not re-declare the data shape.
+
+```typescript
+import type { IWithEmpty, IWithLoading, IWithRootProps } from 'styleguide/component.interfaces';
+import type { IPostMV } from '../../models/post';
+
+export interface IPostProps
+  extends IWithRootProps<'article'>, Partial<IPostMV>, IWithLoading, IWithEmpty {}
+```
+
+**Rules:**
+- `IProps` = `IWithRootProps<tag>` + `Partial<I<Name>MV>` + `IWithLoading` + `IWithEmpty` + any
+  React/lib deps the render needs.
+- Import the `IMV` from the feature's models barrel (e.g. `'../../models/post'`), not from a local file.
+- Infer the correct semantic HTML tag for `IWithRootProps<tag>` from the component's purpose
+  (`article`, `section`, `aside`, `nav`, `div`, `ul`, `li`, …).
+- All imports use `import type`.
+
+---
+
+## 3. ComponentName.tsx
+
+Conditional states (`isLoading`, `isEmpty`) are handled inside a `renderContent()` helper, and the
+root element with `rootProps` + `cn()` is always rendered around it. Props are destructured by name
+from the `IMV` — no `...rest` spread of vm fields.
 
 ```tsx
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'styleguide/utils';
 
-import type { IComponentNameProps } from './ComponentName.interfaces';
+import type { IPostProps } from './Post.interfaces';
 
-import './ComponentName.css';
+import { PostEmpty } from './Empty/Empty';
+import { PostSkeleton } from './Skeleton/Skeleton';
+import './Post.css';
 
-export const ComponentName = ({ rootProps, ...vmProps }: IComponentNameProps) => {
+export const Post = ({ rootProps, id, title, content, idUser, isLoading, isEmpty }: IPostProps) => {
+  const renderContent = () => {
+    if (isLoading) {
+      return <PostSkeleton items={1} />;
+    }
+
+    if (isEmpty) {
+      return <PostEmpty />;
+    }
+
+    return (
+      <>
+        <h2 className="pc__title">{title}</h2>
+        <p className="pc__content">{content}</p>
+
+        <div className="pc__footer">
+          {idUser !== undefined && <span className="pc__user">User ID: {idUser}</span>}
+          <span className="pc__id">Post #{id}</span>
+        </div>
+      </>
+    );
+  };
+
   return (
-    <section {...rootProps} className={cn('component-name-container', rootProps?.className)}>
-      {/* child elements use cn('prefix__child-name', ...) */}
-    </section>
+    <article {...rootProps} className={cn('post-container', rootProps?.className)}>
+      {renderContent()}
+    </article>
+  );
+};
+
+Post.Skeleton = PostSkeleton;
+Post.Empty = PostEmpty;
+```
+
+**Rules:**
+- Named export only (`export const`). No default export.
+- Destructure named `IMV` fields directly in the signature alongside `rootProps`, `isLoading`, `isEmpty`.
+- Use a `renderContent()` helper for the `isLoading` / `isEmpty` / real branches. The root element is
+  rendered once, outside the helper.
+- Replace `article` with the tag that matches `IWithRootProps<tag>`.
+- Always spread `rootProps` on the root element.
+- Merge classes with `cn()`: base class first, then `rootProps?.className`.
+- Attach sub-components as static properties: `Component.Skeleton = …; Component.Empty = …;`.
+- Import order: `cn` from styleguide → blank → `import type` props → blank → sub-component imports →
+  the `./Component.css` side-effect import last.
+
+---
+
+## 4. Sub-component: Empty
+
+Simple semantic block. Uses `cn()` like the main component.
+
+```tsx
+import { cn } from 'styleguide/utils';
+
+import type { IPostEmptyProps } from './Empty.interfaces';
+import './Empty.css';
+
+export const PostEmpty = ({ rootProps }: IPostEmptyProps) => {
+  return (
+    <article {...rootProps} className={cn('post-empty-container', rootProps?.className)}>
+      <h3 className="pec__title">No publications found</h3>
+      <p className="pec__desc">Check back later or try fetching the posts again.</p>
+    </article>
   );
 };
 ```
 
-**Rules:**
+Interfaces — usually just the root props:
 
-- Named export only (`export const`). No default export.
-- Replace `section` with the tag that matches `IWithRootProps<tag>`.
-- Always spread `rootProps` on the root element.
-- Always merge classes with `cn()`: base class first, then `rootProps?.className`.
-- Child elements use `cn('prefix__child-name', childProps?.className)` when they also accept external props.
+```typescript
+import type { IWithRootProps } from 'styleguide/component.interfaces';
+
+export interface IPostEmptyProps extends IWithRootProps<'article'> {}
+```
+
+- Export name is `<Parent>Empty` (e.g. `PostEmpty`).
+- Root class is `<parent>-empty-container`; children use the derived prefix (`pec__`).
 
 ---
 
-## 3. ComponentName.css
+## 5. Sub-component: Skeleton
+
+Renders `items` placeholder copies. Note: Skeleton uses a **raw `className` string**, not `cn()`, and
+spreads `rootProps` per item with a `key`. Default `items` count differs by usage.
+
+```tsx
+import type { IPostSkeletonProps } from './Skeleton.interfaces';
+import './Skeleton.css';
+
+export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
+  return (
+    <>
+      {Array.from({ length: items }).map((_, i) => (
+        <article {...rootProps} key={`skeleton-${i}`} className="post-skeleton-container">
+          <div className="psc__title" />
+          <div className="psc__line psc__line--full" />
+          <div className="psc__line psc__line--partial" />
+          <div className="psc__footer">
+            <div className="psc__badge psc__badge--sm" />
+            <div className="psc__badge psc__badge--xs" />
+          </div>
+        </article>
+      ))}
+    </>
+  );
+};
+```
+
+Interfaces — root props plus `items`:
+
+```typescript
+import type { IWithRootProps } from 'styleguide/component.interfaces';
+
+export interface IPostSkeletonProps extends IWithRootProps<'article'> {
+  items?: number;
+}
+```
+
+- Export name is `<Parent>Skeleton`.
+- Root class is `<parent>-skeleton-container`; children use the derived prefix (`psc__`).
+- State modifiers use the BEM-style `&.prefix__el--modifier` nested in CSS (see below).
+
+---
+
+## 6. CSS files
+
+Every `.css` (parent and each sub-component) starts with the `@reference` line and nests all children
+inside the single `-container` root.
 
 ```css
 @reference "@styles/app.css";
 
-.component-name-container {
+.post-container {
   @apply /* root styles */;
 
-  .prefix__child {
+  .pc__title {
     @apply /* child styles */;
   }
 }
 ```
 
-**Rules:**
+Modifier states nest with `&`:
 
+```css
+.psc__line {
+  @apply bg-muted h-4 animate-pulse rounded-md;
+
+  &.psc__line--full {
+    @apply w-full;
+  }
+
+  &.psc__line--partial {
+    @apply w-5/6;
+  }
+}
+```
+
+**Rules:**
 - First line is always `@reference "@styles/app.css";`.
 - Root class always ends in `-container`.
-- All child classes must be nested inside the root class — never flat at the top level.
-- Child classes always use the abbreviation prefix (`prefix__child-name`).
+- All child classes nested inside the root — never flat at the top level.
+- Child classes use the abbreviation prefix + `__` (see naming system).
+- Modifiers use `&.prefix__el--modifier` nested under the element.
 
 ---
 
-## 4. index.ts
+## 7. index.ts (the barrel — capital I)
+
+Re-export the main component + its interfaces, plus the sub-component interfaces.
 
 ```typescript
-export * from './ComponentName';
-export * from './ComponentName.interfaces';
+export * from './Post';
+export * from './Post.interfaces';
+
+export * from './Empty/Empty.interfaces';
+export * from './Skeleton/Skeleton.interfaces';
 ```
 
 ---
@@ -112,53 +310,42 @@ export * from './ComponentName.interfaces';
 
 ### Root class
 
-`component-name-container` — kebab-case of the component name + `-container`.
+`<component-name>-container` — kebab-case of the component name + `-container`.
 
-| Component       | Root class                 |
-| --------------- | -------------------------- |
-| `Loading`       | `loading-container`        |
-| `ProductCard`   | `product-card-container`   |
-| `CardDashboard` | `card-dashboard-container` |
+| Component     | Root class                |
+| ------------- | ------------------------- |
+| `Post`        | `post-container`          |
+| `PostEmpty`   | `post-empty-container`    |
+| `PostSkeleton`| `post-skeleton-container` |
+| `ProductCard` | `product-card-container`  |
 
-### Child prefix
+### Child prefix (canonical rule)
 
-Take the first letter of each word in the root class, excluding the word `container`.
-
-| Root class                 | Words (excl. `container`)      | Prefix                  |
-| -------------------------- | ------------------------------ | ----------------------- |
-| `loading-container`        | `loading` → `l`                | `lc__` — wait, see note |
-| `product-card-container`   | `product`, `card` → `p`, `c`   | `pcc__`                 |
-| `card-dashboard-container` | `card`, `dashboard` → `c`, `d` | `cdc__` — see note      |
-| `breadcrumb-container`     | `breadcrumb` → `b`             | `bc__`                  |
-
-> **Note:** The abbreviation appends `__` directly. For single-word roots, the container word initial is also included to disambiguate: `loading-container` → `lc__`. For multi-word roots, abbreviate only the non-`container` words.
-
-**Derivation rule (canonical):**
-
-1. Split root class by `-`.
+1. Split the root class by `-`.
 2. Take the first letter of **every** segment, including `container`.
 3. Append `__`.
 
-Examples:
+Examples (all from the real Post component):
 
-- `loading-container` → `[loading, container]` → `l` + `c` → `lc__`
-- `breadcrumb-container` → `[breadcrumb, container]` → `b` + `c` → `bc__`
+- `post-container` → `[post, container]` → `p` + `c` → `pc__`
+- `post-empty-container` → `[post, empty, container]` → `p` + `e` + `c` → `pec__`
+- `post-skeleton-container` → `[post, skeleton, container]` → `p` + `s` + `c` → `psc__`
 - `product-card-container` → `[product, card, container]` → `p` + `c` + `c` → `pcc__`
-- `card-dashboard-container` → `[card, dashboard, container]` → `c` + `d` + `c` → `cdc__`
-
-When in doubt, match the pattern the user uses in context. Prefer short, unambiguous abbreviations.
 
 ---
 
 ## Checklist Before Writing Files
 
-- [ ] `IVM` contains only primitive/plain data types — no React, no library imports
-- [ ] `IProps` extends `IWithRootProps<correctTag>` and `IVM`
+- [ ] `IMV` lives in `models/<name>/<name>.mv.ts` — primitives only, no React/lib imports
+- [ ] `interfaces.ts` imports the `IMV` from the models barrel; does not redefine the data shape
+- [ ] `IProps` extends `IWithRootProps<correctTag>`, `Partial<IMV>`, `IWithLoading`, `IWithEmpty`
 - [ ] Root element tag in `.tsx` matches the tag in `IWithRootProps<tag>`
-- [ ] Root CSS class ends in `-container`
-- [ ] All child CSS classes are nested inside root class
-- [ ] Child CSS classes use correct abbreviation prefix
-- [ ] `cn()` used on root: base class first, then `rootProps?.className`
-- [ ] Named export only (`export const`), no default
-- [ ] All type-only imports use `import type`
-- [ ] `index.ts` re-exports both files with `export *`
+- [ ] `.tsx` uses a `renderContent()` helper for `isLoading` / `isEmpty` branches
+- [ ] Named `IMV` fields destructured directly (no `...vmProps` spread)
+- [ ] `cn()` on parent + Empty roots (base class first, then `rootProps?.className`); Skeleton uses raw className
+- [ ] `Component.Skeleton` and `Component.Empty` attached as static props
+- [ ] Empty & Skeleton each have `.tsx` + `.interfaces.ts` + `.css` (no own barrel)
+- [ ] Every CSS file opens with `@reference "@styles/app.css";`, all children nested in `-container`
+- [ ] Child CSS classes use the correct first-letter-of-every-segment prefix
+- [ ] Barrel file is `index.ts` (capital I), re-exporting main files + sub-component interfaces
+- [ ] All type-only imports use `import type`; named export only, no default

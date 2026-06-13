@@ -2,4 +2,4 @@ import type { IWithEmpty, IWithLoading, IWithRootProps } from 'styleguide/compon
 import type { IPostMV } from '../../models/post';
 
 export interface IPostProps
-  extends IWithRootProps<'article'>, IWithLoading, IWithEmpty, Partial<IPostMV> {}
+  extends IWithRootProps<'article'>, Partial<IPostMV>, IWithLoading, IWithEmpty {}
