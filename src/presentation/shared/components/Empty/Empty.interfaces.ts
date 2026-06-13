@@ -1,0 +1,10 @@
+import type { IWithRootProps } from 'styleguide/component.interfaces';
+
+import type { ReactNode } from 'react';
+
+export interface IEmptyProps extends IWithRootProps<'div'> {
+  title?: string;
+  description?: string;
+  icon?: ReactNode;
+  children?: ReactNode;
+}

@@ -2,10 +2,19 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostsProps } from './Posts.interfaces';
 
+import { Empty } from '@presentation/shared/components/Empty';
+import { Error } from '@presentation/shared/components/Error';
 import { Post } from '../Post/Post';
 import './Posts.css';
 
-export const Posts = ({ rootProps, posts, isLoading, onPostClick, isEmpty }: IPostsProps) => {
+export const Posts = ({
+  rootProps,
+  posts,
+  isLoading,
+  isError,
+  onPostClick,
+  isEmpty,
+}: IPostsProps) => {
   return (
     <section {...rootProps} className={cn('posts-container', rootProps?.className)}>
       <div className="pc__header">
@@ -18,9 +27,24 @@ export const Posts = ({ rootProps, posts, isLoading, onPostClick, isEmpty }: IPo
       <div className="pc__grid">
         {isLoading && <Post.Skeleton items={6} />}
 
-        {isEmpty && <Post.Empty />}
+        {isError && (
+          <Error
+            description="Something went wrong while fetching the posts. Please try again later."
+            rootProps={{ className: 'col-span-full' }}
+            title="Couldn't load publications"
+          />
+        )}
+
+        {isEmpty && (
+          <Empty
+            description="Check back later or try fetching the posts again."
+            rootProps={{ className: 'col-span-full' }}
+            title="No publications found"
+          />
+        )}
 
         {!isLoading &&
+          !isError &&
           !isEmpty &&
           posts?.map((post) => (
             <Post
@@ -29,7 +53,7 @@ export const Posts = ({ rootProps, posts, isLoading, onPostClick, isEmpty }: IPo
               id={post.id}
               idUser={post.idUser}
               rootProps={{
-                onClick: onPostClick ? () => onPostClick(post.id) : undefined,
+                onClick: () => onPostClick?.(post.id),
                 className: cn(
                   onPostClick &&
                     'cursor-pointer transition-transform duration-200 active:scale-[0.98]',

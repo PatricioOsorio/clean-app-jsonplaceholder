@@ -9,7 +9,7 @@ export const PostsPage = () => {
   const navigate = useNavigate();
 
   const { data: posts, isLoading, isError } = usePosts();
-  const isEmpty = isError || (!isLoading && !posts?.length);
+  const isEmpty = !isLoading && !isError && !posts?.length;
 
   const handlePostClick = (postId: number) => {
     console.log(`Post ${postId} clicked!`);
@@ -29,6 +29,7 @@ export const PostsPage = () => {
       <div className="ppc__content">
         <Posts
           isEmpty={isEmpty}
+          isError={isError}
           isLoading={isLoading}
           posts={posts}
           onPostClick={handlePostClick}

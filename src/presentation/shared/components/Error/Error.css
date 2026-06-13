@@ -1,0 +1,21 @@
+@reference "@styles/app.css";
+
+.error-container {
+  @apply bg-destructive/5 border-destructive/30 flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-16 text-center;
+
+  .ec__icon {
+    @apply text-destructive mb-2 text-3xl;
+  }
+
+  .ec__title {
+    @apply text-destructive text-lg font-medium;
+  }
+
+  .ec__desc {
+    @apply text-muted-foreground max-w-sm text-sm;
+  }
+
+  .ec__actions {
+    @apply mt-4 flex items-center gap-2;
+  }
+}

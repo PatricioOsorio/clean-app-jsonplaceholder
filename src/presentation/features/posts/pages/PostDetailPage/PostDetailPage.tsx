@@ -10,12 +10,13 @@ export const PostDetailPage = () => {
 
   const numberId = id ? Number(id) : undefined;
   const { data: post, isLoading, isError } = usePost(numberId);
-  const isEmpty = isError || (!isLoading && !post);
+  const isEmpty = !isLoading && !isError && !post;
 
   return (
     <section className="post-detail-page">
       <PostDetail
         isEmpty={isEmpty}
+        isError={isError}
         isLoading={isLoading}
         post={post}
         onBack={() => navigate('/posts')}

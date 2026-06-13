@@ -23,12 +23,12 @@ specific**. Pick the archetype first, then apply only its rules. Don't bolt an `
 
 ## Pick the archetype first
 
-| Archetype | What it is | Reference | Model | `Empty`/`Skeleton` | Loading/empty render |
-|-----------|-----------|-----------|-------|--------------------|----------------------|
-| **Leaf / card** | One data item, owns its own loading + empty states | `features/posts/components/Post` | `Partial<IMV>` in props | **own subdirs**, attached as `Component.Skeleton`/`.Empty` statics | `renderContent()` helper |
-| **Composite / list** | Renders many leaves | `features/posts/components/Posts` | local `IVM { items?: IMV[] }` | **none** — reuses the leaf's `Leaf.Skeleton`/`Leaf.Empty` statics | inline `{isLoading && …}` in JSX |
-| **Detail** | One full record, bespoke layout | `features/posts/components/PostDetail` | local `IVM { item?: IMV }` | **none** — inlines its own skeleton/empty markup | `renderContent()` helper |
-| **Presentational / shared** | Static chrome, no data, no states | `shared/components/Footer`, `Navigation`, `Loading` | **none** | **none** | none — just renders |
+| Archetype                   | What it is                                         | Reference                                           | Model                         | `Empty`/`Skeleton`                                                 | Loading/empty render             |
+| --------------------------- | -------------------------------------------------- | --------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------ | -------------------------------- |
+| **Leaf / card**             | One data item, owns its own loading + empty states | `features/posts/components/Post`                    | `Partial<IMV>` in props       | **own subdirs**, attached as `Component.Skeleton`/`.Empty` statics | `renderContent()` helper         |
+| **Composite / list**        | Renders many leaves                                | `features/posts/components/Posts`                   | local `IVM { items?: IMV[] }` | **none** — reuses the leaf's `Leaf.Skeleton`/`Leaf.Empty` statics  | inline `{isLoading && …}` in JSX |
+| **Detail**                  | One full record, bespoke layout                    | `features/posts/components/PostDetail`              | local `IVM { item?: IMV }`    | **none** — inlines its own skeleton/empty markup                   | `renderContent()` helper         |
+| **Presentational / shared** | Static chrome, no data, no states                  | `shared/components/Footer`, `Navigation`, `Loading` | **none**                      | **none**                                                           | none — just renders              |
 
 The sections below cover every piece. **Apply only the rows your archetype needs.** A leaf uses §1–7.
 A presentational component uses just the core (§2 minus the model/mixins, §3 minus `renderContent`,
@@ -56,6 +56,7 @@ Composite, detail, and presentational components drop the `Empty/` and `Skeleton
 keep only the 4 core files.
 
 Notes:
+
 - Sub-components (`Empty`, `Skeleton`) belong to the **leaf** that owns those states. They live in
   their own subdirectories with their own 3 files (`.tsx` + `.interfaces.ts` + `.css`), get **no**
   `index.ts`, and the parent barrel re-exports their interfaces. Composite/list components reuse them
@@ -81,6 +82,7 @@ export interface IPostMV {
 ```
 
 **Rules:**
+
 - `IMV` = data contract only: strings, numbers, arrays, plain objects. No React types, no library imports.
 - Suffix is `.mv.ts` (model-view). The interface is `I<Name>MV`.
 - The component imports it — it never redefines the shape locally.
@@ -101,6 +103,7 @@ export interface IPostProps
 ```
 
 **Rules:**
+
 - `IProps` = `IWithRootProps<tag>` + `Partial<I<Name>MV>` + `IWithLoading` + `IWithEmpty` + any
   React/lib deps the render needs.
 - Import the `IMV` from the feature's models barrel (e.g. `'../../models/post'`), not from a local file.
@@ -160,6 +163,7 @@ Post.Empty = PostEmpty;
 ```
 
 **Rules:**
+
 - Named export only (`export const`). No default export.
 - Destructure named `IMV` fields directly in the signature alongside `rootProps`, `isLoading`, `isEmpty`.
 - Use a `renderContent()` helper for the `isLoading` / `isEmpty` / real branches. The root element is
@@ -284,6 +288,7 @@ Modifier states nest with `&`:
 ```
 
 **Rules:**
+
 - First line is always `@reference "@styles/app.css";`.
 - Root class always ends in `-container`.
 - All child classes nested inside the root — never flat at the top level.
@@ -312,12 +317,12 @@ export * from './Skeleton/Skeleton.interfaces';
 
 `<component-name>-container` — kebab-case of the component name + `-container`.
 
-| Component     | Root class                |
-| ------------- | ------------------------- |
-| `Post`        | `post-container`          |
-| `PostEmpty`   | `post-empty-container`    |
-| `PostSkeleton`| `post-skeleton-container` |
-| `ProductCard` | `product-card-container`  |
+| Component      | Root class                |
+| -------------- | ------------------------- |
+| `Post`         | `post-container`          |
+| `PostEmpty`    | `post-empty-container`    |
+| `PostSkeleton` | `post-skeleton-container` |
+| `ProductCard`  | `product-card-container`  |
 
 ### Child prefix (canonical rule)
 

@@ -2,18 +2,40 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostDetailProps } from './PostDetail.interfaces';
 
-import { PostDetailEmpty } from './Empty/Empty';
+import { Empty } from '@presentation/shared/components/Empty';
+import { Error } from '@presentation/shared/components/Error';
 import { PostDetailSkeleton } from './Skeleton/Skeleton';
 import './PostDetail.css';
 
-export const PostDetail = ({ rootProps, post, isLoading, isEmpty, onBack }: IPostDetailProps) => {
+export const PostDetail = ({
+  rootProps,
+  post,
+  isLoading,
+  isError,
+  isEmpty,
+  loadingTemplate,
+  emptyTemplate,
+  errorTemplate,
+  onBack,
+}: IPostDetailProps) => {
   const renderContent = () => {
     if (isLoading) {
-      return <PostDetailSkeleton items={1} />;
+      return loadingTemplate ?? <PostDetailSkeleton items={1} />;
+    }
+
+    if (isError) {
+      return errorTemplate ?? <Error description="We couldn't load this publication." />;
     }
 
     if (isEmpty || !post) {
-      return <PostDetailEmpty />;
+      return (
+        emptyTemplate ?? (
+          <Empty
+            description="The requested publication might have been deleted or does not exist."
+            title="Publication not found"
+          />
+        )
+      );
     }
 
     return (
@@ -50,4 +72,3 @@ export const PostDetail = ({ rootProps, post, isLoading, isEmpty, onBack }: IPos
 };
 
 PostDetail.Skeleton = PostDetailSkeleton;
-PostDetail.Empty = PostDetailEmpty;

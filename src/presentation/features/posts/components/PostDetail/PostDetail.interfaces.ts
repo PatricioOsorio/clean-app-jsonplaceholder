@@ -1,4 +1,9 @@
-import type { IWithEmpty, IWithLoading, IWithRootProps } from 'styleguide/component.interfaces';
+import type {
+  IWithEmpty,
+  IWithError,
+  IWithLoading,
+  IWithRootProps,
+} from 'styleguide/component.interfaces';
 import type { IPostMV } from '../../models/post';
 
 export interface IPostDetailVM {
@@ -6,9 +11,6 @@ export interface IPostDetailVM {
 }
 
 export interface IPostDetailProps
-  extends IWithRootProps<'article'>,
-    IWithLoading,
-    IWithEmpty,
-    IPostDetailVM {
+  extends IWithRootProps<'article'>, IWithLoading, IWithError, IWithEmpty, IPostDetailVM {
   onBack?: () => void;
 }

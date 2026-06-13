@@ -1,0 +1,21 @@
+@reference "@styles/app.css";
+
+.empty-container {
+  @apply bg-muted/30 border-border flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-16 text-center;
+
+  .ec__icon {
+    @apply text-muted-foreground mb-2 text-3xl;
+  }
+
+  .ec__title {
+    @apply text-foreground text-lg font-medium;
+  }
+
+  .ec__desc {
+    @apply text-muted-foreground max-w-sm text-sm;
+  }
+
+  .ec__actions {
+    @apply mt-4 flex items-center gap-2;
+  }
+}
