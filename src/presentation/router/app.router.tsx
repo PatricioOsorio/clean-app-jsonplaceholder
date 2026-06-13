@@ -2,10 +2,12 @@ import { createBrowserRouter, Navigate } from 'react-router';
 
 import { ENV } from '@infrastructure/utils/constants';
 
-const AppLayout = async () => (await import('@presentation/layouts/AppLayout')).default;
-const HomePage = async () => (await import('@presentation/pages/HomePage')).default;
-const PostsPage = async () => (await import('@presentation/pages/PostsPage')).default;
-const PostDetailPage = async () => (await import('@presentation/pages/PostDetailPage')).default;
+const AppLayout = async () => (await import('@presentation/shared/layouts/AppLayout')).default;
+const HomePage = async () => (await import('@presentation/shared/pages/HomePage')).default;
+const PostsPage = async () =>
+  (await import('@presentation/features/posts/pages/PostsPage')).default;
+const PostDetailPage = async () =>
+  (await import('@presentation/features/posts/pages/PostDetailPage')).default;
 
 export const appRouter = createBrowserRouter(
   [

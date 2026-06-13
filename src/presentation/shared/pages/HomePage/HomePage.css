@@ -1,0 +1,74 @@
+@reference "@styles/app.css";
+
+.home-page-container {
+  @apply bg-background relative flex h-full flex-col items-center justify-center overflow-hidden py-8;
+
+  .hpc__grid-bg {
+    @apply pointer-events-none absolute inset-0 opacity-30;
+    background-image:
+      linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  }
+
+  .hpc__content {
+    @apply relative z-10 flex max-w-3xl flex-col items-center gap-8 text-center;
+  }
+
+  .hpc__title-wrapper {
+    @apply border-border bg-card/50 relative border p-8 backdrop-blur-sm;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid hsl(var(--primary));
+    }
+
+    &::before {
+      top: -2px;
+      left: -2px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    &::after {
+      bottom: -2px;
+      right: -2px;
+      border-left: none;
+      border-top: none;
+    }
+  }
+
+  .hpc__title {
+    @apply text-foreground text-4xl font-bold tracking-tighter md:text-6xl;
+  }
+
+  .hpc__title-highlight {
+    @apply text-primary;
+  }
+
+  .hpc__description {
+    @apply text-muted-foreground max-w-xl font-mono text-lg;
+  }
+
+  .hpc__cta-button {
+    @apply text-primary-foreground bg-primary focus:ring-ring focus:ring-offset-background relative inline-flex items-center justify-center px-8 py-4 font-mono font-bold transition-all focus:ring-2 focus:ring-offset-2 focus:outline-none;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+    }
+
+    &:hover .hpc__cta-border {
+      transform: translate(0, 0);
+    }
+  }
+
+  .hpc__cta-border {
+    @apply border-primary pointer-events-none absolute inset-0 border transition-transform;
+    transform: translate(0.25rem, 0.25rem);
+  }
+}

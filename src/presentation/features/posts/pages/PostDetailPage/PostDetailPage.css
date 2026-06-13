@@ -1,0 +1,5 @@
+@reference "@styles/app.css";
+
+.post-detail-page {
+  @apply bg-background relative p-6;
+}

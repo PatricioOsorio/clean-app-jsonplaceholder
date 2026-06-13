@@ -1,5 +1,0 @@
-@reference "@/main.css";
-
-.post-detail-page {
-  @apply bg-background relative p-6;
-}

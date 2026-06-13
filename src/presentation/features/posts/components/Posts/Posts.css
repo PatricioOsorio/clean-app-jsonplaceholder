@@ -1,0 +1,29 @@
+@reference "@styles/app.css";
+
+.posts-container {
+  @apply flex w-full flex-col gap-8;
+
+  .psc__header {
+    @apply border-border flex flex-col border-b pb-6 md:flex-row md:items-end md:justify-between;
+  }
+
+  .psc__title-group {
+    @apply space-y-1;
+  }
+
+  .psc__title {
+    @apply text-foreground text-3xl font-bold tracking-tight;
+  }
+
+  .psc__subtitle {
+    @apply text-muted-foreground text-sm;
+  }
+
+  .psc__count {
+    @apply bg-secondary text-secondary-foreground border-border mt-2 rounded-full border px-2.5 py-1 text-xs font-semibold md:mt-0;
+  }
+
+  .psc__grid {
+    @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+  }
+}

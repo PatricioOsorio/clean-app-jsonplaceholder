@@ -27,10 +27,11 @@
 
     /* Alias */
     "paths": {
-      "@/*": ["./src/*"],
       "@domain/*": ["./src/domain/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
-      "@presentation/*": ["./src/presentation/*"]
+      "@presentation/*": ["./src/presentation/*"],
+      "@styles/*": ["./src/presentation/styles/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

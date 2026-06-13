@@ -8,10 +8,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
       '@domain': path.resolve(__dirname, './src/domain'),
       '@infrastructure': path.resolve(__dirname, './src/infrastructure'),
       '@presentation': path.resolve(__dirname, './src/presentation'),
+      '@styles': path.resolve(__dirname, './src/presentation/styles'),
+      '@': path.resolve(__dirname, './src'),
     },
     dedupe: ['react', 'react-dom'],
   },
