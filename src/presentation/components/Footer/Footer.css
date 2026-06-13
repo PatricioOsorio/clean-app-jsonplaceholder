@@ -1,0 +1,37 @@
+@reference "@/main.css";
+
+.footer-container {
+  @apply border-border bg-card mt-auto w-full border-t;
+
+  .fc__wrapper {
+    @apply mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row;
+  }
+
+  .fc__brand {
+    @apply text-foreground flex items-center space-x-2 font-semibold;
+  }
+
+  .fc__logo {
+    @apply text-primary text-lg;
+  }
+
+  .fc__title {
+    @apply text-sm;
+  }
+
+  .fc__copyright {
+    @apply text-muted-foreground text-center text-xs sm:text-left;
+  }
+
+  .fc__links {
+    @apply text-muted-foreground flex items-center space-x-3 text-xs;
+  }
+
+  .fc__link {
+    @apply hover:text-foreground transition-colors duration-200;
+  }
+
+  .fc__separator {
+    @apply text-border;
+  }
+}

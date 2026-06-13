@@ -4,6 +4,8 @@ import { ENV } from '@infrastructure/utils/constants';
 
 const AppLayout = async () => (await import('@presentation/layouts/AppLayout')).default;
 const HomePage = async () => (await import('@presentation/pages/HomePage')).default;
+const PostsPage = async () => (await import('@presentation/pages/PostsPage')).default;
+const PostDetailPage = async () => (await import('@presentation/pages/PostDetailPage')).default;
 
 export const appRouter = createBrowserRouter(
   [
@@ -14,6 +16,14 @@ export const appRouter = createBrowserRouter(
         {
           index: true,
           lazy: { Component: HomePage },
+        },
+        {
+          path: 'posts',
+          lazy: { Component: PostsPage },
+        },
+        {
+          path: 'posts/:id',
+          lazy: { Component: PostDetailPage },
         },
       ],
     },
