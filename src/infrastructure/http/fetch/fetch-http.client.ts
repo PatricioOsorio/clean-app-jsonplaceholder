@@ -51,7 +51,7 @@ export class FetchHttpClient implements HttpClient {
 
   async get<T>(url: string, config?: any): Promise<T> {
     try {
-      return this.request<T>(url, { method: 'GET', ...config });
+      return await this.request<T>(url, { method: 'GET', ...config });
     } catch (error) {
       this.handleError(error);
     }
@@ -59,7 +59,7 @@ export class FetchHttpClient implements HttpClient {
 
   async post<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
-      return this.request<T>(url, { method: 'POST', body: JSON.stringify(data), ...config });
+      return await this.request<T>(url, { method: 'POST', body: JSON.stringify(data), ...config });
     } catch (error) {
       this.handleError(error);
     }
@@ -67,7 +67,7 @@ export class FetchHttpClient implements HttpClient {
 
   async put<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
-      return this.request<T>(url, { method: 'PUT', body: JSON.stringify(data), ...config });
+      return await this.request<T>(url, { method: 'PUT', body: JSON.stringify(data), ...config });
     } catch (error) {
       this.handleError(error);
     }
@@ -75,7 +75,7 @@ export class FetchHttpClient implements HttpClient {
 
   async patch<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
-      return this.request<T>(url, { method: 'PATCH', body: JSON.stringify(data), ...config });
+      return await this.request<T>(url, { method: 'PATCH', body: JSON.stringify(data), ...config });
     } catch (error) {
       this.handleError(error);
     }
@@ -83,7 +83,7 @@ export class FetchHttpClient implements HttpClient {
 
   async delete<T>(url: string, config?: any): Promise<T> {
     try {
-      return this.request<T>(url, { method: 'DELETE', ...config });
+      return await this.request<T>(url, { method: 'DELETE', ...config });
     } catch (error) {
       this.handleError(error);
     }
