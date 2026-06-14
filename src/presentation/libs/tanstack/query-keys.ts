@@ -4,4 +4,4 @@ export const QUERY_KEYS = {
     postsByUser: (userId: number) => ['posts', 'user', userId] as const,
     post: (id?: number) => ['posts', id] as const,
   },
-};
+} as const;
