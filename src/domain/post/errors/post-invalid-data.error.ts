@@ -1,6 +1,8 @@
-export class PostInvalidDataError extends Error {
+import { DomainError } from '@domain/errors/domain.error';
+
+export class PostInvalidDataError extends DomainError {
   constructor(message?: string) {
-    super(message || `Post has invalid data`);
+    super('Post Invalid Data', message || `Post has invalid data`);
     this.name = 'PostInvalidDataError';
   }
 }

@@ -12,6 +12,8 @@ export const Posts = ({
   posts,
   isLoading,
   isError,
+  errorTitle,
+  errorDescription,
   onPostClick,
   isEmpty,
 }: IPostsProps) => {
@@ -29,9 +31,9 @@ export const Posts = ({
 
         {isError && (
           <Error
-            description="Something went wrong while fetching the posts. Please try again later."
+            description={errorDescription}
             rootProps={{ className: 'col-span-full' }}
-            title="Couldn't load publications"
+            title={errorTitle}
           />
         )}
 

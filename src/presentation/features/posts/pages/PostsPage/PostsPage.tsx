@@ -4,12 +4,15 @@ import { usePosts } from '../../hooks/use-posts';
 import { Posts } from '../../components/Posts';
 
 import './PostsPage.css';
+import { formatError } from '@presentation/utils/error-formatter';
 
 export const PostsPage = () => {
   const navigate = useNavigate();
 
-  const { data: posts, isLoading, isError } = usePosts();
+  const { data: posts, isLoading, isError, error } = usePosts();
   const isEmpty = !isLoading && !isError && !posts?.length;
+
+  const { errorTitle, errorMessage } = formatError(error, 'Error Loading Posts');
 
   const handlePostClick = (postId: number) => {
     console.log(`Post ${postId} clicked!`);
@@ -33,6 +36,8 @@ export const PostsPage = () => {
           isLoading={isLoading}
           posts={posts}
           onPostClick={handlePostClick}
+          errorTitle={errorTitle}
+          errorDescription={errorMessage}
         />
       </div>
     </section>

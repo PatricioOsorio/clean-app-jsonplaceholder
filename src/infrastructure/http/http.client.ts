@@ -8,3 +8,4 @@ export abstract class HttpClient {
   abstract patch<T>(url: string, data?: unknown, config?: any): Promise<T>;
   abstract delete<T>(url: string, config?: any): Promise<T>;
 }
+

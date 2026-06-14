@@ -16,6 +16,8 @@ export const PostDetail = ({
   loadingTemplate,
   emptyTemplate,
   errorTemplate,
+  errorTitle,
+  errorDescription,
   onBack,
 }: IPostDetailProps) => {
   const renderContent = () => {
@@ -24,7 +26,7 @@ export const PostDetail = ({
     }
 
     if (isError) {
-      return errorTemplate ?? <Error description="We couldn't load this publication." />;
+      return errorTemplate ?? <Error title={errorTitle} description={errorDescription} />;
     }
 
     if (isEmpty || !post) {

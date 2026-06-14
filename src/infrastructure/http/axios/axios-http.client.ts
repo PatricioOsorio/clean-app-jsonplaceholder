@@ -5,6 +5,7 @@ import type { AxiosInstance } from 'axios';
 
 import { ENV } from '@infrastructure/utils/constants';
 import { HttpClient } from '../http.client';
+import { HttpError } from '../errors/http.error';
 
 @injectable()
 export class AxiosHttpClient implements HttpClient {
@@ -19,24 +20,59 @@ export class AxiosHttpClient implements HttpClient {
     });
   }
 
+  private handleError(error: unknown): never {
+    // not an axios error → re-throw as is
+    if (!axios.isAxiosError(error)) {
+      throw error;
+    }
+
+    // server/network error (CORS, DNS, offline)
+    if (!error.response) {
+      throw error;
+    }
+
+    // server responded with status code (4xx, 5xx)
+    throw new HttpError(error.response.status, error.response.data?.message ?? error.message);
+  }
+
   async get<T>(url: string, config?: any): Promise<T> {
-    const response = await this.client.get<T>(url, config);
-    return response.data;
+    try {
+      const response = await this.client.get<T>(url, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
   async post<T>(url: string, data?: unknown, config?: any): Promise<T> {
-    const response = await this.client.post<T>(url, data, config);
-    return response.data;
+    try {
+      const response = await this.client.post<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
   async put<T>(url: string, data?: unknown, config?: any): Promise<T> {
-    const response = await this.client.put<T>(url, data, config);
-    return response.data;
+    try {
+      const response = await this.client.put<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
   async patch<T>(url: string, data?: unknown, config?: any): Promise<T> {
-    const response = await this.client.patch<T>(url, data, config);
-    return response.data;
+    try {
+      const response = await this.client.patch<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
   async delete<T>(url: string, config?: any): Promise<T> {
-    const response = await this.client.delete<T>(url, config);
-    return response.data;
+    try {
+      const response = await this.client.delete<T>(url, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 }

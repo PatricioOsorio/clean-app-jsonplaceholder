@@ -1,46 +1,95 @@
 import { inject, injectable } from 'tsyringe';
 
-import { HttpClient } from '../http/http.client';
+import { HttpClient } from '@infrastructure/http/http.client';
+import { HttpError } from '@infrastructure/http/errors/http.error';
+import { NetworkError } from '@domain/errors/network.error';
 import { PostMapper } from './post.mapper';
-import { PostRepository } from '@domain/post/post.repo';
-import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post/post.repo';
-import type { IPost } from '@domain/post/post.entity';
+import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
+import { PostRepository } from '@domain/post';
+import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
+import type { IPost } from '@domain/post';
 import type { IPostDTO } from './post.dto';
+import { DomainError } from '@domain/errors/domain.error';
 
 @injectable()
 export class PostRepositoryImpl implements PostRepository {
   constructor(@inject(HttpClient.TOKEN) private readonly httpClient: HttpClient) {}
 
+  private handleError(error: unknown, postId?: number): never {
+    // server/network error (CORS, DNS, offline)
+    if (!(error instanceof HttpError)) {
+      throw new NetworkError();
+    }
+
+    // 404 over a specific resource → the post doesn't exist
+    if (error.statusCode === 404 && postId !== undefined) {
+      throw new PostNotFoundError(postId);
+    }
+
+    // 404 without id → the collection couldn't be loaded (getAll, create...)
+    if (error.statusCode === 404) {
+      throw new DomainError('Load Failed', 'Could not load posts from server.');
+    }
+
+    // any other HTTP failure (4xx/5xx)
+    throw new DomainError('API Error', error.message);
+  }
+
   async getAll(): Promise<IPost[]> {
-    const response = await this.httpClient.get<IPostDTO[]>('/posts');
-    return PostMapper.toEntities(response);
+    try {
+      const response = await this.httpClient.get<IPostDTO[]>('/posts');
+      return PostMapper.toEntities(response);
+      
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 
   async getById(id: number): Promise<IPost> {
-    const response = await this.httpClient.get<IPostDTO>(`/posts/${id}`);
-    return PostMapper.toEntity(response);
+    try {
+      const response = await this.httpClient.get<IPostDTO>(`/posts/${id}`);
+      return PostMapper.toEntity(response);
+    } catch (error) {
+      this.handleError(error, id);
+    }
   }
 
   async create(post: ICreatePostInput): Promise<IPost> {
-    const response = await this.httpClient.post<IPostDTO>('/posts', PostMapper.toDTO(post));
-    return PostMapper.toEntity(response);
+    try {
+      const response = await this.httpClient.post<IPostDTO>('/posts', PostMapper.toDTO(post));
+      return PostMapper.toEntity(response);
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 
   async update(id: number, post: IUpdatePostInput): Promise<IPost> {
-    const response = await this.httpClient.put<IPostDTO>(`/posts/${id}`, PostMapper.toDTO(post));
-    return PostMapper.toEntity(response);
+    try {
+      const response = await this.httpClient.put<IPostDTO>(`/posts/${id}`, PostMapper.toDTO(post));
+      return PostMapper.toEntity(response);
+    } catch (error) {
+      this.handleError(error, id);
+    }
   }
 
   async patch(id: number, fields: IPatchPostInput): Promise<IPost> {
-    const response = await this.httpClient.patch<IPostDTO>(
-      `/posts/${id}`,
-      PostMapper.toDTO(fields),
-    );
-    return PostMapper.toEntity(response);
+    try {
+      const response = await this.httpClient.patch<IPostDTO>(
+        `/posts/${id}`,
+        PostMapper.toDTO(fields),
+      );
+      return PostMapper.toEntity(response);
+    } catch (error) {
+      this.handleError(error, id);
+    }
   }
 
   async delete(id: number): Promise<boolean> {
-    await this.httpClient.delete(`/posts/${id}`);
-    return true;
+    try {
+      await this.httpClient.delete(`/posts/${id}`);
+      return true;
+    } catch (error) {
+      this.handleError(error, id);
+    }
   }
 }
