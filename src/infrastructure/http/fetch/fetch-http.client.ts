@@ -57,7 +57,7 @@ export class FetchHttpClient implements HttpClient {
     }
   }
 
-  post<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
       return this.request<T>(url, { method: 'POST', body: JSON.stringify(data), ...config });
     } catch (error) {
@@ -65,7 +65,7 @@ export class FetchHttpClient implements HttpClient {
     }
   }
 
-  put<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
       return this.request<T>(url, { method: 'PUT', body: JSON.stringify(data), ...config });
     } catch (error) {
@@ -73,7 +73,7 @@ export class FetchHttpClient implements HttpClient {
     }
   }
 
-  patch<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async patch<T>(url: string, data?: unknown, config?: any): Promise<T> {
     try {
       return this.request<T>(url, { method: 'PATCH', body: JSON.stringify(data), ...config });
     } catch (error) {
@@ -81,7 +81,7 @@ export class FetchHttpClient implements HttpClient {
     }
   }
 
-  delete<T>(url: string, config?: any): Promise<T> {
+  async delete<T>(url: string, config?: any): Promise<T> {
     try {
       return this.request<T>(url, { method: 'DELETE', ...config });
     } catch (error) {

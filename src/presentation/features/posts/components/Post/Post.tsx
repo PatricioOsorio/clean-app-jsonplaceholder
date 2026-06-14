@@ -47,9 +47,9 @@ export const Post = ({
   };
 
   return (
-    <article {...rootProps} className={cn('post-container', rootProps?.className)}>
+    <button {...rootProps} className={cn('post-container', rootProps?.className)}>
       {renderContent()}
-    </article>
+    </button>
   );
 };
 

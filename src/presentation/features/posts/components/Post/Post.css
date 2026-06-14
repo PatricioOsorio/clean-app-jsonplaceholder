@@ -4,11 +4,11 @@
   @apply border-border bg-card text-card-foreground flex flex-col gap-4 rounded-xl border p-6 shadow-xs transition-shadow duration-200 hover:shadow-md;
 
   .pc__title {
-    @apply text-foreground text-xl leading-snug font-semibold;
+    @apply text-foreground self-start text-start text-xl leading-snug font-semibold;
   }
 
   .pc__content {
-    @apply text-muted-foreground line-clamp-3 text-sm leading-relaxed;
+    @apply text-muted-foreground line-clamp-3 self-start text-start text-sm leading-relaxed;
   }
 
   .pc__footer {

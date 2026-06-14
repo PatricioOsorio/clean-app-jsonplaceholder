@@ -7,4 +7,4 @@ import type {
 import type { IPostMV } from '../../models/post';
 
 export interface IPostProps
-  extends IWithRootProps<'article'>, Partial<IPostMV>, IWithLoading, IWithError, IWithEmpty {}
+  extends IWithRootProps<'button'>, Partial<IPostMV>, IWithLoading, IWithError, IWithEmpty {}
