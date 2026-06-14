@@ -18,13 +18,13 @@ export const PostDetailPage = () => {
   return (
     <section className="post-detail-page">
       <PostDetail
+        errorDescription={errorMessage}
+        errorTitle={errorTitle}
         isEmpty={isEmpty}
         isError={isError}
         isLoading={isLoading}
         post={post}
         onBack={() => navigate('/posts')}
-        errorTitle={errorTitle}
-        errorDescription={errorMessage}
       />
     </section>
   );

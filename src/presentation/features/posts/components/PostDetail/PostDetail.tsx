@@ -26,7 +26,7 @@ export const PostDetail = ({
     }
 
     if (isError) {
-      return errorTemplate ?? <Error title={errorTitle} description={errorDescription} />;
+      return errorTemplate ?? <Error description={errorDescription} title={errorTitle} />;
     }
 
     if (isEmpty || !post) {

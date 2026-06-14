@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { injectable } from 'tsyringe';
 
+import { ENV } from '@infrastructure/utils';
 import { HttpError } from '../errors/http.error';
 import { HttpClient } from '../http.client';
-import { ENV } from '@infrastructure/utils/constants';
 
 @injectable()
 export class FetchHttpClient implements HttpClient {

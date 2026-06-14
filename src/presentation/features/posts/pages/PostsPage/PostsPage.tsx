@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { usePosts } from '../../hooks/use-posts';
 import { Posts } from '../../components/Posts';
@@ -15,7 +15,6 @@ export const PostsPage = () => {
   const { errorTitle, errorMessage } = formatError(error, 'Error Loading Posts');
 
   const handlePostClick = (postId: number) => {
-    console.log(`Post ${postId} clicked!`);
     navigate(`/posts/${postId}`);
   };
 
@@ -31,13 +30,13 @@ export const PostsPage = () => {
 
       <div className="ppc__content">
         <Posts
+          errorDescription={errorMessage}
+          errorTitle={errorTitle}
           isEmpty={isEmpty}
           isError={isError}
           isLoading={isLoading}
           posts={posts}
           onPostClick={handlePostClick}
-          errorTitle={errorTitle}
-          errorDescription={errorMessage}
         />
       </div>
     </section>

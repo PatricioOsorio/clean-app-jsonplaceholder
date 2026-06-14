@@ -3,16 +3,16 @@ import { inject, injectable } from 'tsyringe';
 import { HttpClient } from '@infrastructure/http/http.client';
 import { HttpError } from '@infrastructure/http/errors/http.error';
 import { NetworkError } from '@domain/errors/network.error';
-import { PostMapper } from './post.mapper';
+import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { PostRepository } from '@domain/post';
 import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
 import type { IPost } from '@domain/post';
-import type { IPostDTO } from './post.dto';
+import type { IPostDTO } from '../post.dto';
 import { DomainError } from '@domain/errors/domain.error';
 
 @injectable()
-export class PostRepositoryImpl implements PostRepository {
+export class PostRepositoryApi implements PostRepository {
   constructor(@inject(HttpClient.TOKEN) private readonly httpClient: HttpClient) {}
 
   private handleError(error: unknown, postId?: number): never {
@@ -39,7 +39,6 @@ export class PostRepositoryImpl implements PostRepository {
     try {
       const response = await this.httpClient.get<IPostDTO[]>('/posts');
       return PostMapper.toEntities(response);
-      
     } catch (error) {
       this.handleError(error);
     }

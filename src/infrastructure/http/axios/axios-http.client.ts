@@ -3,9 +3,9 @@ import { injectable } from 'tsyringe';
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
-import { ENV } from '@infrastructure/utils/constants';
-import { HttpClient } from '../http.client';
+import { ENV } from '@infrastructure/utils';
 import { HttpError } from '../errors/http.error';
+import type { HttpClient } from '../http.client';
 
 @injectable()
 export class AxiosHttpClient implements HttpClient {

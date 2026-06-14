@@ -2,7 +2,11 @@
 
 This file provides guidance to agents when working with code in this repository.
 
-### Language
+## Mandatory rules for all agents
+
+- ALL MODEL RESPONSES MUST BE WRITTEN IN SPANISH, but code snippets and technical terms should remain in English.
+
+## Language
 
 - All model responses MUST be written in **Spanish**
 - Keep code, technical concepts, and terminology in **English** (e.g. class names, `repository`, `use case`, `dependency injection`, Clean Architecture / SOLID terms)

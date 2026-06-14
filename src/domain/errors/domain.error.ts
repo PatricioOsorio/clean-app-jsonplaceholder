@@ -1,7 +1,7 @@
 export class DomainError extends Error {
   public readonly title: string;
 
-  constructor(title: string = 'Domain Error', message: string) {
+  constructor(title: string, message: string) {
     super(message);
 
     this.title = title;
