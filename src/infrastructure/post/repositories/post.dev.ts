@@ -12,9 +12,12 @@ import { getQueryParam, resolveDelay, withDelay } from '@infrastructure/utils';
  * - ?fault=not-found  => PostNotFoundError
  * - ?fault=invalid    => PostInvalidDataError
  */
-export const simulateFault = async (id?: number): Promise<void> => {
+export const simulateFault = async (id?: number, operation?: string): Promise<void> => {
   const fault = getQueryParam('fault');
   if (!fault) return;
+
+  const faultOp = getQueryParam('faultOperation'); // opcional: limita a una operación
+  if (faultOp && faultOp !== operation) return;
 
   await withDelay(null, resolveDelay()); // let the skeleton render before failing
 

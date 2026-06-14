@@ -19,7 +19,7 @@ export const Navigation = ({ rootProps, items }: INavigationProps) => {
             <li key={item.to} className="nc__item">
               <NavLink
                 className={({ isActive }) => cn('nc__link', isActive && 'nc__link--active')}
-                end={item.to === '/'}
+                end={item.end ?? item.to === '/'}
                 to={item.to}
               >
                 {item.label}

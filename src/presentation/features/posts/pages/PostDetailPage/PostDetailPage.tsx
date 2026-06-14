@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from 'react-router';
-import { PostDetail } from '../../components/PostDetail';
-import { usePost } from '../../hooks/use-post';
+
+import { PostDetail } from '../../components';
+import { usePost } from '../../hooks';
+import { formatError } from '@presentation/utils';
 
 import './PostDetailPage.css';
-import { formatError } from '@presentation/utils/error-formatter';
 
 export const PostDetailPage = () => {
   const { id } = useParams<{ id: string }>();

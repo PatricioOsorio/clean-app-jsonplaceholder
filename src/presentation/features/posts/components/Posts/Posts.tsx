@@ -2,9 +2,8 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostsProps } from './Posts.interfaces';
 
-import { Empty } from '@presentation/shared/components/Empty';
-import { Error } from '@presentation/shared/components/Error';
-import { Post } from '../Post/Post';
+import { Empty, Error } from '@presentation/shared/components';
+import { Post } from '../Post';
 import './Posts.css';
 
 export const Posts = ({
@@ -54,6 +53,7 @@ export const Posts = ({
               content={post.content}
               id={post.id}
               idUser={post.idUser}
+              isOptimistic={post.__optimistic}
               rootProps={{
                 onClick: () => onPostClick?.(post.id),
                 className: cn(

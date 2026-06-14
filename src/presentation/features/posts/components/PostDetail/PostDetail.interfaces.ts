@@ -4,10 +4,10 @@ import type {
   IWithLoading,
   IWithRootProps,
 } from 'styleguide/component.interfaces';
-import type { IPostMV } from '../../models/post';
+import type { IPostVM } from '../../models/post';
 
 export interface IPostDetailVM {
-  post?: IPostMV;
+  post?: IPostVM;
 }
 
 export interface IPostDetailProps

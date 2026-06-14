@@ -8,6 +8,8 @@ const PostsPage = async () =>
   (await import('@presentation/features/posts/pages/PostsPage')).default;
 const PostDetailPage = async () =>
   (await import('@presentation/features/posts/pages/PostDetailPage')).default;
+const PostCreatePage = async () =>
+  (await import('@presentation/features/posts/pages/PostCreatePage')).default;
 
 export const appRouter = createBrowserRouter(
   [
@@ -26,6 +28,10 @@ export const appRouter = createBrowserRouter(
         {
           path: 'posts/:id',
           lazy: { Component: PostDetailPage },
+        },
+        {
+          path: 'posts/create',
+          lazy: { Component: PostCreatePage },
         },
       ],
     },

@@ -6,7 +6,8 @@ import './AppLayout.css';
 export const AppLayout = () => {
   const navItems: INavigationItem[] = [
     { label: 'Home', to: '/' },
-    { label: 'Publications', to: '/posts' },
+    { label: 'Publications', to: '/posts', end: true },
+    { label: 'Create Post', to: '/posts/create' },
   ];
 
   return (

@@ -2,8 +2,7 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostProps } from './Post.interfaces';
 
-import { Empty } from '@presentation/shared/components/Empty';
-import { Error } from '@presentation/shared/components/Error';
+import { Empty, Error } from '@presentation/shared/components';
 import { PostSkeleton } from './Skeleton/Skeleton';
 import './Post.css';
 
@@ -13,6 +12,7 @@ export const Post = ({
   title,
   content,
   idUser,
+  isOptimistic,
   isLoading,
   isError,
   isEmpty,
@@ -47,7 +47,14 @@ export const Post = ({
   };
 
   return (
-    <button {...rootProps} className={cn('post-container', rootProps?.className)}>
+    <button
+      {...rootProps}
+      className={cn(
+        'post-container',
+        { 'optimistic-container': isOptimistic },
+        rootProps?.className,
+      )}
+    >
       {renderContent()}
     </button>
   );

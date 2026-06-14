@@ -3,6 +3,7 @@ import type { IWithRootProps } from 'styleguide/component.interfaces';
 export interface INavigationItem {
   label: string;
   to: string;
+  end?: boolean;
 }
 
 export interface INavigationVM {

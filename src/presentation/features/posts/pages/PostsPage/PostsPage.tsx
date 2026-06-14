@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
 
-import { usePosts } from '../../hooks/use-posts';
-import { Posts } from '../../components/Posts';
+import { usePosts } from '../../hooks';
+import { Posts } from '../../components';
+import { formatError } from '@presentation/utils';
 
 import './PostsPage.css';
-import { formatError } from '@presentation/utils/error-formatter';
 
 export const PostsPage = () => {
   const navigate = useNavigate();

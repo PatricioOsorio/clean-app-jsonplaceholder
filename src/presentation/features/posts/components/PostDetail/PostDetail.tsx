@@ -2,8 +2,7 @@ import { cn } from 'styleguide/utils';
 
 import type { IPostDetailProps } from './PostDetail.interfaces';
 
-import { Empty } from '@presentation/shared/components/Empty';
-import { Error } from '@presentation/shared/components/Error';
+import { Empty, Error } from '@presentation/shared/components';
 import { PostDetailSkeleton } from './Skeleton/Skeleton';
 import './PostDetail.css';
 

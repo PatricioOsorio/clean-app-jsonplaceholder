@@ -1,3 +1,5 @@
+import { DEFAULT_DELAY } from './delay';
+
 export const getQueryParam = (key: string): string | null =>
   new URLSearchParams(window.location.search).get(key);
 
@@ -8,7 +10,7 @@ export const getQueryParam = (key: string): string | null =>
 export const resolveDelay = (): number => {
   const raw = getQueryParam('delay');
   const ms = raw ? Number(raw) : NaN;
-  return Number.isFinite(ms) && ms >= 0 ? ms : 500;
+  return Number.isFinite(ms) && ms >= 0 ? ms : DEFAULT_DELAY;
 };
 
 interface IDataCommandHandlers {

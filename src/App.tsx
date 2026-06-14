@@ -7,12 +7,11 @@ import { ThemeProvider } from 'styleguide/theme-provider';
 import { appRouter } from '@presentation/router/app.router';
 import { DependenciesProvider } from '@presentation/context/dependencies.context';
 import { queryClient } from '@presentation/libs/tanstack';
-
 export const App = () => {
   return (
     <DependenciesProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="vercel-dark">
+        <ThemeProvider defaultTheme="apple-dark">
           <RouterProvider router={appRouter} />
         </ThemeProvider>
 

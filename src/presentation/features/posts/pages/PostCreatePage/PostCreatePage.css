@@ -1,0 +1,45 @@
+@reference "@styles/app.css";
+
+.post-create-page-container {
+  @apply bg-background relative flex w-full flex-col gap-8 py-8;
+
+  .pcpc__header {
+    @apply border-border border-b pb-8;
+  }
+
+  .pcpc__system-tag {
+    @apply text-primary mb-2 font-mono text-xs tracking-widest uppercase;
+  }
+
+  .pcpc__title {
+    @apply text-foreground text-3xl font-bold tracking-tighter md:text-5xl;
+  }
+
+  .pcpc__subtitle {
+    @apply text-muted-foreground mt-4 w-full font-mono text-sm;
+  }
+
+  .pcpc__form {
+    @apply flex w-full flex-col gap-6;
+  }
+
+  .pcpc__field {
+    @apply flex flex-col gap-2;
+  }
+
+  .pcpc__label-row {
+    @apply flex items-center justify-between;
+  }
+
+  .pcpc__label {
+    @apply text-muted-foreground font-mono text-xs tracking-widest uppercase;
+  }
+
+  .pcpc__counter {
+    @apply text-muted-foreground font-mono text-xs tabular-nums;
+  }
+
+  .pcpc__actions {
+    @apply border-border mt-2 flex items-center justify-end gap-3 border-t pt-6;
+  }
+}

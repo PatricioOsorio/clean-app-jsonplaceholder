@@ -1,4 +1,4 @@
-import { Skeleton } from '@presentation/shared/components/Skeleton';
+import { Skeleton } from '@presentation/shared/components';
 
 import type { IPostDetailSkeletonProps } from './Skeleton.interfaces';
 import './Skeleton.css';

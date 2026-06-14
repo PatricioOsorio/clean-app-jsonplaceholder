@@ -30,12 +30,15 @@ export class PostRepositoryMock implements PostRepository {
       onSeed: () => (this.posts = structuredClone(this.seed)),
       onEmpty: () => (this.posts = []),
     });
-    await simulateFault();
+
+    await simulateFault(undefined, 'getAll');
+
     return withDelay([...this.posts], resolveDelay());
   }
 
   async getById(id: number): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'getById');
+
     const post = this.posts.find((p) => p.id === id);
     if (!post) throw new PostNotFoundError(id);
 
@@ -43,7 +46,8 @@ export class PostRepositoryMock implements PostRepository {
   }
 
   async create(post: ICreatePostInput): Promise<IPost> {
-    await simulateFault();
+    await simulateFault(undefined, 'create');
+
     const newPost: IPost = {
       id: this.nextId(),
       idUser: post.idUser,
@@ -55,7 +59,8 @@ export class PostRepositoryMock implements PostRepository {
   }
 
   async update(id: number, post: IUpdatePostInput): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'update');
+
     const index = this.posts.findIndex((p) => p.id === id);
 
     if (index === -1) throw new PostNotFoundError(id);
@@ -75,7 +80,8 @@ export class PostRepositoryMock implements PostRepository {
   }
 
   async patch(id: number, fields: IPatchPostInput): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'patch');
+
     const index = this.posts.findIndex((p) => p.id === id);
 
     if (index === -1) throw new PostNotFoundError(id);
@@ -95,7 +101,7 @@ export class PostRepositoryMock implements PostRepository {
   }
 
   async delete(id: number): Promise<boolean> {
-    await simulateFault(id);
+    await simulateFault(id, 'delete');
     const index = this.posts.findIndex((p) => p.id === id);
 
     if (index === -1) throw new PostNotFoundError(id);
