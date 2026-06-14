@@ -46,12 +46,15 @@ export class PostRepositoryLocal implements PostRepository {
       onSeed: () => this.write(this.seed),
       onEmpty: () => this.write([]),
     });
-    await simulateFault();
+
+    await simulateFault(undefined, 'getAll');
+
     return withDelay(this.read(), resolveDelay());
   }
 
   async getById(id: number): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'getById');
+    
     const post = this.read().find((p) => p.id === id);
     if (!post) throw new PostNotFoundError(id);
 
@@ -59,7 +62,8 @@ export class PostRepositoryLocal implements PostRepository {
   }
 
   async create(post: ICreatePostInput): Promise<IPost> {
-    await simulateFault();
+    await simulateFault(undefined, 'create');
+
     const posts = this.read();
 
     const newPost: IPost = {
@@ -74,7 +78,8 @@ export class PostRepositoryLocal implements PostRepository {
   }
 
   async update(id: number, post: IUpdatePostInput): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'update');
+
     const posts = this.read();
     const index = posts.findIndex((p) => p.id === id);
 
@@ -96,7 +101,8 @@ export class PostRepositoryLocal implements PostRepository {
   }
 
   async patch(id: number, fields: IPatchPostInput): Promise<IPost> {
-    await simulateFault(id);
+    await simulateFault(id, 'patch');
+
     const posts = this.read();
     const index = posts.findIndex((p) => p.id === id);
 
@@ -118,7 +124,8 @@ export class PostRepositoryLocal implements PostRepository {
   }
 
   async delete(id: number): Promise<boolean> {
-    await simulateFault(id);
+    await simulateFault(id, 'delete');
+    
     const posts = this.read();
     const index = posts.findIndex((p) => p.id === id);
 
