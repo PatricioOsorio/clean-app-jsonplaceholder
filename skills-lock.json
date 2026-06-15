@@ -13,6 +13,12 @@
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
     },
+    "ponytail": {
+      "source": "dietrichgebert/ponytail",
+      "sourceType": "github",
+      "skillPath": "skills/ponytail/SKILL.md",
+      "computedHash": "15811786f0277b0b4effe6b72cb9f3eaedefd1fe28f43f20aed3d926c10a88b1"
+    },
     "skill-creator": {
       "source": "anthropics/skills",
       "sourceType": "github",
