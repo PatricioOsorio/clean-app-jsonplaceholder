@@ -1,18 +1,17 @@
 import type { ICreatePostInput, IPost } from '@domain/post';
-import type { IPostCreateVM, IPostUpdateVM, IPostVM, IPostCacheEntry } from './post.mv';
+import type { IPostCreateVM, IPostUpdateVM, IPostVM } from './post.mv';
 
 export abstract class PostMapper {
-  static toVM(dto: IPostCacheEntry): IPostVM {
+  static toVM(dto: IPost): IPostVM {
     return {
       id: dto.id,
       title: dto.title,
       content: dto.content,
       idUser: dto.idUser,
-      __optimistic: dto.__optimistic,
     };
   }
 
-  static toVMs(dtos: IPostCacheEntry[]): IPostVM[] {
+  static toVMs(dtos: IPost[]): IPostVM[] {
     return dtos.map((dto) => this.toVM(dto));
   }
 

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'styleguide/sonner';
 
 import { formatError } from '@presentation/utils';
-import { PostMapper, type IPostCreateVM, type IPostCacheEntry } from '../models/post';
+import { PostMapper, type IPostCreateVM, type IPostVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
 
@@ -19,11 +19,11 @@ export const useCreatePost = () => {
       await queryClient.cancelQueries({ queryKey: key });
 
       // snapshot (to rollback)
-      const previousPosts = queryClient.getQueryData<IPostCacheEntry[]>(key);
+      const previousPosts = queryClient.getQueryData<IPostVM[]>(key);
 
       // optimistically domain update
-      const optimisticPost: IPostCacheEntry = {
-        id: Date.now(),
+      const optimisticPost: IPostVM = {
+        id: -Date.now(),
         ...PostMapper.toCreatePostDomain(input),
         __optimistic: true,
       };
@@ -31,7 +31,7 @@ export const useCreatePost = () => {
       // write to cache
       // don not apply optimistic if we have no data
       if (previousPosts) {
-        queryClient.setQueryData<IPostCacheEntry[]>(key, (old = []) => [...old, optimisticPost]);
+        queryClient.setQueryData<IPostVM[]>(key, (old = []) => [...old, optimisticPost]);
       }
 
       // pass snapshot to onError/onSettled
