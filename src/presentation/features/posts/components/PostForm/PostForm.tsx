@@ -4,6 +4,7 @@ import { Label } from 'styleguide/label';
 import { Button } from 'styleguide/button';
 import { cn } from 'styleguide/utils';
 
+import { Error } from '@presentation/shared/components';
 import type { IPostFormProps } from './PostForm.interfaces';
 
 import { PostFormSkeleton } from './Skeleton/Skeleton';
@@ -21,8 +22,65 @@ export const PostForm = ({
   btnOkProps,
   rootProps,
   isLoading,
+  loadingTemplate,
+  isError,
+  errorTemplate,
+  errorTitle,
+  errorDescription,
 }: IPostFormProps) => {
-  if (isLoading) return <PostFormSkeleton />;
+  const renderContent = () => {
+    if (isLoading) {
+      return loadingTemplate ?? <PostFormSkeleton />;
+    }
+
+    if (isError) {
+      return errorTemplate ?? <Error description={errorDescription} title={errorTitle} />;
+    }
+    
+    return (
+      <>
+        <div className="pfc__field">
+          <Label className="pfc__label" htmlFor="title">
+            Title
+          </Label>
+          <Input
+            autoFocus
+            id="title"
+            name="title"
+            placeholder="A short, descriptive title"
+            type="text"
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+          />
+        </div>
+
+        <div className="pfc__field">
+          <div className="pfc__label-row">
+            <Label className="pfc__label" htmlFor="content">
+              Content
+            </Label>
+            <span className="pfc__counter">
+              {content.length}/{CONTENT_MAX}
+            </span>
+          </div>
+          <Textarea
+            id="content"
+            maxLength={CONTENT_MAX}
+            name="content"
+            placeholder="Write the body of your post…"
+            rows={6}
+            value={content}
+            onChange={(e) => onContentChange(e.target.value)}
+          />
+        </div>
+
+        <div className="pfc__actions">
+          <Button type="button" variant="ghost" {...btnCancelProps} />
+          <Button type="submit" {...btnOkProps} />
+        </div>
+      </>
+    );
+  };
 
   return (
     <form
@@ -31,45 +89,7 @@ export const PostForm = ({
       className={cn('post-form-container', rootProps?.className)}
       onSubmit={onSubmit}
     >
-      <div className="pfc__field">
-        <Label className="pfc__label" htmlFor="title">
-          Title
-        </Label>
-        <Input
-          autoFocus
-          id="title"
-          name="title"
-          placeholder="A short, descriptive title"
-          type="text"
-          value={title}
-          onChange={(e) => onTitleChange(e.target.value)}
-        />
-      </div>
-
-      <div className="pfc__field">
-        <div className="pfc__label-row">
-          <Label className="pfc__label" htmlFor="content">
-            Content
-          </Label>
-          <span className="pfc__counter">
-            {content.length}/{CONTENT_MAX}
-          </span>
-        </div>
-        <Textarea
-          id="content"
-          maxLength={CONTENT_MAX}
-          name="content"
-          placeholder="Write the body of your post…"
-          rows={6}
-          value={content}
-          onChange={(e) => onContentChange(e.target.value)}
-        />
-      </div>
-
-      <div className="pfc__actions">
-        <Button type="button" variant="ghost" {...btnCancelProps} />
-        <Button type="submit" {...btnOkProps} />
-      </div>
+      {renderContent()}
     </form>
   );
 };

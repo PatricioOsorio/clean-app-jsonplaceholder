@@ -2,16 +2,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'styleguide/sonner';
 
 import { formatError } from '@presentation/utils';
-import { PostMapper, type IPostUpdateVM } from '../models/post';
+import { PostMapper, type IPostUpdateVM, type IPostCacheEntry } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
-import type { IPost } from '@domain/post';
 
-export const useUpdatePost = (id?: number) => {
+export const useUpdatePost = (id: number) => {
   const { updatePostUseCase } = useDependencies();
   const queryClient = useQueryClient();
 
   const updatePostMutation = useMutation({
+    mutationKey: ['post-update', id],
+
     // optimistic update
     onMutate: async (input: IPostUpdateVM) => {
       const key = QUERY_KEYS.user.posts();
@@ -20,18 +21,25 @@ export const useUpdatePost = (id?: number) => {
       await queryClient.cancelQueries({ queryKey: key });
 
       // snapshot (to rollback)
-      const previousPosts = queryClient.getQueryData<IPost[]>(key);
+      const previousPosts = queryClient.getQueryData<IPostCacheEntry[]>(key);
+
+      const oldPost = previousPosts?.find((p) => p.id === id);
+      if (!oldPost) return { previousPosts };
 
       // optimistically domain update
-      const optimisticPost: IPost = {
+      const optimisticPost: IPostCacheEntry = {
+        ...oldPost,
         ...PostMapper.toUpdatePostDomain(input),
-        id: id ?? input.id!,
+        id: id,
+        __optimistic: true,
       };
 
       // write to cache
       // don not apply optimistic if we have no data
       if (previousPosts) {
-        queryClient.setQueryData<IPost[]>(key, (old = []) => [...old, optimisticPost]);
+        queryClient.setQueryData<IPostCacheEntry[]>(key, (old = []) =>
+          old.map((p) => (p.id === optimisticPost.id ? optimisticPost : p)),
+        );
       }
 
       // pass snapshot to onError/onSettled

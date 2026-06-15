@@ -1,20 +1,18 @@
 import type { ICreatePostInput, IPost } from '@domain/post';
-import type { IPostCreateVM, IPostUpdateVM, IPostVM } from './post.mv';
-
-const TEMP_ID_THRESHOLD = 0;
+import type { IPostCreateVM, IPostUpdateVM, IPostVM, IPostCacheEntry } from './post.mv';
 
 export abstract class PostMapper {
-  static toVM(dto: IPost): IPostVM {
+  static toVM(dto: IPostCacheEntry): IPostVM {
     return {
       id: dto.id,
       title: dto.title,
       content: dto.content,
       idUser: dto.idUser,
-      __optimistic: dto.id < TEMP_ID_THRESHOLD,
+      __optimistic: dto.__optimistic,
     };
   }
 
-  static toVMs(dtos: IPost[]): IPostVM[] {
+  static toVMs(dtos: IPostCacheEntry[]): IPostVM[] {
     return dtos.map((dto) => this.toVM(dto));
   }
 

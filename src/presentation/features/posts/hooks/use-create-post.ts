@@ -2,36 +2,36 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'styleguide/sonner';
 
 import { formatError } from '@presentation/utils';
-import { PostMapper, type IPostCreateVM } from '../models/post';
+import { PostMapper, type IPostCreateVM, type IPostCacheEntry } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
-import type { IPost } from '@domain/post';
 
 export const useCreatePost = () => {
   const { createPostUseCase } = useDependencies();
   const queryClient = useQueryClient();
 
   const createPostMutation = useMutation({
-    // optimistic update
+    mutationKey: ['post-create'],
+
     onMutate: async (input: IPostCreateVM) => {
       const key = QUERY_KEYS.user.posts();
-
       // abort current refetch
       await queryClient.cancelQueries({ queryKey: key });
 
       // snapshot (to rollback)
-      const previousPosts = queryClient.getQueryData<IPost[]>(key);
+      const previousPosts = queryClient.getQueryData<IPostCacheEntry[]>(key);
 
       // optimistically domain update
-      const optimisticPost: IPost = {
-        id: -Date.now(), // temporary id for optimistic post
+      const optimisticPost: IPostCacheEntry = {
+        id: Date.now(),
         ...PostMapper.toCreatePostDomain(input),
+        __optimistic: true,
       };
 
       // write to cache
       // don not apply optimistic if we have no data
       if (previousPosts) {
-        queryClient.setQueryData<IPost[]>(key, (old = []) => [...old, optimisticPost]);
+        queryClient.setQueryData<IPostCacheEntry[]>(key, (old = []) => [...old, optimisticPost]);
       }
 
       // pass snapshot to onError/onSettled
@@ -50,7 +50,6 @@ export const useCreatePost = () => {
       queryClient.setQueryData(QUERY_KEYS.user.posts(), context?.previousPosts);
 
       const errorMessage = formatError(err, 'Error creating post').errorMessage;
-
       toast.error(errorMessage);
     },
 

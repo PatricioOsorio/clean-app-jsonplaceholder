@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import { useCreatePost, usePost, useUpdatePost } from '../../hooks';
-import './PostPage.css';
 import { PostForm } from '../../components/PostForm';
+import './PostPage.css';
 
 export const PostPage = () => {
   // ! Edit logic
@@ -29,16 +29,12 @@ export const PostPage = () => {
     if (!isValid) return;
 
     if (isEditMode) {
-      return updatePost(
-        {
-          id: Number(urlPostId),
-          title: title.trim(),
-          content: content.trim(),
-        },
-        {
-          onSuccess: () => navigate('/posts'),
-        },
-      );
+      updatePost({
+        id: Number(urlPostId),
+        title: title.trim(),
+        content: content.trim(),
+      });
+      return navigate('/posts');
     }
 
     return createPost(

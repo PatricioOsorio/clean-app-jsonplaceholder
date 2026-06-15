@@ -1,23 +1,24 @@
-import { useNavigate } from 'react-router';
-
-import { usePosts } from '../../hooks';
 import { Posts } from '../../components';
-import { formatError } from '@presentation/utils';
+import { usePostsPage } from './usePostsPage';
 
 import './PostsPage.css';
 
 export const PostsPage = () => {
-  const navigate = useNavigate();
+  const {
+    // props
+    posts,
+    isLoading,
+    isError,
+    errorTitle,
+    errorMessage,
+    isEmpty,
 
-  const { data: posts, isLoading, isError, error } = usePosts();
-  const isEmpty = !isLoading && !isError && !posts?.length;
-
-  const { errorTitle, errorMessage } = formatError(error, 'Error Loading Posts');
-
-  const handlePostClick = (postId: number) => {
-    navigate(`/posts/${postId}`);
-  };
-
+    // handlers
+    handlePostClick,
+    handleEdit,
+    handleDelete,
+  } = usePostsPage();
+  
   return (
     <section className="posts-page-container">
       <header className="ppc__header">
@@ -35,6 +36,10 @@ export const PostsPage = () => {
           isEmpty={isEmpty}
           isError={isError}
           isLoading={isLoading}
+          postProps={{
+            onEdit: handleEdit,
+            onDelete: handleDelete,
+          }}
           posts={posts}
           onPostClick={handlePostClick}
         />

@@ -1,3 +1,4 @@
+import { Button } from 'styleguide/button';
 import { cn } from 'styleguide/utils';
 
 import type { IPostProps } from './Post.interfaces';
@@ -19,6 +20,8 @@ export const Post = ({
   loadingTemplate,
   emptyTemplate,
   errorTemplate,
+  onEdit,
+  onDelete,
 }: IPostProps) => {
   const renderContent = () => {
     if (isLoading) {
@@ -39,15 +42,48 @@ export const Post = ({
         <p className="pc__content">{content}</p>
 
         <div className="pc__footer">
-          {idUser !== undefined && <span className="pc__user">User ID: {idUser}</span>}
-          <span className="pc__id">Post #{id}</span>
+          <div className="pc__meta">
+            {idUser !== undefined && <span className="pc__user">User ID: {idUser}</span>}
+            <span className="pc__id">Post #{id}</span>
+          </div>
+
+          <div className="pc__actions">
+            {onEdit && (
+              <Button
+                aria-label="Editar publicación"
+                size="sm"
+                type="button"
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit({ id, title, content, idUser }, e);
+                }}
+              >
+                Editar
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                aria-label="Borrar publicación"
+                size="sm"
+                type="button"
+                variant="destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(id, e);
+                }}
+              >
+                Borrar
+              </Button>
+            )}
+          </div>
         </div>
       </>
     );
   };
 
   return (
-    <button
+    <article
       {...rootProps}
       className={cn(
         'post-container',
@@ -56,7 +92,7 @@ export const Post = ({
       )}
     >
       {renderContent()}
-    </button>
+    </article>
   );
 };
 

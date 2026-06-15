@@ -7,10 +7,10 @@
 @source '../../../node_modules/styleguide/dist';
 
 @utility optimistic-container {
-  @apply border-primary/60 relative animate-pulse cursor-wait overflow-hidden border-dashed;
+  @apply border-primary/60 pointer-events-none relative animate-pulse cursor-not-allowed cursor-wait overflow-hidden border-dashed;
 
   &::before {
-    content: 'Creating…';
+    content: 'Working…';
     @apply bg-primary/10 text-primary absolute top-3 right-3 z-10 rounded-full px-2 py-0.5 text-[10px] font-medium;
   }
 }

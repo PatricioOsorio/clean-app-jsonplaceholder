@@ -11,7 +11,7 @@ export const App = () => {
   return (
     <DependenciesProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="apple-dark">
+        <ThemeProvider defaultTheme="apple-light">
           <RouterProvider router={appRouter} />
         </ThemeProvider>
 

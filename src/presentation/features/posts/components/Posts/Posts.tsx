@@ -15,6 +15,7 @@ export const Posts = ({
   errorDescription,
   onPostClick,
   isEmpty,
+  postProps,
 }: IPostsProps) => {
   return (
     <section {...rootProps} className={cn('posts-container', rootProps?.className)}>
@@ -50,6 +51,7 @@ export const Posts = ({
           posts?.map((post) => (
             <Post
               key={post.id}
+              {...postProps}
               content={post.content}
               id={post.id}
               idUser={post.idUser}

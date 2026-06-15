@@ -15,6 +15,14 @@
     @apply border-border text-muted-foreground mt-auto flex items-center justify-between border-t pt-3 text-xs;
   }
 
+  .pc__meta {
+    @apply flex items-center gap-3;
+  }
+
+  .pc__actions {
+    @apply flex items-center gap-2;
+  }
+
   .pc__user {
     @apply text-foreground font-medium;
   }
