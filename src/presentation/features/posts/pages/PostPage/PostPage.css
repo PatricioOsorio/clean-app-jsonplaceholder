@@ -1,0 +1,21 @@
+@reference "@styles/app.css";
+
+.post-page {
+  @apply bg-background relative flex w-full flex-col gap-8 py-8;
+
+  .pp__header {
+    @apply border-border border-b pb-8;
+  }
+
+  .pp__system-tag {
+    @apply text-primary mb-2 font-mono text-xs tracking-widest uppercase;
+  }
+
+  .pp__title {
+    @apply text-foreground text-3xl font-bold tracking-tighter md:text-5xl;
+  }
+
+  .pp__subtitle {
+    @apply text-muted-foreground mt-4 w-full font-mono text-sm;
+  }
+}

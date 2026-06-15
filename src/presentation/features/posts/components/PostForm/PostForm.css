@@ -1,0 +1,25 @@
+@reference "@styles/app.css";
+
+.post-form-container {
+  @apply flex w-full flex-col gap-6;
+
+  .pfc__field {
+    @apply flex flex-col gap-2;
+  }
+
+  .pfc__label-row {
+    @apply flex items-center justify-between;
+  }
+
+  .pfc__label {
+    @apply text-muted-foreground font-mono text-xs tracking-widest uppercase;
+  }
+
+  .pfc__counter {
+    @apply text-muted-foreground font-mono text-xs tabular-nums;
+  }
+
+  .pfc__actions {
+    @apply border-border mt-2 flex items-center justify-end gap-3 border-t pt-6;
+  }
+}

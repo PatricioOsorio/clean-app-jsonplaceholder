@@ -1,8 +1,7 @@
 import type { ICreatePostInput, IPost } from '@domain/post';
-import type { IPostCreateVM, IPostVM } from './post.mv';
+import type { IPostCreateVM, IPostUpdateVM, IPostVM } from './post.mv';
 
-// Optimistic posts use Date.now() as a temporary id; real ids are small integers.
-const TEMP_ID_THRESHOLD = 1_000_000_000_000;
+const TEMP_ID_THRESHOLD = 0;
 
 export abstract class PostMapper {
   static toVM(dto: IPost): IPostVM {
@@ -11,7 +10,7 @@ export abstract class PostMapper {
       title: dto.title,
       content: dto.content,
       idUser: dto.idUser,
-      __optimistic: dto.id > TEMP_ID_THRESHOLD,
+      __optimistic: dto.id < TEMP_ID_THRESHOLD,
     };
   }
 
@@ -36,5 +35,16 @@ export abstract class PostMapper {
       content: vm.content,
       idUser: vm.idUser,
     };
+  }
+
+  static toUpdatePostDomain(vm: IPostUpdateVM): Partial<IPost> {
+    const domain: Partial<IPost> = {};
+
+    if (vm.id !== undefined) domain.id = vm.id;
+    if (vm.idUser !== undefined) domain.idUser = vm.idUser;
+    if (vm.title !== undefined) domain.title = vm.title;
+    if (vm.content !== undefined) domain.content = vm.content;
+
+    return domain;
   }
 }

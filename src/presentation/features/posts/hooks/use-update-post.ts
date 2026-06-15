@@ -2,18 +2,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'styleguide/sonner';
 
 import { formatError } from '@presentation/utils';
-import { PostMapper, type IPostCreateVM } from '../models/post';
+import { PostMapper, type IPostUpdateVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
 import type { IPost } from '@domain/post';
 
-export const useCreatePost = () => {
-  const { createPostUseCase } = useDependencies();
+export const useUpdatePost = (id?: number) => {
+  const { updatePostUseCase } = useDependencies();
   const queryClient = useQueryClient();
 
-  const createPostMutation = useMutation({
+  const updatePostMutation = useMutation({
     // optimistic update
-    onMutate: async (input: IPostCreateVM) => {
+    onMutate: async (input: IPostUpdateVM) => {
       const key = QUERY_KEYS.user.posts();
 
       // abort current refetch
@@ -24,8 +24,8 @@ export const useCreatePost = () => {
 
       // optimistically domain update
       const optimisticPost: IPost = {
-        id: -Date.now(), // temporary id for optimistic post
-        ...PostMapper.toCreatePostDomain(input),
+        ...PostMapper.toUpdatePostDomain(input),
+        id: id ?? input.id!,
       };
 
       // write to cache
@@ -38,18 +38,18 @@ export const useCreatePost = () => {
       return { previousPosts };
     },
 
-    mutationFn: (input: IPostCreateVM) =>
-      createPostUseCase.execute(PostMapper.toCreatePostDomain(input)),
+    mutationFn: (input: IPostUpdateVM) =>
+      updatePostUseCase.execute(input.id, PostMapper.toUpdatePostDomain(input)),
 
     onSuccess: () => {
-      toast.success('Post created successfully!');
+      toast.success('Post updated successfully!');
     },
 
     onError: (err, _input, context) => {
       // rollback
       queryClient.setQueryData(QUERY_KEYS.user.posts(), context?.previousPosts);
 
-      const errorMessage = formatError(err, 'Error creating post').errorMessage;
+      const errorMessage = formatError(err, 'Error updating post').errorMessage;
 
       toast.error(errorMessage);
     },
@@ -60,5 +60,5 @@ export const useCreatePost = () => {
     },
   });
 
-  return createPostMutation;
+  return updatePostMutation;
 };
