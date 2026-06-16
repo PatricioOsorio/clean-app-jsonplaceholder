@@ -18,7 +18,7 @@ export const PostsPage = () => {
     handleEdit,
     handleDelete,
   } = usePostsPage();
-  
+
   return (
     <section className="posts-page-container">
       <header className="ppc__header">

@@ -9,7 +9,7 @@ export const usePostsPage = () => {
   const navigate = useNavigate();
 
   const { data: posts, isLoading, isError, error } = usePosts();
-
+  
   const isEmpty = !isLoading && !isError && !posts?.length;
 
   const { errorTitle, errorMessage } = formatError(error, 'Error Loading Posts');

@@ -2,19 +2,18 @@ import type { ICreatePostInput, IPost } from '@domain/post';
 import type { IPostCreateVM, IPostUpdateVM, IPostVM } from './post.mv';
 
 export abstract class PostMapper {
-  static toVM(dto: IPost): IPostVM {
+  static toVM(entity: IPost): IPostVM {
     return {
-      id: dto.id,
-      title: dto.title,
-      content: dto.content,
-      idUser: dto.idUser,
+      id: entity.id,
+      title: entity.title,
+      content: entity.content,
+      idUser: entity.idUser,
     };
   }
 
-  static toVMs(dtos: IPost[]): IPostVM[] {
-    return dtos.map((dto) => this.toVM(dto));
+  static toVMs(entities: IPost[]): IPostVM[] {
+    return entities.map((entity) => this.toVM(entity));
   }
-
   static toDomain(vm: Partial<IPostVM>): Partial<IPost> {
     const domain: Partial<IPost> = {};
 
