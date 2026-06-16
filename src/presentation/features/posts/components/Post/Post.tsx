@@ -87,7 +87,7 @@ export const Post = ({
       {...rootProps}
       className={cn(
         'post-container',
-        { 'optimistic-container': isOptimistic },
+        { 'optimistic-working': isOptimistic },
         rootProps?.className,
       )}
     >

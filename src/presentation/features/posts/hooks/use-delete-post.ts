@@ -11,19 +11,7 @@ export const useDeletePost = () => {
     mutationFn: async (id: number) => {
       return deletePostUseCase.execute(id);
     },
-    optimisticUpdate: (old: IPostVM[] = [], id: number) => {
-      const posts = old.map((post) => {
-        if (post.id !== id) return post;
-
-        return {
-          ...post,
-          __optimistic: true,
-        };
-      });
-
-      return posts;
-    },
-
+    optimisticUpdate: (old: IPostVM[] = [], id: number) => old.filter((post) => post.id !== id),
     messages: {
       success: 'Post deleted successfully!',
       fallbackError: 'Error deleting post',

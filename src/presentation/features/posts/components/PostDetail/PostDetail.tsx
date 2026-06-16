@@ -96,7 +96,7 @@ export const PostDetail = ({
       {...rootProps}
       className={cn(
         'post-detail-container',
-        { 'optimistic-container': isOptimistic },
+        { 'optimistic-deleting': isOptimistic },
         rootProps?.className,
       )}
     >
