@@ -1,21 +1,36 @@
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { formatError } from '@presentation/utils';
-import { usePost } from '../../hooks';
+import { useDeletePost, usePost } from '../../hooks';
 
 export const usePostDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id: idPostParam } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const idPost = id ? Number(id) : undefined;
+  const idPost = idPostParam ? Number(idPostParam) : undefined;
   const { data: post, isLoading, isError, error } = usePost(idPost);
   const isEmpty = !isLoading && !isError && !post;
+
+  const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
 
   const { errorTitle, errorMessage } = formatError(error, 'Error Loading Post');
 
   // handlers
   const handleBack = () => {
     navigate('/posts');
+  };
+
+  const handleDelete = () => {
+    if (!idPost) return;
+    deletePost(idPost, {
+      onSuccess: () => {
+        navigate('/posts');
+      },
+    });
+  };
+
+  const handleEdit = () => {
+    navigate(`/posts/edit/${idPost}`);
   };
 
   return {
@@ -26,8 +41,11 @@ export const usePostDetailPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
+    isDeleting,
 
     // handlers
     handleBack,
+    handleDelete,
+    handleEdit,
   };
 };

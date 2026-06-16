@@ -9,8 +9,7 @@ export const usePost = (id?: number) => {
 
   const postQuery = useQuery({
     queryKey: QUERY_KEYS.user.post(id),
-    queryFn: () => getPostUseCase.execute(id!),
-    select: (postDomain) => PostMapper.toVM(postDomain),
+    queryFn: async () => PostMapper.toVM(await getPostUseCase.execute(id!)),
     enabled: !!id,
   });
 

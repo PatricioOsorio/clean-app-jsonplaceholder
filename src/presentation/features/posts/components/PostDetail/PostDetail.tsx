@@ -1,3 +1,4 @@
+import { Button } from 'styleguide/button';
 import { cn } from 'styleguide/utils';
 
 import type { IPostDetailProps } from './PostDetail.interfaces';
@@ -12,12 +13,16 @@ export const PostDetail = ({
   isLoading,
   isError,
   isEmpty,
+  isOptimistic,
   loadingTemplate,
   emptyTemplate,
   errorTemplate,
   errorTitle,
   errorDescription,
   onBack,
+  onEdit,
+  onDelete,
+  isDeleting,
 }: IPostDetailProps) => {
   const renderContent = () => {
     if (isLoading) {
@@ -55,12 +60,46 @@ export const PostDetail = ({
         <div className="pdc__body">
           <p className="pdc__text">{post.content}</p>
         </div>
+
+        <div className="pdc__actions">
+          {onEdit && (
+            <Button
+              aria-label="Editar publicación"
+              disabled={isDeleting}
+              size="sm"
+              type="button"
+              variant="outline"
+              onClick={(e) => onEdit(post, e)}
+            >
+              Editar
+            </Button>
+          )}
+          {onDelete && (
+            <Button
+              aria-label="Borrar publicación"
+              disabled={isDeleting}
+              size="sm"
+              type="button"
+              variant="destructive"
+              onClick={(e) => onDelete(post.id, e)}
+            >
+              {isDeleting ? 'Borrando...' : 'Borrar'}
+            </Button>
+          )}
+        </div>
       </>
     );
   };
 
   return (
-    <article {...rootProps} className={cn('post-detail-container', rootProps?.className)}>
+    <article
+      {...rootProps}
+      className={cn(
+        'post-detail-container',
+        { 'optimistic-container': isOptimistic },
+        rootProps?.className,
+      )}
+    >
       {onBack && (
         <button className="pdc__back-button" onClick={onBack}>
           <span className="pdc__back-arrow">←</span> Back to publications

@@ -11,7 +11,7 @@ export const usePostsPage = () => {
   const isEmpty = !isLoading && !isError && !posts?.length;
   const { errorTitle, errorMessage } = formatError(error);
 
-  const { mutate: deletePost, isPending: isDeletingPost } = useDeletePost();
+  const { mutate: deletePost } = useDeletePost();
 
   const handlePostClick = (postId: number) => {
     navigate(`/posts/${postId}`);
@@ -37,7 +37,6 @@ export const usePostsPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
-    isDeletingPost,
 
     // constants
     TITLE,

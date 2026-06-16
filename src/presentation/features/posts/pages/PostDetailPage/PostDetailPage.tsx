@@ -12,9 +12,12 @@ export const PostDetailPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
+    isDeleting,
 
     // handlers
     handleBack,
+    handleDelete,
+    handleEdit,
   } = usePostDetailPage();
 
   return (
@@ -27,6 +30,9 @@ export const PostDetailPage = () => {
         isLoading={isLoading}
         post={post}
         onBack={handleBack}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        isOptimistic={isDeleting}
       />
     </section>
   );

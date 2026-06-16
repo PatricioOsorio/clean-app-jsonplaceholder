@@ -46,4 +46,8 @@
   .pdc__text {
     @apply text-muted-foreground text-base leading-relaxed whitespace-pre-wrap sm:text-lg;
   }
+
+  .pdc__actions {
+    @apply border-border flex items-center justify-end gap-3 border-t pt-6;
+  }
 }
