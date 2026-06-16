@@ -54,7 +54,7 @@ export class PostRepositoryLocal implements PostRepository {
 
   async getById(id: number): Promise<IPost> {
     await simulateFault(id, 'getById');
-    
+
     const post = this.read().find((p) => p.id === id);
     if (!post) throw new PostNotFoundError(id);
 
@@ -125,7 +125,7 @@ export class PostRepositoryLocal implements PostRepository {
 
   async delete(id: number): Promise<boolean> {
     await simulateFault(id, 'delete');
-    
+
     const posts = this.read();
     const index = posts.findIndex((p) => p.id === id);
 

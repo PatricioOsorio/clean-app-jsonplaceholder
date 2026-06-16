@@ -15,13 +15,13 @@ export abstract class PostMapper {
     return dtos.map((dto) => this.toEntity(dto));
   }
 
-  static toDTO(domain: Partial<IPost>): Partial<IPostDTO> {
+  static toDTO(entity: Partial<IPost>): Partial<IPostDTO> {
     const dto: Partial<IPostDTO> = {};
 
-    if (domain.id !== undefined) dto.id = domain.id;
-    if (domain.idUser !== undefined) dto.userId = domain.idUser;
-    if (domain.title !== undefined) dto.title = domain.title;
-    if (domain.content !== undefined) dto.body = domain.content;
+    if (entity.id !== undefined) dto.id = entity.id;
+    if (entity.idUser !== undefined) dto.userId = entity.idUser;
+    if (entity.title !== undefined) dto.title = entity.title;
+    if (entity.content !== undefined) dto.body = entity.content;
 
     return dto;
   }

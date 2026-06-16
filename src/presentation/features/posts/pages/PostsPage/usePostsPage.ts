@@ -9,10 +9,8 @@ export const usePostsPage = () => {
   const navigate = useNavigate();
 
   const { data: posts, isLoading, isError, error } = usePosts();
-  
   const isEmpty = !isLoading && !isError && !posts?.length;
-
-  const { errorTitle, errorMessage } = formatError(error, 'Error Loading Posts');
+  const { errorTitle, errorMessage } = formatError(error);
 
   const handlePostClick = (postId: number) => {
     navigate(`/posts/${postId}`);
@@ -26,6 +24,10 @@ export const usePostsPage = () => {
     toast.success(`Post ${postId} deleted successfully (not really, this is a placeholder).`);
   };
 
+  // constants
+  const TITLE = 'SYSTEM POSTS';
+  const SUBTITLE = 'Data fetched via TanStack Query + Clean Architecture Use Cases.';
+
   return {
     // props
     posts,
@@ -34,6 +36,10 @@ export const usePostsPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
+
+    // constants
+    TITLE,
+    SUBTITLE,
 
     // handlers
     handlePostClick,

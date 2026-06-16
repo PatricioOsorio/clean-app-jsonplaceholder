@@ -8,8 +8,7 @@ const PostsPage = async () =>
   (await import('@presentation/features/posts/pages/PostsPage')).default;
 const PostDetailPage = async () =>
   (await import('@presentation/features/posts/pages/PostDetailPage')).default;
-const PostPage = async () =>
-  (await import('@presentation/features/posts/pages/PostPage')).default;
+const PostPage = async () => (await import('@presentation/features/posts/pages/PostPage')).default;
 
 export const appRouter = createBrowserRouter(
   [
@@ -36,7 +35,7 @@ export const appRouter = createBrowserRouter(
         {
           path: 'posts/edit/:id',
           lazy: { Component: PostPage },
-        }
+        },
       ],
     },
     { path: '*', element: <Navigate replace to="/" /> },

@@ -9,10 +9,10 @@ export const useUpdatePost = (id: number) => {
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
     mutationFn: async (input: IPostUpdateVM) => {
-      return updatePostUseCase.execute(input.id, PostMapper.toUpdatePostDomain(input));
+      return updatePostUseCase.execute(input.id, PostMapper.toUpdatePostInputDomain(input));
     },
     optimisticUpdate: (old: IPostVM[] = [], input: IPostUpdateVM) => {
-      const updatedFields = PostMapper.toUpdatePostDomain(input);
+      const updatedFields = PostMapper.toUpdatePostInputDomain(input);
 
       const applyUpdate = (post: IPostVM): IPostVM => {
         if (post.id !== id) {
@@ -36,51 +36,3 @@ export const useUpdatePost = (id: number) => {
     },
   });
 };
-
-// ? Documentation purposes
-// const { updatePostUseCase } = useDependencies();
-// const queryClient = useQueryClient();
-
-// const { cancelAndSnapshot, rollback, invalidate } = useMutationBase<IPostVM[]>(
-//   QUERY_KEYS.user.posts(),
-// );
-
-// return useMutation({
-//   onMutate: async (input: IPostUpdateVM) => {
-//     const previousPosts = await cancelAndSnapshot();
-
-//     const oldPost = previousPosts?.find((p) => p.id === id);
-//     if (!oldPost) return { previousPosts };
-
-//     const optimisticPost: IPostVM = {
-//       ...oldPost,
-//       ...PostMapper.toUpdatePostDomain(input),
-//       id,
-//       __optimistic: true,
-//     };
-
-//     if (previousPosts) {
-//       queryClient.setQueryData<IPostVM[]>(QUERY_KEYS.user.posts(), (old = []) =>
-//         old.map((p) => (p.id === optimisticPost.id ? optimisticPost : p)),
-//       );
-//     }
-
-//     return { previousPosts };
-//   },
-
-//   mutationFn: (input: IPostUpdateVM) =>
-//     updatePostUseCase.execute(input.id, PostMapper.toUpdatePostDomain(input)),
-
-//   onSuccess: () => {
-//     toast.success('Post updated successfully!');
-//   },
-
-//   onError: (err, _input, context) => {
-//     rollback(context?.previousPosts);
-//     toast.error(formatError(err, 'Error updating post').errorMessage);
-//   },
-
-//   onSettled: () => {
-//     invalidate();
-//   },
-// });

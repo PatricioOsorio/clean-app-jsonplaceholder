@@ -13,6 +13,10 @@ export const PostsPage = () => {
     errorMessage,
     isEmpty,
 
+    // constants
+    TITLE,
+    SUBTITLE,
+
     // handlers
     handlePostClick,
     handleEdit,
@@ -23,10 +27,8 @@ export const PostsPage = () => {
     <section className="posts-page-container">
       <header className="ppc__header">
         <p className="ppc__system-tag">[ System // Data // Posts ]</p>
-        <h1 className="ppc__title">SYSTEM POSTS</h1>
-        <p className="ppc__subtitle">
-          Data fetched via TanStack Query + Clean Architecture Use Cases.
-        </p>
+        <h1 className="ppc__title">{TITLE}</h1>
+        <p className="ppc__subtitle">{SUBTITLE}</p>
       </header>
 
       <div className="ppc__content">

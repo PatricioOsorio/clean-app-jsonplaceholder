@@ -1,20 +1,21 @@
-import { useParams, useNavigate } from 'react-router';
-
 import { PostDetail } from '../../components';
-import { usePost } from '../../hooks';
-import { formatError } from '@presentation/utils';
+import { usePostDetailPage } from './usePostDetailPage';
 
 import './PostDetailPage.css';
 
 export const PostDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const {
+    // props
+    post,
+    isLoading,
+    isError,
+    errorTitle,
+    errorMessage,
+    isEmpty,
 
-  const numberId = id ? Number(id) : undefined;
-  const { data: post, isLoading, isError, error } = usePost(numberId);
-  const isEmpty = !isLoading && !isError && !post;
-
-  const { errorTitle, errorMessage } = formatError(error, 'Error Loading Post');
+    // handlers
+    handleBack,
+  } = usePostDetailPage();
 
   return (
     <section className="post-detail-page">
@@ -25,7 +26,7 @@ export const PostDetailPage = () => {
         isError={isError}
         isLoading={isLoading}
         post={post}
-        onBack={() => navigate('/posts')}
+        onBack={handleBack}
       />
     </section>
   );

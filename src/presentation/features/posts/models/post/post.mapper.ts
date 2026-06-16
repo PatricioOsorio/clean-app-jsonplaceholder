@@ -14,18 +14,19 @@ export abstract class PostMapper {
   static toVMs(entities: IPost[]): IPostVM[] {
     return entities.map((entity) => this.toVM(entity));
   }
-  static toDomain(vm: Partial<IPostVM>): Partial<IPost> {
-    const domain: Partial<IPost> = {};
 
-    if (vm.id !== undefined) domain.id = vm.id;
-    if (vm.idUser !== undefined) domain.idUser = vm.idUser;
-    if (vm.title !== undefined) domain.title = vm.title;
-    if (vm.content !== undefined) domain.content = vm.content;
+  static toEntity(vm: Partial<IPostVM>): Partial<IPost> {
+    const entity: Partial<IPost> = {};
 
-    return domain;
+    if (vm.id !== undefined) entity.id = vm.id;
+    if (vm.idUser !== undefined) entity.idUser = vm.idUser;
+    if (vm.title !== undefined) entity.title = vm.title;
+    if (vm.content !== undefined) entity.content = vm.content;
+
+    return entity;
   }
 
-  static toCreatePostDomain(vm: IPostCreateVM): ICreatePostInput {
+  static toCreatePostInputDomain(vm: IPostCreateVM): ICreatePostInput {
     return {
       title: vm.title,
       content: vm.content,
@@ -33,14 +34,14 @@ export abstract class PostMapper {
     };
   }
 
-  static toUpdatePostDomain(vm: IPostUpdateVM): Partial<IPost> {
-    const domain: Partial<IPost> = {};
+  static toUpdatePostInputDomain(vm: IPostUpdateVM): Partial<IPost> {
+    const inputDomain: Partial<IPost> = {};
 
-    if (vm.id !== undefined) domain.id = vm.id;
-    if (vm.idUser !== undefined) domain.idUser = vm.idUser;
-    if (vm.title !== undefined) domain.title = vm.title;
-    if (vm.content !== undefined) domain.content = vm.content;
+    if (vm.id !== undefined) inputDomain.id = vm.id;
+    if (vm.idUser !== undefined) inputDomain.idUser = vm.idUser;
+    if (vm.title !== undefined) inputDomain.title = vm.title;
+    if (vm.content !== undefined) inputDomain.content = vm.content;
 
-    return domain;
+    return inputDomain;
   }
 }

@@ -36,7 +36,7 @@ export const PostForm = ({
     if (isError) {
       return errorTemplate ?? <Error description={errorDescription} title={errorTitle} />;
     }
-    
+
     return (
       <>
         <div className="pfc__field">

@@ -1,84 +1,54 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-
-import { useCreatePost, usePost, useUpdatePost } from '../../hooks';
 import { PostForm } from '../../components/PostForm';
+import { usePostPage } from './usePostPage';
+
 import './PostPage.css';
 
 export const PostPage = () => {
-  // ! Edit logic
-  const navigate = useNavigate();
-  const { id: urlPostId } = useParams();
-  const isEditMode = Boolean(urlPostId);
+  const {
+    // props
+    isEditMode,
+    isPostLoading,
+    title,
+    content,
 
-  const { data: postData, isLoading: isPostLoading } = usePost(Number(urlPostId));
-  const { mutate: updatePost, isPending: isUpdating } = useUpdatePost(Number(urlPostId));
+    // computed
+    TITLE,
+    SUBTITLE,
+    isDisabledCancelButton,
+    isDisabledOkButton,
+    okButtonText,
 
-  // ! Create logic
-  const { mutate: createPost, isPending: isCreating } = useCreatePost();
-
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-
-  const isValid = title.trim().length > 0 && content.trim().length > 0;
-
-  // ! Shared logic
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!isValid) return;
-
-    if (isEditMode) {
-      updatePost({
-        id: Number(urlPostId),
-        title: title.trim(),
-        content: content.trim(),
-      });
-      return navigate('/posts');
-    }
-
-    return createPost(
-      { title: title.trim(), content: content.trim(), idUser: 1 },
-      {
-        onSuccess: () => navigate('/posts'),
-      },
-    );
-  };
-
-  useEffect(() => {
-    if (!isEditMode || isPostLoading || !postData) return;
-
-    setTitle(postData.title);
-    setContent(postData.content);
-  }, [isEditMode, isPostLoading, postData]);
+    // handlers
+    handleCancel,
+    handleSubmit,
+    handleContentChange,
+    handleTitleChange,
+  } = usePostPage();
 
   return (
     <section className="post-page">
       <header className="pp__header">
         <p className="pp__system-tag">[ System // Action // Compose ]</p>
-        <h1 className="pp__title">{isEditMode ? 'EDIT POST' : 'CREATE POST'}</h1>
-        <p className="pp__subtitle">
-          Write a new entry. Saved through Clean Architecture Use Cases with an optimistic update.
-        </p>
+        <h1 className="pp__title">{TITLE}</h1>
+        <p className="pp__subtitle">{SUBTITLE}</p>
       </header>
 
       <PostForm
         btnCancelProps={{
-          disabled: isUpdating || isCreating,
-          onClick: () => navigate('/posts'),
+          disabled: isDisabledCancelButton,
+          onClick: handleCancel,
           children: 'Cancel',
         }}
         btnOkProps={{
-          disabled: !isValid || isUpdating || isCreating,
-          children:
-            isUpdating || isCreating ? 'Saving…' : isEditMode ? 'Update Post' : 'Create Post',
+          disabled: isDisabledOkButton,
+          children: okButtonText,
         }}
         content={content}
         isLoading={isEditMode && isPostLoading}
         title={title}
-        onContentChange={setContent}
+        onContentChange={handleContentChange}
         onSubmit={handleSubmit}
-        onTitleChange={setTitle}
+        onTitleChange={handleTitleChange}
       />
     </section>
   );
