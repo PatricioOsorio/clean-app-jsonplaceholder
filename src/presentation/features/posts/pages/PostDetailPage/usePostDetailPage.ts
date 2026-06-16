@@ -7,8 +7,8 @@ export const usePostDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const numberId = id ? Number(id) : undefined;
-  const { data: post, isLoading, isError, error } = usePost(numberId);
+  const idPost = id ? Number(id) : undefined;
+  const { data: post, isLoading, isError, error } = usePost(idPost);
   const isEmpty = !isLoading && !isError && !post;
 
   const { errorTitle, errorMessage } = formatError(error, 'Error Loading Post');
