@@ -16,6 +16,7 @@ export const usePostPage = () => {
 
   const { data: postData, isLoading: isPostLoading } = usePost(idPost);
   const { mutate: updatePost, isPending: isUpdatingPost } = useUpdatePost(idPost);
+  // const { mutate: updatePost, isPending: isUpdatingPost } = usePatchPost(idPost);
 
   // create logic
   const { mutate: createPost, isPending: isCreatingPost } = useCreatePost();
@@ -39,6 +40,7 @@ export const usePostPage = () => {
         id: idPost,
         title: titleTrimmed,
         content: contentTrimmed,
+        idUser: USER_ID,
       });
       // optimistic ui
       return navigate('/posts');

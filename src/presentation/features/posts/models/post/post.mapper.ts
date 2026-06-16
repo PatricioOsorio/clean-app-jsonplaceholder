@@ -1,5 +1,5 @@
 import type { ICreatePostInput, IPost } from '@domain/post';
-import type { IPostCreateVM, IPostUpdateVM, IPostVM } from './post.mv';
+import type { IPatchPostInputVM, IPostCreateInputVM, IPostUpdateInputVM, IPostVM } from './post.mv';
 
 export abstract class PostMapper {
   static toVM(entity: IPost): IPostVM {
@@ -26,7 +26,7 @@ export abstract class PostMapper {
     return entity;
   }
 
-  static toCreatePostInputDomain(vm: IPostCreateVM): ICreatePostInput {
+  static toCreatePostInputDomain(vm: IPostCreateInputVM): ICreatePostInput {
     return {
       title: vm.title,
       content: vm.content,
@@ -34,7 +34,18 @@ export abstract class PostMapper {
     };
   }
 
-  static toUpdatePostInputDomain(vm: IPostUpdateVM): Partial<IPost> {
+  static toUpdatePostInputDomain(vm: IPostUpdateInputVM): Partial<IPost> {
+    const inputDomain: Partial<IPost> = {};
+
+    if (vm.id !== undefined) inputDomain.id = vm.id;
+    if (vm.idUser !== undefined) inputDomain.idUser = vm.idUser;
+    if (vm.title !== undefined) inputDomain.title = vm.title;
+    if (vm.content !== undefined) inputDomain.content = vm.content;
+
+    return inputDomain;
+  }
+
+  static toPatchPostInputDomain(vm: Partial<IPatchPostInputVM>): Partial<IPost> {
     const inputDomain: Partial<IPost> = {};
 
     if (vm.id !== undefined) inputDomain.id = vm.id;

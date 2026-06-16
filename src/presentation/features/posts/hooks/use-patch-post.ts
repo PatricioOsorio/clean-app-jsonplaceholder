@@ -1,18 +1,18 @@
-import { PostMapper, type IPostUpdateInputVM, type IPostVM } from '../models/post';
+import { PostMapper, type IPatchPostInputVM, type IPostVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 
-export const useUpdatePost = (id: number) => {
-  const { updatePostUseCase } = useDependencies();
+export const usePatchPost = (id: number) => {
+  const { patchPostUseCase } = useDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
-    mutationFn: async (input: IPostUpdateInputVM) => {
-      return updatePostUseCase.execute(input.id, PostMapper.toUpdatePostInputDomain(input));
+    mutationFn: async (input: IPatchPostInputVM) => {
+      return patchPostUseCase.execute(input.id, PostMapper.toPatchPostInputDomain(input));
     },
-    optimisticUpdate: (old: IPostVM[] = [], input: IPostUpdateInputVM) => {
-      const updatedFields = PostMapper.toUpdatePostInputDomain(input);
+    optimisticUpdate: (old: IPostVM[] = [], input: IPatchPostInputVM) => {
+      const updatedFields = PostMapper.toPatchPostInputDomain(input);
 
       const applyUpdate = (post: IPostVM): IPostVM => {
         if (post.id !== id) {
@@ -31,7 +31,7 @@ export const useUpdatePost = (id: number) => {
     },
 
     messages: {
-      success: 'Post updated successfully!',
+      success: 'Post patched successfully!',
       fallbackError: 'Error updating post',
     },
   });

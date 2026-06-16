@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router';
-import { toast } from 'styleguide/sonner';
 
 import { formatError } from '@presentation/utils';
-import { usePosts } from '../../hooks';
+import { useDeletePost, usePosts } from '../../hooks';
 import type { IPostVM } from '../../models/post';
 
 export const usePostsPage = () => {
@@ -11,6 +10,8 @@ export const usePostsPage = () => {
   const { data: posts, isLoading, isError, error } = usePosts();
   const isEmpty = !isLoading && !isError && !posts?.length;
   const { errorTitle, errorMessage } = formatError(error);
+
+  const { mutate: deletePost, isPending: isDeletingPost } = useDeletePost();
 
   const handlePostClick = (postId: number) => {
     navigate(`/posts/${postId}`);
@@ -21,7 +22,7 @@ export const usePostsPage = () => {
   };
 
   const handleDelete = (postId: number) => {
-    toast.success(`Post ${postId} deleted successfully (not really, this is a placeholder).`);
+    deletePost(postId);
   };
 
   // constants
@@ -36,6 +37,7 @@ export const usePostsPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
+    isDeletingPost,
 
     // constants
     TITLE,
