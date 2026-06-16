@@ -85,11 +85,7 @@ export const Post = ({
   return (
     <article
       {...rootProps}
-      className={cn(
-        'post-container',
-        { 'optimistic-working': isOptimistic },
-        rootProps?.className,
-      )}
+      className={cn('post-container', { 'optimistic-working': isOptimistic }, rootProps?.className)}
     >
       {renderContent()}
     </article>

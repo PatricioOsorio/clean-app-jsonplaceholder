@@ -28,11 +28,11 @@ export const PostDetailPage = () => {
         isEmpty={isEmpty}
         isError={isError}
         isLoading={isLoading}
+        isOptimistic={isDeleting}
         post={post}
         onBack={handleBack}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        isOptimistic={isDeleting}
       />
     </section>
   );
