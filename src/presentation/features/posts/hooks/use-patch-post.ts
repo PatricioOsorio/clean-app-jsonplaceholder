@@ -12,7 +12,7 @@ export const usePatchPost = (id: number) => {
     mutationFn: async (input: IPatchPostInputVM) => {
       const rawInput = PostMapper.toPatchPostInputDomain(input);
       const dto = PatchPostDto.create(rawInput, validators.patch);
-      return posts.patch(input.id, dto);
+      return posts.patch(id, dto);
     },
 
     optimisticUpdate: (old: IPostVM[] = [], input: IPatchPostInputVM) => {

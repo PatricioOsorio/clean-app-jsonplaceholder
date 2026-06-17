@@ -12,7 +12,7 @@ export const useUpdatePost = (id: number) => {
     mutationFn: async (input: IPostUpdateInputVM) => {
       const rawInput = PostMapper.toUpdatePostInputDomain(input);
       const dto = UpdatePostDto.create(rawInput, validators.update);
-      return posts.update(input.id, dto);
+      return posts.update(id, dto);
     },
 
     optimisticUpdate: (old: IPostVM[] = [], input: IPostUpdateInputVM) => {
