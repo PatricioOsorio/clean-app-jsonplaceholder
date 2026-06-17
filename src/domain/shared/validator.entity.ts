@@ -6,4 +6,3 @@ export type ValidationIssue = {
 export interface ValidatorEntity<T> {
   validate(input: unknown): T;
 }
-

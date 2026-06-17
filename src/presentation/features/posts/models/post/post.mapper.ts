@@ -1,4 +1,9 @@
-import type { ICreatePostInput, IPostEntity, IUpdatePostInput, IPatchPostInput } from '@domain/post';
+import type {
+  ICreatePostInput,
+  IPostEntity,
+  IUpdatePostInput,
+  IPatchPostInput,
+} from '@domain/post';
 import type { IPatchPostInputVM, IPostCreateInputVM, IPostUpdateInputVM, IPostVM } from './post.mv';
 
 export abstract class PostMapper {

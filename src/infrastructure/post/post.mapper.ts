@@ -4,14 +4,8 @@ import type { IPostDTO } from './post.dto';
 
 export abstract class PostMapper {
   static toEntity(dto: IPostDTO): IPostEntity {
-    return new PostEntity(
-      dto.id,
-      dto.userId,
-      dto.title,
-      dto.body
-    );
+    return new PostEntity(dto.id, dto.userId, dto.title, dto.body);
   }
-
 
   static toEntities(dtos: IPostDTO[]): IPostEntity[] {
     return dtos.map((dto) => this.toEntity(dto));

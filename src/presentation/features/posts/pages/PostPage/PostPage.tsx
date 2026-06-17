@@ -45,12 +45,12 @@ export const PostPage = () => {
           children: okButtonText,
         }}
         content={content}
+        errors={fieldErrors}
         isLoading={isEditMode && isPostLoading}
         title={title}
         onContentChange={handleContentChange}
         onSubmit={handleSubmit}
         onTitleChange={handleTitleChange}
-        errors={fieldErrors}
       />
     </section>
   );
