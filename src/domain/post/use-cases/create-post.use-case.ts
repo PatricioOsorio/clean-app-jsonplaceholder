@@ -1,18 +1,16 @@
-import { PostRepository, type ICreatePostInput } from '../post.repo';
-import { PostInvalidDataError } from '../errors/post-invalid-data.error';
+import type { ValidatorEntity } from '@domain/shared';
+import type { ICreatePostInput } from '../post.repo';
 import type { IPost } from '../post.entity';
+import { PostRepository } from '../post.repo';
 
 export class CreatePostUseCase {
-  constructor(private postRepo: PostRepository) {}
+  constructor(
+    private postRepo: PostRepository,
+    private validator: ValidatorEntity<ICreatePostInput>,
+  ) {}
 
-  async execute(payload: ICreatePostInput): Promise<IPost> {
-    const { title, content } = payload;
-
-    if (!title || title.trim() === '') throw new PostInvalidDataError('Title is required');
-    if (!content || content.trim() === '') throw new PostInvalidDataError('Content is required');
-
-    const post = await this.postRepo.create(payload);
-
-    return post;
+  async execute(payload: unknown): Promise<IPost> {
+    const input = this.validator.validate(payload);
+    return this.postRepo.create(input);
   }
 }
