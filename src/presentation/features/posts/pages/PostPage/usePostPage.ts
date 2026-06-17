@@ -14,7 +14,7 @@ export const usePostPage = () => {
   const isEditMode = Boolean(urlPostId);
   const idPost = Number(urlPostId);
 
-  const { data: postData, isLoading: isPostLoading, error: postError } = usePost(idPost);
+  const { data: postData, isLoading: isPostLoading } = usePost(idPost);
   const {
     mutate: updatePost,
     isPending: isUpdatingPost,
@@ -85,6 +85,7 @@ export const usePostPage = () => {
   const okButtonText =
     isUpdatingPost || isCreatingPost ? 'Saving…' : isEditMode ? 'Update Post' : 'Create Post';
 
+    // TODO : checar esto
   // Obtener error de la mutación activa
   const mutationError = isEditMode ? updateError : createError;
 

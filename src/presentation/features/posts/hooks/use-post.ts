@@ -2,14 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 
 import { PostMapper } from '@presentation/features/posts/models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
-import { useDependencies } from '@presentation/context';
+import { usePostsDependencies } from './use-posts-dependencies';
 
 export const usePost = (id?: number) => {
-  const { posts } = useDependencies();
+  const { posts } = usePostsDependencies();
 
   const postQuery = useQuery({
     queryKey: QUERY_KEYS.user.post(id),
-    queryFn: async () => PostMapper.toVM(await posts.getOne.execute(id!)),
+    queryFn: async () => PostMapper.toVM(await posts.getById(id!)),
     enabled: !!id,
   });
 

@@ -5,8 +5,7 @@ import { HttpError } from '@domain/http/errors/http.error';
 import { NetworkError } from '@domain/errors/network.error';
 import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
-import { PostRepository } from '@domain/post';
-import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
+import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import type { IPostEntity } from '@domain/post';
 import type { IPostDTO } from '../post.dto';
 import { DomainError } from '@domain/errors/domain.error';
@@ -53,7 +52,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async create(post: ICreatePostInput): Promise<IPostEntity> {
+  async create(post: CreatePostDto): Promise<IPostEntity> {
     try {
       const response = await this.httpClient.post<IPostDTO>('/posts', PostMapper.toDTO(post));
       return PostMapper.toEntity(response);
@@ -62,7 +61,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async update(id: number, post: IUpdatePostInput): Promise<IPostEntity> {
+  async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
     try {
       const response = await this.httpClient.put<IPostDTO>(`/posts/${id}`, PostMapper.toDTO(post));
       return PostMapper.toEntity(response);
@@ -71,7 +70,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async patch(id: number, fields: IPatchPostInput): Promise<IPostEntity> {
+  async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
     try {
       const response = await this.httpClient.patch<IPostDTO>(
         `/posts/${id}`,
@@ -82,6 +81,7 @@ export class PostRepositoryApi implements PostRepository {
       this.handleError(error, id);
     }
   }
+
 
   async delete(id: number): Promise<boolean> {
     try {

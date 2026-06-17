@@ -14,9 +14,9 @@ import {
 } from '@infrastructure/post';
 import {
   PostRepository,
-  CreatePostUseCase,
-  UpdatePostUseCase,
-  PatchPostUseCase,
+  CreatePostDto,
+  UpdatePostDto,
+  PatchPostDto,
 } from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
@@ -46,14 +46,15 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(PostRepository.TOKEN, { useClass: POST_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreatePostUseCase.VALIDATOR_TOKEN, {
+container.register(CreatePostDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
-container.register(UpdatePostUseCase.VALIDATOR_TOKEN, {
+container.register(UpdatePostDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
-container.register(PatchPostUseCase.VALIDATOR_TOKEN, {
+container.register(PatchPostDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 
 export { container };
+

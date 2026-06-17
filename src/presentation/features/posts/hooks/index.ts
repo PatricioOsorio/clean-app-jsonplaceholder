@@ -4,3 +4,5 @@ export * from './use-posts';
 export * from './use-update-post';
 export * from './use-patch-post';
 export * from './use-delete-post';
+export * from './use-posts-dependencies';
+

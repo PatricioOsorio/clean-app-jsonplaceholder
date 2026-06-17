@@ -1,15 +1,16 @@
 import { injectable } from 'tsyringe';
 
-import type {
-  ICreatePostInput,
-  IPatchPostInput,
-  IPostEntity,
-  IUpdatePostInput,
+import {
+  CreatePostDto,
+  UpdatePostDto,
+  PatchPostDto,
   PostRepository,
 } from '@domain/post';
+import type { IPostEntity } from '@domain/post';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { resolveDelay, runDataCommand, withDelay } from '@infrastructure/utils';
 import { simulateFault } from './post.dev';
+
 
 @injectable()
 export class PostRepositoryMock implements PostRepository {
@@ -45,7 +46,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...post }, resolveDelay());
   }
 
-  async create(post: ICreatePostInput): Promise<IPostEntity> {
+  async create(post: CreatePostDto): Promise<IPostEntity> {
     await simulateFault(undefined, 'create');
 
     const newPost: IPostEntity = {
@@ -58,7 +59,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...newPost }, resolveDelay());
   }
 
-  async update(id: number, post: IUpdatePostInput): Promise<IPostEntity> {
+  async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
     await simulateFault(id, 'update');
 
     const index = this.posts.findIndex((p) => p.id === id);
@@ -79,7 +80,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...updatedPost }, resolveDelay());
   }
 
-  async patch(id: number, fields: IPatchPostInput): Promise<IPostEntity> {
+  async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
     await simulateFault(id, 'patch');
 
     const index = this.posts.findIndex((p) => p.id === id);
