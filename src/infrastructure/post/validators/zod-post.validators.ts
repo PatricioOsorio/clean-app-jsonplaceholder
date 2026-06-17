@@ -54,7 +54,9 @@ export class ZodPatchPostValidator implements ValidatorEntity<IPatchPostInput> {
       title: z.string().min(1, 'Title cannot be empty').optional(),
       content: z.string().min(1, 'Content cannot be empty').optional(),
     })
-    .refine((data) => Object.keys(data).length > 0, { message: 'At least one field is required' });
+    .refine((data) => Object.values(data).some((v) => v !== undefined), {
+      message: 'At least one field is required',
+    });
 
   validate(input: unknown): IPatchPostInput {
     try {

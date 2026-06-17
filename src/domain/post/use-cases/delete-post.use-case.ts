@@ -5,7 +5,7 @@ export class DeletePostUseCase {
   constructor(private postRepo: PostRepository) {}
 
   async execute(id: number): Promise<boolean> {
-    if (!id) throw new PostInvalidDataError('Post ID is required');
+    if (id <= 0) throw new PostInvalidDataError('Post ID must be a positive number');
 
     const isDeleted = await this.postRepo.delete(id);
 

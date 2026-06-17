@@ -9,7 +9,7 @@ import {
   ZodUpdatePostValidator,
   ZodPatchPostValidator,
 } from '@infrastructure/post';
-import { PostRepository, POST_VALIDATOR_TOKENS } from '@domain/post';
+import { PostRepository, CreatePostUseCase, UpdatePostUseCase, PatchPostUseCase } from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
 type PostRepositoryCtor = ClassProvider<PostRepository>['useClass'];
@@ -23,8 +23,8 @@ const REPOSITORIES: Record<typeof DATA_SOURCE, PostRepositoryCtor> = {
 };
 
 container.register(PostRepository.TOKEN, { useClass: REPOSITORIES[DATA_SOURCE] });
-container.register(POST_VALIDATOR_TOKENS.CREATE, { useClass: ZodCreatePostValidator });
-container.register(POST_VALIDATOR_TOKENS.UPDATE, { useClass: ZodUpdatePostValidator });
-container.register(POST_VALIDATOR_TOKENS.PATCH, { useClass: ZodPatchPostValidator });
+container.register(CreatePostUseCase.VALIDATOR_TOKEN, { useClass: ZodCreatePostValidator });
+container.register(UpdatePostUseCase.VALIDATOR_TOKEN, { useClass: ZodUpdatePostValidator });
+container.register(PatchPostUseCase.VALIDATOR_TOKEN, { useClass: ZodPatchPostValidator });
 
 export { container };

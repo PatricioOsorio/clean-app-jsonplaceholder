@@ -5,7 +5,6 @@ import type { IDependencies } from './dependencies.types';
 
 import {
   PostRepository,
-  POST_VALIDATOR_TOKENS,
   CreatePostUseCase,
   DeletePostUseCase,
   GetPostUseCase,
@@ -19,9 +18,10 @@ import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domai
 container.register(DEPENDENCIES_TOKEN, {
   useFactory: (c) => {
     const postRepo = c.resolve<PostRepository>(PostRepository.TOKEN);
-    const createValidator = c.resolve<ValidatorEntity<ICreatePostInput>>(POST_VALIDATOR_TOKENS.CREATE);
-    const updateValidator = c.resolve<ValidatorEntity<IUpdatePostInput>>(POST_VALIDATOR_TOKENS.UPDATE);
-    const patchValidator = c.resolve<ValidatorEntity<IPatchPostInput>>(POST_VALIDATOR_TOKENS.PATCH);
+    
+    const createValidator = c.resolve<ValidatorEntity<ICreatePostInput>>(CreatePostUseCase.VALIDATOR_TOKEN);
+    const updateValidator = c.resolve<ValidatorEntity<IUpdatePostInput>>(UpdatePostUseCase.VALIDATOR_TOKEN);
+    const patchValidator = c.resolve<ValidatorEntity<IPatchPostInput>>(PatchPostUseCase.VALIDATOR_TOKEN);
 
     return {
       posts: {

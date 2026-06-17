@@ -1,8 +1,8 @@
 import type { IPost } from './post.entity';
 
 export type ICreatePostInput = Omit<IPost, 'id'>;
-export type IUpdatePostInput = Partial<Omit<IPost, 'id'>>;
-export type IPatchPostInput = Partial<Omit<IPost, 'id'>>;
+export type IUpdatePostInput = Omit<IPost, 'id'>; // all required 
+export type IPatchPostInput = Partial<Omit<IPost, 'id'>>; // all optional
 
 export abstract class PostRepository {
   static TOKEN = Symbol('PostRepository');
