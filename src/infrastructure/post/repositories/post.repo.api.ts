@@ -54,7 +54,10 @@ export class PostRepositoryApi implements PostRepository {
 
   async create(post: CreatePostDto): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.post<IPostResponse>('/posts', PostMapper.toResponse(post));
+      const response = await this.httpClient.post<IPostResponse>(
+        '/posts',
+        PostMapper.toResponse(post),
+      );
       return PostMapper.toEntity(response);
     } catch (error) {
       this.handleError(error);
@@ -63,7 +66,10 @@ export class PostRepositoryApi implements PostRepository {
 
   async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.put<IPostResponse>(`/posts/${id}`, PostMapper.toResponse(post));
+      const response = await this.httpClient.put<IPostResponse>(
+        `/posts/${id}`,
+        PostMapper.toResponse(post),
+      );
       return PostMapper.toEntity(response);
     } catch (error) {
       this.handleError(error, id);
@@ -81,7 +87,6 @@ export class PostRepositoryApi implements PostRepository {
       this.handleError(error, id);
     }
   }
-
 
   async delete(id: number): Promise<boolean> {
     try {

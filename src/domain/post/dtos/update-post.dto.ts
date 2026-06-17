@@ -1,4 +1,4 @@
-import type { ValidatorEntity } from '@domain/shared/validator.entity';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IUpdatePostInput } from '../post.repo';
 
 export class UpdatePostDto {
@@ -10,7 +10,7 @@ export class UpdatePostDto {
     public readonly content: string,
   ) {}
 
-  static create(props: unknown, validator: ValidatorEntity<IUpdatePostInput>): UpdatePostDto {
+  static create(props: unknown, validator: IValidatorEntity<IUpdatePostInput>): UpdatePostDto {
     const validated = validator.validate(props);
     return new UpdatePostDto(validated.idUser, validated.title, validated.content);
   }

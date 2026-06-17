@@ -14,4 +14,3 @@ export abstract class PostRepository {
   abstract patch(id: number, fields: PatchPostDto): Promise<IPostEntity>;
   abstract delete(id: number): Promise<boolean>;
 }
-

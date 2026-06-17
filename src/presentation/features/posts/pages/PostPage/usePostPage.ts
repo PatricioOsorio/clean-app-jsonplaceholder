@@ -85,7 +85,7 @@ export const usePostPage = () => {
   const okButtonText =
     isUpdatingPost || isCreatingPost ? 'Saving…' : isEditMode ? 'Update Post' : 'Create Post';
 
-    // TODO : checar esto
+  // TODO : checar esto
   // Obtener error de la mutación activa
   const mutationError = isEditMode ? updateError : createError;
 

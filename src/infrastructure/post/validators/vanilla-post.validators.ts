@@ -1,11 +1,11 @@
 import { injectable } from 'tsyringe';
 
 import { PostInvalidDataError } from '@domain/post/errors';
-import type { ValidatorEntity, ValidationIssue } from '@domain/shared/validator.entity';
+import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
 import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
 
 @injectable()
-export class VanillaCreatePostValidator implements ValidatorEntity<ICreatePostInput> {
+export class VanillaCreatePostValidator implements IValidatorEntity<ICreatePostInput> {
   validate(input: unknown): ICreatePostInput {
     const raw = (input || {}) as Partial<ICreatePostInput>;
 
@@ -17,7 +17,7 @@ export class VanillaCreatePostValidator implements ValidatorEntity<ICreatePostIn
     };
 
     // Validate
-    const issues: ValidationIssue[] = [];
+    const issues: IValidationIssue[] = [];
     if (!data.idUser || isNaN(data.idUser)) {
       issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
     }
@@ -38,7 +38,7 @@ export class VanillaCreatePostValidator implements ValidatorEntity<ICreatePostIn
 }
 
 @injectable()
-export class VanillaUpdatePostValidator implements ValidatorEntity<IUpdatePostInput> {
+export class VanillaUpdatePostValidator implements IValidatorEntity<IUpdatePostInput> {
   validate(input: unknown): IUpdatePostInput {
     const raw = (input || {}) as Partial<IUpdatePostInput>;
 
@@ -50,7 +50,7 @@ export class VanillaUpdatePostValidator implements ValidatorEntity<IUpdatePostIn
     };
 
     // Validate
-    const issues: ValidationIssue[] = [];
+    const issues: IValidationIssue[] = [];
     if (!data.idUser || isNaN(data.idUser)) {
       issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
     }
@@ -71,13 +71,13 @@ export class VanillaUpdatePostValidator implements ValidatorEntity<IUpdatePostIn
 }
 
 @injectable()
-export class VanillaPatchPostValidator implements ValidatorEntity<IPatchPostInput> {
+export class VanillaPatchPostValidator implements IValidatorEntity<IPatchPostInput> {
   validate(input: unknown): IPatchPostInput {
     const raw = (input || {}) as Partial<IPatchPostInput>;
 
     // Normalize and Validate
     const data: IPatchPostInput = {};
-    const issues: ValidationIssue[] = [];
+    const issues: IValidationIssue[] = [];
 
     if (raw.idUser !== undefined) {
       data.idUser = Number(raw.idUser);

@@ -2,12 +2,12 @@ import { injectable } from 'tsyringe';
 import { z, ZodError } from 'zod';
 
 import { PostInvalidDataError } from '@domain/post/errors';
-import type { ValidatorEntity, ValidationIssue } from '@domain/shared/validator.entity';
+import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
 import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
 
 function toPostError(error: unknown): never {
   if (error instanceof ZodError) {
-    const issues: ValidationIssue[] = error.issues.map((issue) => ({
+    const issues: IValidationIssue[] = error.issues.map((issue) => ({
       field: issue.path.join('.'),
       message: issue.message,
     }));
@@ -18,7 +18,7 @@ function toPostError(error: unknown): never {
 }
 
 @injectable()
-export class ZodCreatePostValidator implements ValidatorEntity<ICreatePostInput> {
+export class ZodCreatePostValidator implements IValidatorEntity<ICreatePostInput> {
   private schema = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title is required'),
@@ -35,7 +35,7 @@ export class ZodCreatePostValidator implements ValidatorEntity<ICreatePostInput>
 }
 
 @injectable()
-export class ZodUpdatePostValidator implements ValidatorEntity<IUpdatePostInput> {
+export class ZodUpdatePostValidator implements IValidatorEntity<IUpdatePostInput> {
   private schema = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title cannot be empty'),
@@ -52,7 +52,7 @@ export class ZodUpdatePostValidator implements ValidatorEntity<IUpdatePostInput>
 }
 
 @injectable()
-export class ZodPatchPostValidator implements ValidatorEntity<IPatchPostInput> {
+export class ZodPatchPostValidator implements IValidatorEntity<IPatchPostInput> {
   private schema = z
     .object({
       idUser: z.number().optional(),

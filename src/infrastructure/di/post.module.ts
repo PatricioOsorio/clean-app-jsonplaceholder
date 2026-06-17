@@ -12,12 +12,7 @@ import {
   VanillaUpdatePostValidator,
   VanillaPatchPostValidator,
 } from '@infrastructure/post';
-import {
-  PostRepository,
-  CreatePostDto,
-  UpdatePostDto,
-  PatchPostDto,
-} from '@domain/post';
+import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
 const VALIDATOR_PROVIDER = 'zod'; // zod | vanilla
@@ -57,4 +52,3 @@ container.register(PatchPostDto.VALIDATOR_TOKEN, {
 });
 
 export { container };
-
