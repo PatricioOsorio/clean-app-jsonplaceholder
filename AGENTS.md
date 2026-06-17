@@ -83,10 +83,13 @@ When guiding, agent must enforce and teach:
 **Clean Architecture rules:**
 
 - Dependencies point inward only: `presentation` → `domain` ← `infrastructure` (never `domain` → `infrastructure`)
-- Domain layer has zero knowledge of Axios, React, tsyringe, or any framework
-- Use cases orchestrate domain logic — they do not call HTTP directly
-- Repositories are interfaces in domain; implementations live in infrastructure
-- DTOs/mappers live at layer boundaries — raw API responses never leak into domain entities
+- Domain layer has zero knowledge of Axios, React, or any framework (except abstract validator interfaces)
+- We do NOT use separate Use Case classes (removed to eliminate pass-through boilerplate). The presentation layer (custom hooks) invokes Repository methods directly.
+- Boundary validation is enforced using DTO classes in the domain (`CreatePostDto`, etc.). They are validated on entry using static factory methods that accept the registered validator engine strategy (`CreatePostDto.create(props, validator)`).
+- Domain Entities are pure business/data objects without carrying validation infrastructure or injected validator engines.
+- Dependency Injection (via `tsyringe`) is resolved locally per feature using feature hooks (e.g. `usePostsDeps()`), avoiding a monolithic global `useDependencies` React context.
+- Repositories are interfaces in domain; implementations live in infrastructure.
+- DTOs/mappers live at layer boundaries — raw API responses never leak into domain entities.
 
 **SOLID:**
 
