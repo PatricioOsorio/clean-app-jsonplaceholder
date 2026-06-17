@@ -1,6 +1,6 @@
 import type { ValidatorEntity } from '@domain/shared';
 import type { ICreatePostInput } from '../post.repo';
-import type { IPost } from '../post.entity';
+import type { IPostEntity } from '../post.entity';
 import { PostRepository } from '../post.repo';
 
 export class CreatePostUseCase {
@@ -11,7 +11,7 @@ export class CreatePostUseCase {
     private validator: ValidatorEntity<ICreatePostInput>,
   ) {}
 
-  async execute(payload: ICreatePostInput): Promise<IPost> {
+  async execute(payload: ICreatePostInput): Promise<IPostEntity> {
     const input = this.validator.validate(payload);
     return this.postRepo.create(input);
   }

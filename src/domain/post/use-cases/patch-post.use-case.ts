@@ -1,6 +1,6 @@
 import type { ValidatorEntity } from '@domain/shared';
 import type { IPatchPostInput } from '../post.repo';
-import type { IPost } from '../post.entity';
+import type { IPostEntity } from '../post.entity';
 import { PostRepository } from '../post.repo';
 
 export class PatchPostUseCase {
@@ -11,7 +11,7 @@ export class PatchPostUseCase {
     private validator: ValidatorEntity<IPatchPostInput>,
   ) {}
 
-  async execute(id: number, fields: IPatchPostInput): Promise<IPost> {
+  async execute(id: number, fields: IPatchPostInput): Promise<IPostEntity> {
     const input = this.validator.validate(fields);
     return this.postRepo.patch(id, input);
   }

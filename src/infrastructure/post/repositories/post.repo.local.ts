@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import type {
   ICreatePostInput,
   IPatchPostInput,
-  IPost,
+  IPostEntity,
   IUpdatePostInput,
   PostRepository,
 } from '@domain/post';
@@ -16,7 +16,7 @@ import { simulateFault } from './post.dev';
 export class PostRepositoryLocal implements PostRepository {
   private readonly key = LOCAL_STORAGE_KEYS.posts;
 
-  private readonly seed: IPost[] = [
+  private readonly seed: IPostEntity[] = [
     { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
     { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
     { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
@@ -24,8 +24,8 @@ export class PostRepositoryLocal implements PostRepository {
 
   constructor(@inject(StorageClient.TOKEN) private readonly storage: StorageClient) {}
 
-  private read(): IPost[] {
-    const posts = this.storage.get<IPost[]>(this.key);
+  private read(): IPostEntity[] {
+    const posts = this.storage.get<IPostEntity[]>(this.key);
     if (!posts) {
       this.write(this.seed);
       return [...this.seed];
@@ -33,15 +33,15 @@ export class PostRepositoryLocal implements PostRepository {
     return posts;
   }
 
-  private write(posts: IPost[]): void {
+  private write(posts: IPostEntity[]): void {
     this.storage.set(this.key, posts);
   }
 
-  private nextId(posts: IPost[]): number {
+  private nextId(posts: IPostEntity[]): number {
     return posts.length ? Math.max(...posts.map((p) => p.id)) + 1 : 1;
   }
 
-  async getAll(): Promise<IPost[]> {
+  async getAll(): Promise<IPostEntity[]> {
     runDataCommand({
       onSeed: () => this.write(this.seed),
       onEmpty: () => this.write([]),
@@ -52,7 +52,7 @@ export class PostRepositoryLocal implements PostRepository {
     return withDelay(this.read(), resolveDelay());
   }
 
-  async getById(id: number): Promise<IPost> {
+  async getById(id: number): Promise<IPostEntity> {
     await simulateFault(id, 'getById');
 
     const post = this.read().find((p) => p.id === id);
@@ -61,12 +61,12 @@ export class PostRepositoryLocal implements PostRepository {
     return withDelay({ ...post }, resolveDelay());
   }
 
-  async create(post: ICreatePostInput): Promise<IPost> {
+  async create(post: ICreatePostInput): Promise<IPostEntity> {
     await simulateFault(undefined, 'create');
 
     const posts = this.read();
 
-    const newPost: IPost = {
+    const newPost: IPostEntity = {
       id: this.nextId(posts),
       idUser: post.idUser,
       title: post.title,
@@ -77,7 +77,7 @@ export class PostRepositoryLocal implements PostRepository {
     return withDelay({ ...newPost }, resolveDelay());
   }
 
-  async update(id: number, post: IUpdatePostInput): Promise<IPost> {
+  async update(id: number, post: IUpdatePostInput): Promise<IPostEntity> {
     await simulateFault(id, 'update');
 
     const posts = this.read();
@@ -87,7 +87,7 @@ export class PostRepositoryLocal implements PostRepository {
 
     const existingPost = posts[index];
 
-    const updatedPost: IPost = {
+    const updatedPost: IPostEntity = {
       id,
       idUser: post.idUser ?? existingPost.idUser,
       title: post.title ?? existingPost.title,
@@ -100,7 +100,7 @@ export class PostRepositoryLocal implements PostRepository {
     return withDelay({ ...updatedPost }, resolveDelay());
   }
 
-  async patch(id: number, fields: IPatchPostInput): Promise<IPost> {
+  async patch(id: number, fields: IPatchPostInput): Promise<IPostEntity> {
     await simulateFault(id, 'patch');
 
     const posts = this.read();
@@ -110,7 +110,7 @@ export class PostRepositoryLocal implements PostRepository {
 
     const existingPost = posts[index];
 
-    const patchedPost: IPost = {
+    const patchedPost: IPostEntity = {
       id,
       idUser: fields.idUser ?? existingPost.idUser,
       title: fields.title ?? existingPost.title,

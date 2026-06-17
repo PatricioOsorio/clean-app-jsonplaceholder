@@ -1,4 +1,4 @@
-export interface IPost {
+export interface IPostEntity {
   id: number;
   idUser: number;
   title: string;

@@ -1,8 +1,8 @@
-import type { IPost } from '@domain/post/post.entity';
+import type { IPostEntity } from '@domain/post/post.entity';
 import type { IPostDTO } from './post.dto';
 
 export abstract class PostMapper {
-  static toEntity(dto: IPostDTO): IPost {
+  static toEntity(dto: IPostDTO): IPostEntity {
     return {
       id: dto.id,
       idUser: dto.userId,
@@ -11,11 +11,11 @@ export abstract class PostMapper {
     };
   }
 
-  static toEntities(dtos: IPostDTO[]): IPost[] {
+  static toEntities(dtos: IPostDTO[]): IPostEntity[] {
     return dtos.map((dto) => this.toEntity(dto));
   }
 
-  static toDTO(entity: Partial<IPost>): Partial<IPostDTO> {
+  static toDTO(entity: Partial<IPostEntity>): Partial<IPostDTO> {
     const dto: Partial<IPostDTO> = {};
 
     if (entity.id !== undefined) dto.id = entity.id;

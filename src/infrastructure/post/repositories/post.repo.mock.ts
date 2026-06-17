@@ -3,7 +3,7 @@ import { injectable } from 'tsyringe';
 import type {
   ICreatePostInput,
   IPatchPostInput,
-  IPost,
+  IPostEntity,
   IUpdatePostInput,
   PostRepository,
 } from '@domain/post';
@@ -13,19 +13,19 @@ import { simulateFault } from './post.dev';
 
 @injectable()
 export class PostRepositoryMock implements PostRepository {
-  private readonly seed: IPost[] = [
+  private readonly seed: IPostEntity[] = [
     { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
     { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
     { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
   ];
 
-  private posts: IPost[] = structuredClone(this.seed);
+  private posts: IPostEntity[] = structuredClone(this.seed);
 
   private nextId(): number {
     return this.posts.length ? Math.max(...this.posts.map((p) => p.id)) + 1 : 1;
   }
 
-  async getAll(): Promise<IPost[]> {
+  async getAll(): Promise<IPostEntity[]> {
     runDataCommand({
       onSeed: () => (this.posts = structuredClone(this.seed)),
       onEmpty: () => (this.posts = []),
@@ -36,7 +36,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay([...this.posts], resolveDelay());
   }
 
-  async getById(id: number): Promise<IPost> {
+  async getById(id: number): Promise<IPostEntity> {
     await simulateFault(id, 'getById');
 
     const post = this.posts.find((p) => p.id === id);
@@ -45,10 +45,10 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...post }, resolveDelay());
   }
 
-  async create(post: ICreatePostInput): Promise<IPost> {
+  async create(post: ICreatePostInput): Promise<IPostEntity> {
     await simulateFault(undefined, 'create');
 
-    const newPost: IPost = {
+    const newPost: IPostEntity = {
       id: this.nextId(),
       idUser: post.idUser,
       title: post.title,
@@ -58,7 +58,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...newPost }, resolveDelay());
   }
 
-  async update(id: number, post: IUpdatePostInput): Promise<IPost> {
+  async update(id: number, post: IUpdatePostInput): Promise<IPostEntity> {
     await simulateFault(id, 'update');
 
     const index = this.posts.findIndex((p) => p.id === id);
@@ -67,7 +67,7 @@ export class PostRepositoryMock implements PostRepository {
 
     const existingPost = this.posts[index];
 
-    const updatedPost: IPost = {
+    const updatedPost: IPostEntity = {
       id,
       idUser: post.idUser ?? existingPost.idUser,
       title: post.title ?? existingPost.title,
@@ -79,7 +79,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay({ ...updatedPost }, resolveDelay());
   }
 
-  async patch(id: number, fields: IPatchPostInput): Promise<IPost> {
+  async patch(id: number, fields: IPatchPostInput): Promise<IPostEntity> {
     await simulateFault(id, 'patch');
 
     const index = this.posts.findIndex((p) => p.id === id);
@@ -88,7 +88,7 @@ export class PostRepositoryMock implements PostRepository {
 
     const existingPost = this.posts[index];
 
-    const patchedPost: IPost = {
+    const patchedPost: IPostEntity = {
       id,
       idUser: fields.idUser ?? existingPost.idUser,
       title: fields.title ?? existingPost.title,

@@ -1,10 +1,10 @@
 import { PostRepository } from '../post.repo';
-import type { IPost } from '../post.entity';
+import type { IPostEntity } from '../post.entity';
 
 export class GetPostUseCase {
   constructor(private postRepository: PostRepository) {}
 
-  async execute(id: number): Promise<IPost> {
+  async execute(id: number): Promise<IPostEntity> {
     return this.postRepository.getById(id);
   }
 }
