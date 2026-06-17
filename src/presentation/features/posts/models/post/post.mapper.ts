@@ -1,4 +1,4 @@
-import type { ICreatePostInput, IPostEntity } from '@domain/post';
+import type { ICreatePostInput, IPostEntity, IUpdatePostInput, IPatchPostInput } from '@domain/post';
 import type { IPatchPostInputVM, IPostCreateInputVM, IPostUpdateInputVM, IPostVM } from './post.mv';
 
 export abstract class PostMapper {
@@ -34,21 +34,17 @@ export abstract class PostMapper {
     };
   }
 
-  static toUpdatePostInputDomain(vm: IPostUpdateInputVM): Partial<IPostEntity> {
-    const inputDomain: Partial<IPostEntity> = {};
-
-    if (vm.id !== undefined) inputDomain.id = vm.id;
-    if (vm.idUser !== undefined) inputDomain.idUser = vm.idUser;
-    if (vm.title !== undefined) inputDomain.title = vm.title;
-    if (vm.content !== undefined) inputDomain.content = vm.content;
-
-    return inputDomain;
+  static toUpdatePostInputDomain(vm: IPostUpdateInputVM): IUpdatePostInput {
+    return {
+      title: vm.title,
+      content: vm.content,
+      idUser: vm.idUser,
+    };
   }
 
-  static toPatchPostInputDomain(vm: Partial<IPatchPostInputVM>): Partial<IPostEntity> {
-    const inputDomain: Partial<IPostEntity> = {};
+  static toPatchPostInputDomain(vm: Partial<IPatchPostInputVM>): IPatchPostInput {
+    const inputDomain: IPatchPostInput = {};
 
-    if (vm.id !== undefined) inputDomain.id = vm.id;
     if (vm.idUser !== undefined) inputDomain.idUser = vm.idUser;
     if (vm.title !== undefined) inputDomain.title = vm.title;
     if (vm.content !== undefined) inputDomain.content = vm.content;
