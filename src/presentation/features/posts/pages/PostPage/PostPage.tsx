@@ -17,6 +17,7 @@ export const PostPage = () => {
     isDisabledCancelButton,
     isDisabledOkButton,
     okButtonText,
+    fieldErrors,
 
     // handlers
     handleCancel,
@@ -49,6 +50,7 @@ export const PostPage = () => {
         onContentChange={handleContentChange}
         onSubmit={handleSubmit}
         onTitleChange={handleTitleChange}
+        errors={fieldErrors}
       />
     </section>
   );

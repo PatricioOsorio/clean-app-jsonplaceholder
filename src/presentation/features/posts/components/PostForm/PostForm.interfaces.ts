@@ -11,4 +11,5 @@ export interface IPostFormProps
   onContentChange: (content: string) => void;
   btnCancelProps?: ComponentProps<typeof Button>;
   btnOkProps?: ComponentProps<typeof Button>;
+  errors?: Record<string, string>;
 }

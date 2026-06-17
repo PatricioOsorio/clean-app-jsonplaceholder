@@ -24,6 +24,7 @@ export const PostForm = ({
   isLoading,
   loadingTemplate,
   isError,
+  errors,
   errorTemplate,
   errorTitle,
   errorDescription,
@@ -52,6 +53,7 @@ export const PostForm = ({
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
           />
+          {errors?.title && <span className="mt-1 text-xs text-red-500">{errors.title}</span>}
         </div>
 
         <div className="pfc__field">
@@ -72,6 +74,7 @@ export const PostForm = ({
             value={content}
             onChange={(e) => onContentChange(e.target.value)}
           />
+          {errors?.content && <span className="mt-1 text-xs text-red-500">{errors.content}</span>}
         </div>
 
         <div className="pfc__actions">

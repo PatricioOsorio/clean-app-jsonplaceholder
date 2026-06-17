@@ -26,6 +26,9 @@ export const useToastWithOptimistic = <TInput, TCache, TData = unknown>(
     },
 
     onError: (error) => {
+      // Si el error tiene issues (validación de formulario)
+      if (error && typeof error === 'object' && 'issues' in error) return;
+
       toast.error(formatError(error, options.messages.fallbackError).errorMessage);
     },
   });

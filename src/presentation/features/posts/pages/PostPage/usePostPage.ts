@@ -14,35 +14,42 @@ export const usePostPage = () => {
   const isEditMode = Boolean(urlPostId);
   const idPost = Number(urlPostId);
 
-  const { data: postData, isLoading: isPostLoading } = usePost(idPost);
-  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdatePost(idPost);
+  const { data: postData, isLoading: isPostLoading, error: postError } = usePost(idPost);
+  const {
+    mutate: updatePost,
+    isPending: isUpdatingPost,
+    error: updateError,
+  } = useUpdatePost(idPost);
 
   // create logic
-  const { mutate: createPost, isPending: isCreatingPost } = useCreatePost();
+  const { mutate: createPost, isPending: isCreatingPost, error: createError } = useCreatePost();
 
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
 
   // shared logic
-  const isValid = title.trim().length > 0 && content.trim().length > 0;
+  // const isValid = title.trim().length > 0 && content.trim().length > 0;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isValid) return;
+    // if (!isValid) return;
 
     const titleTrimmed = title.trim();
     const contentTrimmed = content.trim();
 
     if (isEditMode) {
-      updatePost({
-        id: idPost,
-        title: titleTrimmed,
-        content: contentTrimmed,
-        idUser: USER_ID,
-      });
-      // optimistic ui
-      return navigate('/posts');
+      return updatePost(
+        {
+          id: idPost,
+          title: titleTrimmed,
+          content: contentTrimmed,
+          idUser: USER_ID,
+        },
+        {
+          onSuccess: () => navigate('/posts'),
+        },
+      );
     }
 
     return createPost(
@@ -74,9 +81,20 @@ export const usePostPage = () => {
     : 'Write a new entry. Saved through Clean Architecture Use Cases with an optimistic update.';
 
   const isDisabledCancelButton = isUpdatingPost || isCreatingPost;
-  const isDisabledOkButton = !isValid || isUpdatingPost || isCreatingPost;
+  const isDisabledOkButton = isUpdatingPost || isCreatingPost;
   const okButtonText =
     isUpdatingPost || isCreatingPost ? 'Saving…' : isEditMode ? 'Update Post' : 'Create Post';
+
+  // Obtener error de la mutación activa
+  const mutationError = isEditMode ? updateError : createError;
+
+  // Procesar issues reactivamente
+  const fieldErrors: Record<string, string> = {};
+  if (mutationError && 'issues' in mutationError && Array.isArray(mutationError.issues)) {
+    for (const issue of mutationError.issues) {
+      fieldErrors[issue.field] = issue.message;
+    }
+  }
 
   return {
     // props
@@ -91,6 +109,7 @@ export const usePostPage = () => {
     isDisabledCancelButton,
     isDisabledOkButton,
     okButtonText,
+    fieldErrors,
 
     // handlers
     handleCancel,
