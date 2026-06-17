@@ -1,17 +1,17 @@
-import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import type { IPatchPostInput } from '../post.repo';
+export type PatchPostProps = { idUser?: number; title?: string; content?: string };
 
-export class PatchPostDto {
+export class PatchPostDto implements PatchPostProps {
   static readonly VALIDATOR_TOKEN = Symbol('PatchPostDto.Validator');
 
-  private constructor(
-    public readonly idUser?: number,
-    public readonly title?: string,
-    public readonly content?: string,
-  ) {}
+  readonly idUser?: number;
+  readonly title?: string;
+  readonly content?: string;
 
-  static create(props: unknown, validator: IValidatorEntity<IPatchPostInput>): PatchPostDto {
-    const validated = validator.validate(props);
-    return new PatchPostDto(validated.idUser, validated.title, validated.content);
+  private constructor(props: PatchPostProps) {
+    Object.assign(this, props);
+  }
+
+  static create(data: PatchPostProps): PatchPostDto {
+    return new PatchPostDto(data);
   }
 }

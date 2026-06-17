@@ -3,7 +3,7 @@ import { z, ZodError } from 'zod';
 
 import { PostInvalidDataError } from '@domain/post/errors';
 import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
-import type { ICreatePostInput, IPatchPostInput, IUpdatePostInput } from '@domain/post';
+import { CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 
 function toPostError(error: unknown): never {
   if (error instanceof ZodError) {
@@ -18,16 +18,17 @@ function toPostError(error: unknown): never {
 }
 
 @injectable()
-export class ZodCreatePostValidator implements IValidatorEntity<ICreatePostInput> {
+export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
   private schema = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title is required'),
     content: z.string().min(1, 'Content is required'),
   });
 
-  validate(input: unknown): ICreatePostInput {
+  validate(input: unknown): CreatePostDto {
     try {
-      return this.schema.parse(input);
+      const result = this.schema.parse(input);
+      return CreatePostDto.create(result);
     } catch (error) {
       toPostError(error);
     }
@@ -35,16 +36,17 @@ export class ZodCreatePostValidator implements IValidatorEntity<ICreatePostInput
 }
 
 @injectable()
-export class ZodUpdatePostValidator implements IValidatorEntity<IUpdatePostInput> {
+export class ZodUpdatePostValidator implements IValidatorEntity<UpdatePostDto> {
   private schema = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title cannot be empty'),
     content: z.string().min(1, 'Content cannot be empty'),
   });
 
-  validate(input: unknown): IUpdatePostInput {
+  validate(input: unknown): UpdatePostDto {
     try {
-      return this.schema.parse(input);
+      const result = this.schema.parse(input);
+      return UpdatePostDto.create(result);
     } catch (error) {
       toPostError(error);
     }
@@ -52,7 +54,7 @@ export class ZodUpdatePostValidator implements IValidatorEntity<IUpdatePostInput
 }
 
 @injectable()
-export class ZodPatchPostValidator implements IValidatorEntity<IPatchPostInput> {
+export class ZodPatchPostValidator implements IValidatorEntity<PatchPostDto> {
   private schema = z
     .object({
       idUser: z.number().optional(),
@@ -63,9 +65,10 @@ export class ZodPatchPostValidator implements IValidatorEntity<IPatchPostInput> 
       message: 'At least one field is required',
     });
 
-  validate(input: unknown): IPatchPostInput {
+  validate(input: unknown): PatchPostDto {
     try {
-      return this.schema.parse(input);
+      const result = this.schema.parse(input);
+      return PatchPostDto.create(result);
     } catch (error) {
       toPostError(error);
     }

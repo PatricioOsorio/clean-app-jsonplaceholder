@@ -8,3 +8,4 @@ export class PostEntity {
 }
 
 export type IPostEntity = PostEntity;
+

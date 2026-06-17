@@ -1,17 +1,17 @@
-import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import type { IUpdatePostInput } from '../post.repo';
+export type UpdatePostProps = { idUser: number; title: string; content: string };
 
-export class UpdatePostDto {
+export class UpdatePostDto implements UpdatePostProps {
   static readonly VALIDATOR_TOKEN = Symbol('UpdatePostDto.Validator');
 
-  private constructor(
-    public readonly idUser: number,
-    public readonly title: string,
-    public readonly content: string,
-  ) {}
+  readonly idUser!: number;
+  readonly title!: string;
+  readonly content!: string;
 
-  static create(props: unknown, validator: IValidatorEntity<IUpdatePostInput>): UpdatePostDto {
-    const validated = validator.validate(props);
-    return new UpdatePostDto(validated.idUser, validated.title, validated.content);
+  private constructor(props: UpdatePostProps) {
+    Object.assign(this, props);
+  }
+
+  static create(data: UpdatePostProps): UpdatePostDto {
+    return new UpdatePostDto(data);
   }
 }

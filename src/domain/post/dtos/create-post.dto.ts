@@ -1,17 +1,17 @@
-import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import type { ICreatePostInput } from '../post.repo';
+export type CreatePostProps = { idUser: number; title: string; content: string };
 
-export class CreatePostDto {
+export class CreatePostDto implements CreatePostProps {
   static readonly VALIDATOR_TOKEN = Symbol('CreatePostDto.Validator');
 
-  private constructor(
-    public readonly idUser: number,
-    public readonly title: string,
-    public readonly content: string,
-  ) {}
+  readonly idUser!: number;
+  readonly title!: string;
+  readonly content!: string;
 
-  static create(props: unknown, validator: IValidatorEntity<ICreatePostInput>): CreatePostDto {
-    const validated = validator.validate(props);
-    return new CreatePostDto(validated.idUser, validated.title, validated.content);
+  private constructor(props: CreatePostProps) {
+    Object.assign(this, props);
+  }
+
+  static create(data: CreatePostProps): CreatePostDto {
+    return new CreatePostDto(data);
   }
 }

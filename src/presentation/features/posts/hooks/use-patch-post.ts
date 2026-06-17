@@ -1,4 +1,3 @@
-import { PatchPostDto } from '@domain/post';
 import { PostMapper, type IPatchPostInputVM, type IPostVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { usePostsDependencies } from './use-posts-dependencies';
@@ -10,28 +9,17 @@ export const usePatchPost = (id: number) => {
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
     mutationFn: async (input: IPatchPostInputVM) => {
-      const rawInput = PostMapper.toPatchPostInputDomain(input);
-      const dto = PatchPostDto.create(rawInput, validators.patch);
+      const dto = validators.patch.validate(PostMapper.toPatchPostInputDomain(input));
       return posts.patch(id, dto);
     },
 
     optimisticUpdate: (old: IPostVM[] = [], input: IPatchPostInputVM) => {
       const updatedFields = PostMapper.toPatchPostInputDomain(input);
 
-      const applyUpdate = (post: IPostVM): IPostVM => {
-        if (post.id !== id) {
-          return post;
-        }
-
-        return {
-          ...post,
-          ...updatedFields,
-          id,
-          __optimistic: true,
-        };
-      };
-
-      return old.map(applyUpdate);
+      return old.map((post): IPostVM => {
+        if (post.id !== id) return post;
+        return { ...post, ...updatedFields, id, __optimistic: true };
+      });
     },
 
     messages: {
