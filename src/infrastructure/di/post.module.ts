@@ -8,23 +8,52 @@ import {
   ZodCreatePostValidator,
   ZodUpdatePostValidator,
   ZodPatchPostValidator,
+  VanillaCreatePostValidator,
+  VanillaUpdatePostValidator,
+  VanillaPatchPostValidator,
 } from '@infrastructure/post';
-import { PostRepository, CreatePostUseCase, UpdatePostUseCase, PatchPostUseCase } from '@domain/post';
+import {
+  PostRepository,
+  CreatePostUseCase,
+  UpdatePostUseCase,
+  PatchPostUseCase,
+} from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
-type PostRepositoryCtor = ClassProvider<PostRepository>['useClass'];
-
+const VALIDATOR_PROVIDER = 'zod'; // zod | vanilla
 const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
 
-const REPOSITORIES: Record<typeof DATA_SOURCE, PostRepositoryCtor> = {
+type IPostRepositoryCtor = ClassProvider<PostRepository>['useClass'];
+
+const POST_REPOSITORIES: Record<typeof DATA_SOURCE, IPostRepositoryCtor> = {
   api: PostRepositoryApi,
   mock: PostRepositoryMock,
   localstorage: PostRepositoryLocal,
 };
 
-container.register(PostRepository.TOKEN, { useClass: REPOSITORIES[DATA_SOURCE] });
-container.register(CreatePostUseCase.VALIDATOR_TOKEN, { useClass: ZodCreatePostValidator });
-container.register(UpdatePostUseCase.VALIDATOR_TOKEN, { useClass: ZodUpdatePostValidator });
-container.register(PatchPostUseCase.VALIDATOR_TOKEN, { useClass: ZodPatchPostValidator });
+const VALIDATORS_REPOSITORIES = {
+  zod: {
+    create: ZodCreatePostValidator,
+    update: ZodUpdatePostValidator,
+    patch: ZodPatchPostValidator,
+  },
+  vanilla: {
+    create: VanillaCreatePostValidator,
+    update: VanillaUpdatePostValidator,
+    patch: VanillaPatchPostValidator,
+  },
+};
+
+container.register(PostRepository.TOKEN, { useClass: POST_REPOSITORIES[DATA_SOURCE] });
+
+container.register(CreatePostUseCase.VALIDATOR_TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
+});
+container.register(UpdatePostUseCase.VALIDATOR_TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
+});
+container.register(PatchPostUseCase.VALIDATOR_TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
+});
 
 export { container };
