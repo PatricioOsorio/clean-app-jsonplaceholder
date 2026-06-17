@@ -1,24 +1,24 @@
 import { PostEntity } from '@domain/post/post.entity';
 import type { IPostEntity } from '@domain/post/post.entity';
-import type { IPostDTO } from './post.dto';
+import type { IPostResponse } from './post.reponse';
 
 export abstract class PostMapper {
-  static toEntity(dto: IPostDTO): IPostEntity {
-    return new PostEntity(dto.id, dto.userId, dto.title, dto.body);
+  static toEntity(response: IPostResponse): IPostEntity {
+    return new PostEntity(response.id, response.userId, response.title, response.body);
   }
 
-  static toEntities(dtos: IPostDTO[]): IPostEntity[] {
-    return dtos.map((dto) => this.toEntity(dto));
+  static toEntities(responses: IPostResponse[]): IPostEntity[] {
+    return responses.map((response) => this.toEntity(response));
   }
 
-  static toDTO(entity: Partial<IPostEntity>): Partial<IPostDTO> {
-    const dto: Partial<IPostDTO> = {};
+  static toResponse(entity: Partial<IPostEntity>): Partial<IPostResponse> {
+    const response: Partial<IPostResponse> = {};
 
-    if (entity.id !== undefined) dto.id = entity.id;
-    if (entity.idUser !== undefined) dto.userId = entity.idUser;
-    if (entity.title !== undefined) dto.title = entity.title;
-    if (entity.content !== undefined) dto.body = entity.content;
+    if (entity.id !== undefined) response.id = entity.id;
+    if (entity.idUser !== undefined) response.userId = entity.idUser;
+    if (entity.title !== undefined) response.title = entity.title;
+    if (entity.content !== undefined) response.body = entity.content;
 
-    return dto;
+    return response;
   }
 }

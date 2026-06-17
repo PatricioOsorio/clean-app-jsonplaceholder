@@ -1,4 +1,4 @@
-export interface IPostDTO {
+export interface IPostResponse {
   userId: number;
   id: number;
   title: string;

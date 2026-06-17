@@ -1,4 +1,4 @@
-export * from './post.dto';
+export * from './post.reponse';
 export * from './post.mapper';
 export * from './repositories';
 export * from './validators/zod-post.validators';

@@ -7,7 +7,7 @@ import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import type { IPostEntity } from '@domain/post';
-import type { IPostDTO } from '../post.dto';
+import type { IPostResponse } from '../post.reponse';
 import { DomainError } from '@domain/errors/domain.error';
 
 @injectable()
@@ -36,7 +36,7 @@ export class PostRepositoryApi implements PostRepository {
 
   async getAll(): Promise<IPostEntity[]> {
     try {
-      const response = await this.httpClient.get<IPostDTO[]>('/posts');
+      const response = await this.httpClient.get<IPostResponse[]>('/posts');
       return PostMapper.toEntities(response);
     } catch (error) {
       this.handleError(error);
@@ -45,7 +45,7 @@ export class PostRepositoryApi implements PostRepository {
 
   async getById(id: number): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.get<IPostDTO>(`/posts/${id}`);
+      const response = await this.httpClient.get<IPostResponse>(`/posts/${id}`);
       return PostMapper.toEntity(response);
     } catch (error) {
       this.handleError(error, id);
@@ -54,7 +54,7 @@ export class PostRepositoryApi implements PostRepository {
 
   async create(post: CreatePostDto): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.post<IPostDTO>('/posts', PostMapper.toDTO(post));
+      const response = await this.httpClient.post<IPostResponse>('/posts', PostMapper.toResponse(post));
       return PostMapper.toEntity(response);
     } catch (error) {
       this.handleError(error);
@@ -63,7 +63,7 @@ export class PostRepositoryApi implements PostRepository {
 
   async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.put<IPostDTO>(`/posts/${id}`, PostMapper.toDTO(post));
+      const response = await this.httpClient.put<IPostResponse>(`/posts/${id}`, PostMapper.toResponse(post));
       return PostMapper.toEntity(response);
     } catch (error) {
       this.handleError(error, id);
@@ -72,9 +72,9 @@ export class PostRepositoryApi implements PostRepository {
 
   async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
     try {
-      const response = await this.httpClient.patch<IPostDTO>(
+      const response = await this.httpClient.patch<IPostResponse>(
         `/posts/${id}`,
-        PostMapper.toDTO(fields),
+        PostMapper.toResponse(fields),
       );
       return PostMapper.toEntity(response);
     } catch (error) {
