@@ -4,12 +4,12 @@ import { useDependencies } from '@presentation/context';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 
 export const useDeletePost = () => {
-  const { deletePostUseCase } = useDependencies();
+  const { posts } = useDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
     mutationFn: async (id: number) => {
-      return deletePostUseCase.execute(id);
+      return posts.delete.execute(id);
     },
     optimisticUpdate: (old: IPostVM[] = [], id: number) => old.filter((post) => post.id !== id),
     messages: {

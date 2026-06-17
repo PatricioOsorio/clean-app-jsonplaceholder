@@ -4,12 +4,12 @@ import { useDependencies } from '@presentation/context';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 
 export const usePatchPost = (id: number) => {
-  const { patchPostUseCase } = useDependencies();
+  const { posts } = useDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
     mutationFn: async (input: IPatchPostInputVM) => {
-      return patchPostUseCase.execute(input.id, PostMapper.toPatchPostInputDomain(input));
+      return posts.patch.execute(input.id, PostMapper.toPatchPostInputDomain(input));
     },
     optimisticUpdate: (old: IPostVM[] = [], input: IPatchPostInputVM) => {
       const updatedFields = PostMapper.toPatchPostInputDomain(input);

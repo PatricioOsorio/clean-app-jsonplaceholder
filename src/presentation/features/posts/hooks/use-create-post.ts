@@ -4,12 +4,12 @@ import { useDependencies } from '@presentation/context';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 
 export const useCreatePost = () => {
-  const { createPostUseCase } = useDependencies();
+  const { posts } = useDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
     mutationFn: async (input: IPostCreateInputVM) => {
-      return createPostUseCase.execute(PostMapper.toCreatePostInputDomain(input));
+      return posts.create.execute(PostMapper.toCreatePostInputDomain(input));
     },
     optimisticUpdate: (old: IPostVM[] = [], input: IPostCreateInputVM) => [
       ...old,

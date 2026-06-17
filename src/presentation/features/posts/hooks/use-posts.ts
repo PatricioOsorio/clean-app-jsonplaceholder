@@ -5,11 +5,11 @@ import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useDependencies } from '@presentation/context';
 
 export const usePosts = () => {
-  const { getPostsUseCase } = useDependencies();
+  const { posts } = useDependencies();
 
   const postsQuery = useQuery({
     queryKey: QUERY_KEYS.user.posts(),
-    queryFn: async () => PostMapper.toVMs(await getPostsUseCase.execute()),
+    queryFn: async () => PostMapper.toVMs(await posts.getAll.execute()),
   });
 
   return postsQuery;

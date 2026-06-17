@@ -18,12 +18,14 @@ container.register(DEPENDENCIES_TOKEN, {
     const postRepo = c.resolve<PostRepository>(PostRepository.TOKEN);
 
     return {
-      createPostUseCase: new CreatePostUseCase(postRepo),
-      deletePostUseCase: new DeletePostUseCase(postRepo),
-      getPostUseCase: new GetPostUseCase(postRepo),
-      getPostsUseCase: new GetPostsUseCase(postRepo),
-      patchPostUseCase: new PatchPostUseCase(postRepo),
-      updatePostUseCase: new UpdatePostUseCase(postRepo),
+      posts: {
+        create: new CreatePostUseCase(postRepo),
+        delete: new DeletePostUseCase(postRepo),
+        getOne: new GetPostUseCase(postRepo),
+        getAll: new GetPostsUseCase(postRepo),
+        patch: new PatchPostUseCase(postRepo),
+        update: new UpdatePostUseCase(postRepo),
+      },
     } satisfies IDependencies;
   },
 });
