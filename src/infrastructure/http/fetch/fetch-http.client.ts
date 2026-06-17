@@ -2,11 +2,11 @@
 import { injectable } from 'tsyringe';
 
 import { ENV } from '@infrastructure/utils';
-import { HttpError } from '../errors/http.error';
-import { HttpClient } from '../http.client';
+import type { HttpRepository } from '@domain/http/http.repo';
+import { HttpError } from '@domain/http/errors/http.error';
 
 @injectable()
-export class FetchHttpClient implements HttpClient {
+export class FetchHttpClient implements HttpRepository {
   private readonly client: typeof fetch;
   private readonly baseURL: string = ENV.VITE_API_BASE_URL;
 

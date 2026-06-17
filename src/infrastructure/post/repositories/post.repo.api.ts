@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
-import { HttpClient } from '@infrastructure/http/http.client';
-import { HttpError } from '@infrastructure/http/errors/http.error';
+import { HttpRepository } from '@domain/http/http.repo';
+import { HttpError } from '@domain/http/errors/http.error';
 import { NetworkError } from '@domain/errors/network.error';
 import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
@@ -13,7 +13,7 @@ import { DomainError } from '@domain/errors/domain.error';
 
 @injectable()
 export class PostRepositoryApi implements PostRepository {
-  constructor(@inject(HttpClient.TOKEN) private readonly httpClient: HttpClient) {}
+  constructor(@inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository) {}
 
   private handleError(error: unknown, postId?: number): never {
     // server/network error (CORS, DNS, offline)

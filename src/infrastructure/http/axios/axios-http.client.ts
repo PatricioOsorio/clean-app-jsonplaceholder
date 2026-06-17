@@ -4,11 +4,11 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 import { ENV } from '@infrastructure/utils';
-import { HttpError } from '../errors/http.error';
-import type { HttpClient } from '../http.client';
+import type { HttpRepository } from '@domain/http/http.repo';
+import { HttpError } from '@domain/http/errors/http.error';
 
 @injectable()
-export class AxiosHttpClient implements HttpClient {
+export class AxiosHttpClient implements HttpRepository {
   private readonly client: AxiosInstance;
 
   constructor() {

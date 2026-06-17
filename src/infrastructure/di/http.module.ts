@@ -1,10 +1,8 @@
 import { container } from 'tsyringe';
 
-import { HttpClient, AxiosHttpClient } from '@infrastructure/http';
+import { HttpRepository } from '@domain/http/http.repo';
+import { AxiosHttpClient } from '@infrastructure/http';
 
-// import { FetchHttpClient } from '../http/fetch/fetch-http.client';
-
-container.register(HttpClient.TOKEN, { useClass: AxiosHttpClient });
-// container.register(HttpClient.TOKEN, { useClass: FetchHttpClient });
+container.register(HttpRepository.TOKEN, { useClass: AxiosHttpClient });
 
 export { container };
