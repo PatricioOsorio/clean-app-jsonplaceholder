@@ -1,24 +1,21 @@
-import { PostMapper, type IPostCreateInputVM, type IPostVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { usePostsDependencies } from './use-posts-dependencies';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
+import type { ICreatePostProps } from '@domain/post';
+import type { IPostVM } from '../models/post';
 
 export const useCreatePost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
-    mutationFn: async (input: IPostCreateInputVM) => {
-      const dto = validators.create.validate(PostMapper.toCreatePostInputDomain(input));
+    mutationFn: async (input: ICreatePostProps) => {
+      const dto = validators.create.validate(input);
       return posts.create(dto);
     },
-    optimisticUpdate: (old: IPostVM[] = [], input: IPostCreateInputVM) => [
+    optimisticUpdate: (old: IPostVM[] = [], input: ICreatePostProps) => [
       ...old,
-      {
-        id: -Date.now(),
-        ...PostMapper.toCreatePostInputDomain(input),
-        __optimistic: true,
-      },
+      { id: -Date.now(), ...input, __optimistic: true },
     ],
     messages: {
       success: 'Post created successfully!',

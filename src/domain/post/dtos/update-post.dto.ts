@@ -1,17 +1,18 @@
-export type UpdatePostProps = { idUser: number; title: string; content: string };
+export type IUpdatePostProps = { id: number; idUser: number; title: string; content: string };
 
-export class UpdatePostDto implements UpdatePostProps {
+export class UpdatePostDto implements IUpdatePostProps {
   static readonly VALIDATOR_TOKEN = Symbol('UpdatePostDto.Validator');
 
+  readonly id!: number;
   readonly idUser!: number;
   readonly title!: string;
   readonly content!: string;
 
-  private constructor(props: UpdatePostProps) {
+  private constructor(props: IUpdatePostProps) {
     Object.assign(this, props);
   }
 
-  static create(data: UpdatePostProps): UpdatePostDto {
+  static create(data: IUpdatePostProps): UpdatePostDto {
     return new UpdatePostDto(data);
   }
 }

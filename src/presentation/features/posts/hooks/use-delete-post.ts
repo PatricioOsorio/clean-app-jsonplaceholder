@@ -1,7 +1,7 @@
-import { type IPostVM } from '../models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { usePostsDependencies } from './use-posts-dependencies';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
+import type { IPostVM } from '../models/post';
 
 export const useDeletePost = () => {
   const { posts } = usePostsDependencies();

@@ -14,12 +14,16 @@ export class VanillaCreatePostValidator implements IValidatorEntity<CreatePostDt
     const content = (raw.content ?? '').trim();
 
     const issues: IValidationIssue[] = [];
-    if (!idUser || isNaN(idUser)) issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
+    if (!idUser || isNaN(idUser))
+      issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
     if (!title) issues.push({ field: 'title', message: 'Title is required' });
     if (!content) issues.push({ field: 'content', message: 'Content is required' });
 
     if (issues.length > 0) {
-      throw new PostInvalidDataError(issues.map((i) => `${i.field}: ${i.message}`).join(', '), issues);
+      throw new PostInvalidDataError(
+        issues.map((i) => `${i.field}: ${i.message}`).join(', '),
+        issues,
+      );
     }
 
     return CreatePostDto.create({ idUser, title, content });
@@ -31,20 +35,27 @@ export class VanillaUpdatePostValidator implements IValidatorEntity<UpdatePostDt
   validate(input: unknown): UpdatePostDto {
     const raw = (input || {}) as Partial<UpdatePostDto>;
 
+    const id = Number(raw.id ?? 0);
     const idUser = Number(raw.idUser ?? 0);
     const title = (raw.title ?? '').trim();
     const content = (raw.content ?? '').trim();
 
     const issues: IValidationIssue[] = [];
-    if (!idUser || isNaN(idUser)) issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
+    if (!id || isNaN(id)) issues.push({ field: 'id', message: 'Must be a valid post ID' });
+    if (!idUser || isNaN(idUser))
+      issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
     if (!title) issues.push({ field: 'title', message: 'Title is required and cannot be empty' });
-    if (!content) issues.push({ field: 'content', message: 'Content is required and cannot be empty' });
+    if (!content)
+      issues.push({ field: 'content', message: 'Content is required and cannot be empty' });
 
     if (issues.length > 0) {
-      throw new PostInvalidDataError(issues.map((i) => `${i.field}: ${i.message}`).join(', '), issues);
+      throw new PostInvalidDataError(
+        issues.map((i) => `${i.field}: ${i.message}`).join(', '),
+        issues,
+      );
     }
 
-    return UpdatePostDto.create({ idUser, title, content });
+    return UpdatePostDto.create({ id, idUser, title, content });
   }
 }
 
@@ -76,7 +87,10 @@ export class VanillaPatchPostValidator implements IValidatorEntity<PatchPostDto>
     }
 
     if (issues.length > 0) {
-      throw new PostInvalidDataError(issues.map((i) => `${i.field}: ${i.message}`).join(', '), issues);
+      throw new PostInvalidDataError(
+        issues.map((i) => `${i.field}: ${i.message}`).join(', '),
+        issues,
+      );
     }
 
     return PatchPostDto.create({ idUser, title, content });

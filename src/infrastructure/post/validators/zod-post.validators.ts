@@ -38,6 +38,7 @@ export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
 @injectable()
 export class ZodUpdatePostValidator implements IValidatorEntity<UpdatePostDto> {
   private schema = z.object({
+    id: z.number(),
     idUser: z.number(),
     title: z.string().min(1, 'Title cannot be empty'),
     content: z.string().min(1, 'Content cannot be empty'),

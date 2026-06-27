@@ -1,17 +1,17 @@
-export type PatchPostProps = { idUser?: number; title?: string; content?: string };
+export type IPatchPostProps = { idUser?: number; title?: string; content?: string };
 
-export class PatchPostDto implements PatchPostProps {
+export class PatchPostDto implements IPatchPostProps {
   static readonly VALIDATOR_TOKEN = Symbol('PatchPostDto.Validator');
 
   readonly idUser?: number;
   readonly title?: string;
   readonly content?: string;
 
-  private constructor(props: PatchPostProps) {
+  private constructor(props: IPatchPostProps) {
     Object.assign(this, props);
   }
 
-  static create(data: PatchPostProps): PatchPostDto {
+  static create(data: IPatchPostProps): PatchPostDto {
     return new PatchPostDto(data);
   }
 }
