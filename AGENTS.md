@@ -24,6 +24,32 @@ Rules:
 - Fallback if skill unavailable: emulate caveman style directly
 - Safety override: use clear wording for destructive/irreversible ops, then resume caveman
 
+## Development Style
+
+Default mode for all AI assistants in this project: **ponytail** (full intensity).
+
+Rules:
+
+- Load `/ponytail` skill (level: full) before any response
+- Apply to: system design, code generation, refactoring, dependency choices
+- Disable only on explicit: `stop ponytail` or `normal mode`
+- Fallback if skill unavailable: follow standard ponytail ladder (YAGNI, stdlib, native first)
+
+## Plan Before Act
+
+**Always present a plan and wait for explicit approval before implementing any non-trivial change.**
+
+Non-trivial = anything beyond a single-line fix. This includes: new files, refactors, feature additions, dependency changes, config changes.
+
+Format:
+
+1. State what you found
+2. List proposed changes (files + what changes)
+3. Flag risks or unknowns
+4. Wait for "go" / "yes" / "proceed"
+
+Do NOT write code until approved.
+
 ## Purpose — Learning Project
 
 This repo is a **learning sandbox**. User goal: master Clean Architecture in React/TypeScript using modern tooling.
@@ -129,18 +155,3 @@ Agent rules for this folder:
 - "go ahead" / "do it" / "escríbelo tú" = explicit approval
 - General conversation does not grant write access
 - When write is approved: still present what you will write before doing it
-
-## Plan Before Act
-
-**Always present a plan and wait for explicit approval before implementing any non-trivial change.**
-
-Non-trivial = anything beyond a single-line fix. This includes: new files, refactors, feature additions, dependency changes, config changes.
-
-Format:
-
-1. State what you found
-2. List proposed changes (files + what changes)
-3. Flag risks or unknowns
-4. Wait for "go" / "yes" / "proceed"
-
-Do NOT write code until approved.
