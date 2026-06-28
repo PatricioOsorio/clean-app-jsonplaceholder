@@ -1,6 +1,6 @@
 import { PostEntity } from '@domain/post/post.entity';
 import type { IPostEntity } from '@domain/post/post.entity';
-import type { IPostResponse } from './post.reponse';
+import type { IPostResponse } from './post.response';
 
 export abstract class PostMapper {
   static toEntity(response: IPostResponse): IPostEntity {

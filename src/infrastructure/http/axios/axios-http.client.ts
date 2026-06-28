@@ -5,7 +5,7 @@ import type { AxiosInstance } from 'axios';
 
 import { ENV } from '@infrastructure/utils';
 import type { HttpRepository } from '@domain/http/http.repo';
-import { HttpError } from '@domain/http/errors/http.error';
+import { HttpErrorMapper } from '../http-error.mapper';
 
 @injectable()
 export class AxiosHttpClient implements HttpRepository {
@@ -32,7 +32,10 @@ export class AxiosHttpClient implements HttpRepository {
     }
 
     // server responded with status code (4xx, 5xx)
-    throw new HttpError(error.response.status, error.response.data?.message ?? error.message);
+    throw HttpErrorMapper.toDomainError(
+      error.response.status,
+      error.response.data?.message ?? error.message,
+    );
   }
 
   async get<T>(url: string, config?: any): Promise<T> {

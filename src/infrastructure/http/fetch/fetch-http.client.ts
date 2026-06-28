@@ -4,6 +4,7 @@ import { injectable } from 'tsyringe';
 import { ENV } from '@infrastructure/utils';
 import type { HttpRepository } from '@domain/http/http.repo';
 import { HttpError } from '@domain/http/errors/http.error';
+import { HttpErrorMapper } from '../http-error.mapper';
 
 @injectable()
 export class FetchHttpClient implements HttpRepository {
@@ -11,7 +12,7 @@ export class FetchHttpClient implements HttpRepository {
   private readonly baseURL: string = ENV.VITE_API_BASE_URL;
 
   constructor() {
-    this.client = fetch.bind(window);
+    this.client = fetch.bind(globalThis);
   }
 
   private async request<T>(url: string, options: RequestInit): Promise<T> {
@@ -28,7 +29,10 @@ export class FetchHttpClient implements HttpRepository {
     });
 
     if (!response.ok) {
-      throw new HttpError(response.status, response.statusText || 'Error fetching data');
+      throw HttpErrorMapper.toDomainError(
+        response.status,
+        response.statusText || 'Error fetching data',
+      );
     }
 
     const text = await response.text();
@@ -46,7 +50,7 @@ export class FetchHttpClient implements HttpRepository {
       throw error;
     }
     // Server responded with an error status code (4xx, 5xx) or other unexpected errors
-    throw new HttpError(500, (error as Error).message || 'Unexpected error');
+    throw HttpErrorMapper.toDomainError(500, (error as Error).message || 'Unexpected error');
   }
 
   async get<T>(url: string, config?: any): Promise<T> {

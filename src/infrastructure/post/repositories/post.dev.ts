@@ -25,7 +25,7 @@ export const simulateFault = async (id?: number, operation?: string): Promise<vo
     case 'network':
       throw new NetworkError();
     case 'server':
-      throw new DomainError('API Error', 'Simulated server error (500)');
+      throw new DomainError('API Error', 'Simulated server error (500)', 'INTERNAL_ERROR');
     case 'not-found':
       throw new PostNotFoundError(id ?? 0);
     case 'invalid':

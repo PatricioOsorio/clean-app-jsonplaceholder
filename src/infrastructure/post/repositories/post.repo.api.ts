@@ -7,7 +7,7 @@ import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import type { IPostEntity } from '@domain/post';
-import type { IPostResponse } from '../post.reponse';
+import type { IPostResponse } from '../post.response';
 import { DomainError } from '@domain/errors/domain.error';
 
 @injectable()
@@ -21,17 +21,17 @@ export class PostRepositoryApi implements PostRepository {
     }
 
     // 404 over a specific resource → the post doesn't exist
-    if (error.statusCode === 404 && postId !== undefined) {
+    if (error.gatewayCode === 'NOT_FOUND' && postId !== undefined) {
       throw new PostNotFoundError(postId);
     }
 
     // 404 without id → the collection couldn't be loaded (getAll, create...)
-    if (error.statusCode === 404) {
-      throw new DomainError('Load Failed', 'Could not load posts from server.');
+    if (error.gatewayCode === 'NOT_FOUND') {
+      throw new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');
     }
 
     // any other HTTP failure (4xx/5xx)
-    throw new DomainError('API Error', error.message);
+    throw new DomainError('API Error', error.message, error.gatewayCode || 'INTERNAL_ERROR');
   }
 
   async getAll(): Promise<IPostEntity[]> {
