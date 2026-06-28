@@ -4,20 +4,23 @@ import { useToastWithOptimistic } from './use-toast-with-optimistic';
 import type { IPostVM } from '../models/post';
 import type { IUpdatePostProps } from '@domain/post';
 
-export const useUpdatePost = (id: number) => {
+export const useUpdatePost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
     queryKey: QUERY_KEYS.user.posts(),
-    mutationFn: async (input: IUpdatePostProps) => {
+    mutationFn: async ({ id, input }: { id: number; input: IUpdatePostProps }) => {
       const dto = validators.update.validate(input);
       return posts.update(id, dto);
     },
 
-    optimisticUpdate: (old: IPostVM[] = [], input: IUpdatePostProps) =>
+    optimisticUpdate: (
+      old: IPostVM[] = [],
+      { id, input }: { id: number; input: IUpdatePostProps },
+    ) =>
       old.map((post): IPostVM => {
         if (post.id !== id) return post;
-        return { ...post, ...input, id, __optimistic: true };
+        return { ...post, ...input, __optimistic: true };
       }),
 
     messages: {

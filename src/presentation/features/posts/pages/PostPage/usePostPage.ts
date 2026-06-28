@@ -15,11 +15,7 @@ export const usePostPage = () => {
   const idPost = Number(urlPostId);
 
   const { data: postData, isLoading: isPostLoading } = usePost(idPost);
-  const {
-    mutate: updatePost,
-    isPending: isUpdatingPost,
-    error: updateError,
-  } = useUpdatePost(idPost);
+  const { mutate: updatePost, isPending: isUpdatingPost, error: updateError } = useUpdatePost();
 
   // create logic
   const { mutate: createPost, isPending: isCreatingPost, error: createError } = useCreatePost();
@@ -42,9 +38,7 @@ export const usePostPage = () => {
       return updatePost(
         {
           id: idPost,
-          title: titleTrimmed,
-          content: contentTrimmed,
-          idUser: USER_ID,
+          input: { title: titleTrimmed, content: contentTrimmed, idUser: USER_ID },
         },
         {
           onSuccess: () => navigate('/posts'),

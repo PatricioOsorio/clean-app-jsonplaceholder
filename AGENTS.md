@@ -111,7 +111,7 @@ When guiding, agent must enforce and teach:
 - Dependencies point inward only: `presentation` → `domain` ← `infrastructure` (never `domain` → `infrastructure`)
 - Domain layer has zero knowledge of Axios, React, or any framework (except abstract validator interfaces)
 - We do NOT use separate Use Case classes (removed to eliminate pass-through boilerplate). The presentation layer (custom hooks) invokes Repository methods directly.
-- Boundary validation is enforced using DTO classes in the domain (`CreatePostDto`, etc.). They are validated on entry using static factory methods that accept the registered validator engine strategy (`CreatePostDto.create(props, validator)`).
+- Boundary validation is enforced using DTO classes in the domain (`CreatePostDto`, etc.). They are validated on entry (in hooks/controllers) using validator instances resolved from the DI container (e.g. `validators.create.validate(input)`), which inside instantiate the DTO using pure factory methods.
 - Domain Entities are pure business/data objects without carrying validation infrastructure or injected validator engines.
 - Dependency Injection (via `tsyringe`) is resolved locally per feature using feature hooks (e.g. `usePostsDeps()`), avoiding a monolithic global `useDependencies` React context.
 - Repositories are interfaces in domain; implementations live in infrastructure.
