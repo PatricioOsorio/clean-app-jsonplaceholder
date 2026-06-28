@@ -35,13 +35,11 @@ export class VanillaUpdatePostValidator implements IValidatorEntity<UpdatePostDt
   validate(input: unknown): UpdatePostDto {
     const raw = (input || {}) as Partial<UpdatePostDto>;
 
-    const id = Number(raw.id ?? 0);
     const idUser = Number(raw.idUser ?? 0);
     const title = (raw.title ?? '').trim();
     const content = (raw.content ?? '').trim();
 
     const issues: IValidationIssue[] = [];
-    if (!id || isNaN(id)) issues.push({ field: 'id', message: 'Must be a valid post ID' });
     if (!idUser || isNaN(idUser))
       issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
     if (!title) issues.push({ field: 'title', message: 'Title is required and cannot be empty' });
@@ -55,7 +53,7 @@ export class VanillaUpdatePostValidator implements IValidatorEntity<UpdatePostDt
       );
     }
 
-    return UpdatePostDto.create({ id, idUser, title, content });
+    return UpdatePostDto.create({ idUser, title, content });
   }
 }
 

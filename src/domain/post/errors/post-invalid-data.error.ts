@@ -6,7 +6,11 @@ export class PostInvalidDataError extends DomainError {
     message?: string,
     public readonly issues?: IValidationIssue[],
   ) {
-    super('Post Invalid Data', message || `Post has invalid data`);
-    this.name = 'PostInvalidDataError';
+    super(
+      'Post Invalid Data',
+      message || `Post has invalid data`,
+      'VALIDATION_ERROR',
+    );
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
