@@ -1,7 +1,7 @@
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
-import { usePostsDependencies } from './use-posts-dependencies';
-import { useToastWithOptimistic } from './use-toast-with-optimistic';
-import type { IPostVM } from '../models/post';
+import { usePostsDependencies } from '@presentation/features/posts/hooks';
+import { useToastWithOptimistic } from '@presentation/shared/hooks';
+import type { IPostVM } from '@presentation/features/posts/models/post';
 import type { IUpdatePostProps } from '@domain/post';
 
 export const useUpdatePost = () => {

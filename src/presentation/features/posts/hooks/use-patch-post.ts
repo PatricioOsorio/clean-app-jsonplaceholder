@@ -1,8 +1,8 @@
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
-import { usePostsDependencies } from './use-posts-dependencies';
+import { usePostsDependencies } from '@presentation/features/posts/hooks';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 import type { IPatchPostProps } from '@domain/post';
-import type { IPostVM } from '../models/post';
+import type { IPostVM } from '@presentation/features/posts/models/post';
 
 export const usePatchPost = () => {
   const { posts, validators } = usePostsDependencies();

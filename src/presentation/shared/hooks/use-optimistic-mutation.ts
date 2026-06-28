@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient, type QueryKey } from '@tanstack/react-query';
+import { type QueryKey, useQueryClient, useMutation } from '@tanstack/react-query';
 
 export interface IOptimisticProps<TInput, TCache, TData = unknown> {
   queryKey: QueryKey;

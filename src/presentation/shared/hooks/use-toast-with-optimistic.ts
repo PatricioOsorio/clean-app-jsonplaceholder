@@ -1,7 +1,6 @@
 import { toast } from 'styleguide/sonner';
-
-import { formatError } from '@presentation/utils/error-formatter';
 import { useOptimistic, type IOptimisticProps } from './use-optimistic-mutation';
+import { formatError } from '@presentation/utils';
 
 type IMessages = {
   success: string;
