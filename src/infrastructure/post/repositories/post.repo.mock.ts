@@ -3,105 +3,66 @@ import { injectable } from 'tsyringe';
 import { CreatePostDto, UpdatePostDto, PatchPostDto, PostRepository } from '@domain/post';
 import type { IPostEntity } from '@domain/post';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
-import { resolveDelay, runDataCommand, withDelay } from '@infrastructure/utils';
-import { simulateFault } from './post.dev';
+import { resolveDelay, runDataCommand, withDelay, InMemoryDb } from '@infrastructure/utils';
+import { simulateFaultPost } from './post.dev';
 
 @injectable()
 export class PostRepositoryMock implements PostRepository {
-  private readonly seed: IPostEntity[] = [
+  private readonly db = new InMemoryDb<IPostEntity>([
     { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
     { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
     { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
-  ];
-
-  private posts: IPostEntity[] = structuredClone(this.seed);
-
-  private nextId(): number {
-    return this.posts.length ? Math.max(...this.posts.map((p) => p.id)) + 1 : 1;
-  }
+  ]);
 
   async getAll(): Promise<IPostEntity[]> {
     runDataCommand({
-      onSeed: () => (this.posts = structuredClone(this.seed)),
-      onEmpty: () => (this.posts = []),
+      onSeed: () => this.db.resetToSeed(),
+      onEmpty: () => this.db.clear(),
     });
 
-    await simulateFault(undefined, 'getAll');
+    await simulateFaultPost(undefined, 'getAll');
 
-    return withDelay([...this.posts], resolveDelay());
+    return withDelay(this.db.getAll(), resolveDelay());
   }
 
   async getById(id: number): Promise<IPostEntity> {
-    await simulateFault(id, 'getById');
+    await simulateFaultPost(id, 'getById');
 
-    const post = this.posts.find((p) => p.id === id);
+    const post = this.db.getById(id);
     if (!post) throw new PostNotFoundError(id);
 
-    return withDelay({ ...post }, resolveDelay());
+    return withDelay(post, resolveDelay());
   }
 
   async create(post: CreatePostDto): Promise<IPostEntity> {
-    await simulateFault(undefined, 'create');
-
-    const newPost: IPostEntity = {
-      id: this.nextId(),
-      idUser: post.idUser,
-      title: post.title,
-      content: post.content,
-    };
-    this.posts.push(newPost);
-    return withDelay({ ...newPost }, resolveDelay());
+    await simulateFaultPost(undefined, 'create');
+    const newPost = this.db.create(post);
+    return withDelay(newPost, resolveDelay());
   }
 
   async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
-    await simulateFault(id, 'update');
+    await simulateFaultPost(id, 'update');
 
-    const index = this.posts.findIndex((p) => p.id === id);
+    const updated = this.db.update(id, post);
+    if (!updated) throw new PostNotFoundError(id);
 
-    if (index === -1) throw new PostNotFoundError(id);
-
-    const existingPost = this.posts[index];
-
-    const updatedPost: IPostEntity = {
-      id,
-      idUser: post.idUser ?? existingPost.idUser,
-      title: post.title ?? existingPost.title,
-      content: post.content ?? existingPost.content,
-    };
-
-    this.posts[index] = updatedPost;
-
-    return withDelay({ ...updatedPost }, resolveDelay());
+    return withDelay(updated, resolveDelay());
   }
 
   async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
-    await simulateFault(id, 'patch');
+    await simulateFaultPost(id, 'patch');
 
-    const index = this.posts.findIndex((p) => p.id === id);
+    const patched = this.db.update(id, fields);
+    if (!patched) throw new PostNotFoundError(id);
 
-    if (index === -1) throw new PostNotFoundError(id);
-
-    const existingPost = this.posts[index];
-
-    const patchedPost: IPostEntity = {
-      id,
-      idUser: fields.idUser ?? existingPost.idUser,
-      title: fields.title ?? existingPost.title,
-      content: fields.content ?? existingPost.content,
-    };
-
-    this.posts[index] = patchedPost;
-
-    return withDelay({ ...patchedPost }, resolveDelay());
+    return withDelay(patched, resolveDelay());
   }
 
   async delete(id: number): Promise<boolean> {
-    await simulateFault(id, 'delete');
-    const index = this.posts.findIndex((p) => p.id === id);
+    await simulateFaultPost(id, 'delete');
 
-    if (index === -1) throw new PostNotFoundError(id);
-
-    this.posts.splice(index, 1);
+    const deleted = this.db.delete(id);
+    if (!deleted) throw new PostNotFoundError(id);
 
     return withDelay(true, resolveDelay());
   }

@@ -1,37 +1,28 @@
 import { inject, injectable } from 'tsyringe';
 
+import { createApiErrorHandler } from '@infrastructure/http';
+import { DomainError } from '@domain/errors/domain.error';
 import { HttpRepository } from '@domain/http/http.repo';
-import { HttpError } from '@domain/http/errors/http.error';
-import { NetworkError } from '@domain/errors/network.error';
 import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import type { IPostEntity } from '@domain/post';
 import type { IPostResponse } from '../post.response';
-import { DomainError } from '@domain/errors/domain.error';
+
+const postErrorHandler = createApiErrorHandler((error, postId) => {
+  if (error.gatewayCode === 'NOT_FOUND') {
+    return postId !== undefined
+      ? new PostNotFoundError(postId)
+      : new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');
+  }
+});
 
 @injectable()
 export class PostRepositoryApi implements PostRepository {
   constructor(@inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository) {}
 
   private handleError(error: unknown, postId?: number): never {
-    // server/network error (CORS, DNS, offline)
-    if (!(error instanceof HttpError)) {
-      throw new NetworkError();
-    }
-
-    // 404 over a specific resource → the post doesn't exist
-    if (error.gatewayCode === 'NOT_FOUND' && postId !== undefined) {
-      throw new PostNotFoundError(postId);
-    }
-
-    // 404 without id → the collection couldn't be loaded (getAll, create...)
-    if (error.gatewayCode === 'NOT_FOUND') {
-      throw new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');
-    }
-
-    // any other HTTP failure (4xx/5xx)
-    throw new DomainError('API Error', error.message, error.gatewayCode || 'INTERNAL_ERROR');
+    return postErrorHandler(error, postId);
   }
 
   async getAll(): Promise<IPostEntity[]> {

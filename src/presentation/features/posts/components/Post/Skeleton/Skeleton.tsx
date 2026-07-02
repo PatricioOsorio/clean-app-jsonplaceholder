@@ -5,9 +5,9 @@ import './Skeleton.css';
 
 export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
   return (
-    <>
+    <div {...rootProps} className="post-skeleton-container">
       {Array.from({ length: items }).map((_, i) => (
-        <article {...rootProps} key={`skeleton-${i}`} className="post-skeleton-container">
+        <article key={`skeleton-${i}`} className="psc__item">
           <Skeleton.Text className="h-6 w-3/4" />
           <Skeleton.Text className="w-full" />
           <Skeleton.Text className="w-5/6" />
@@ -18,6 +18,6 @@ export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
           </div>
         </article>
       ))}
-    </>
+    </div>
   );
 };

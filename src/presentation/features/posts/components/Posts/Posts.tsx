@@ -26,47 +26,48 @@ export const Posts = ({
         </div>
       </div>
 
-      <div className="pc__grid">
-        {isLoading && <Post.Skeleton items={6} />}
+      {isLoading && <Post.Skeleton items={6} />}
 
-        {isError && (
-          <Error
-            description={errorDescription}
-            rootProps={{ className: 'col-span-full' }}
-            title={errorTitle}
-          />
-        )}
-
-        {isEmpty && (
-          <Empty
-            description="Check back later or try fetching the posts again."
-            rootProps={{ className: 'col-span-full' }}
-            title="No publications found"
-          />
-        )}
-
-        {!isLoading &&
-          !isError &&
-          !isEmpty &&
-          posts?.map((post) => (
-            <Post
-              key={post.id}
-              {...postProps}
-              content={post.content}
-              id={post.id}
-              idUser={post.idUser}
-              isOptimistic={post.__optimistic}
-              rootProps={{
-                onClick: () => onPostClick?.(post.id),
-                className: cn(
-                  onPostClick &&
-                    'cursor-pointer transition-transform duration-200 active:scale-[0.98]',
-                ),
-              }}
-              title={post.title}
+      {!isLoading && (
+        <div className="pc__grid">
+          {isError && (
+            <Error
+              description={errorDescription}
+              rootProps={{ className: 'col-span-full' }}
+              title={errorTitle}
             />
-          ))}
-      </div>
+          )}
+
+          {isEmpty && (
+            <Empty
+              description="Check back later or try fetching the posts again."
+              rootProps={{ className: 'col-span-full' }}
+              title="No publications found"
+            />
+          )}
+
+          {!isError &&
+            !isEmpty &&
+            posts?.map((post) => (
+              <Post
+                key={post.id}
+                {...postProps}
+                content={post.content}
+                id={post.id}
+                idUser={post.idUser}
+                isOptimistic={post.__optimistic}
+                rootProps={{
+                  onClick: () => onPostClick?.(post.id),
+                  className: cn(
+                    onPostClick &&
+                      'cursor-pointer transition-transform duration-200 active:scale-[0.98]',
+                  ),
+                }}
+                title={post.title}
+              />
+            ))}
+        </div>
+      )}
     </section>
   );
 };

@@ -16,5 +16,6 @@ export interface IPostDetailProps
   onBack?: () => void;
   onEdit?: (post: IPostVM, e: React.MouseEvent<HTMLButtonElement>) => void;
   onDelete?: (id: number, e: React.MouseEvent<HTMLButtonElement>) => void;
+
   isDeleting?: boolean;
 }

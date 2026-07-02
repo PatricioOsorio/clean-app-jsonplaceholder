@@ -1,0 +1,12 @@
+@reference "@styles/app.css";
+
+.comments-list-container {
+  @apply flex flex-col gap-4;
+
+  .clc__title {
+    @apply text-foreground text-lg font-semibold;
+  }
+  .clc__list {
+    @apply flex flex-col gap-4;
+  }
+}

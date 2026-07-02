@@ -1,20 +1,30 @@
 import { PostDetail } from '../../components';
 import { usePostDetailPage } from './usePostDetailPage';
-
+import { CommentsList } from '@presentation/features/comments/components';
 import './PostDetailPage.css';
 
 export const PostDetailPage = () => {
   const {
-    // props
+    // post
     post,
-    isLoading,
-    isError,
-    errorTitle,
-    errorMessage,
-    isEmpty,
+    isPostLoading,
+    isPostError,
+    errorPostTitle,
+    errorPostMessage,
+    isPostEmpty,
+
+    // delete post
     isDeleting,
 
-    // handlers
+    // comments
+    comments,
+    isCommentsLoading,
+    isCommentsError,
+    errorCommentsTitle,
+    errorCommentsMessage,
+    shouldShowComments,
+
+    // Handlers
     handleBack,
     handleDelete,
     handleEdit,
@@ -23,17 +33,28 @@ export const PostDetailPage = () => {
   return (
     <section className="post-detail-page">
       <PostDetail
-        errorDescription={errorMessage}
-        errorTitle={errorTitle}
-        isEmpty={isEmpty}
-        isError={isError}
-        isLoading={isLoading}
-        isOptimistic={isDeleting}
         post={post}
+        isLoading={isPostLoading}
+        isError={isPostError}
+        errorTitle={errorPostTitle}
+        errorDescription={errorPostMessage}
+        isDeleting={isDeleting}
+        isEmpty={isPostEmpty}
+        isOptimistic={isDeleting}
         onBack={handleBack}
         onDelete={handleDelete}
         onEdit={handleEdit}
       />
+
+      {shouldShowComments && (
+        <CommentsList
+          comments={comments}
+          isLoading={isCommentsLoading}
+          isError={isCommentsError}
+          errorTitle={errorCommentsTitle}
+          errorDescription={errorCommentsMessage}
+        />
+      )}
     </section>
   );
 };

@@ -35,7 +35,7 @@ export default tseslint.config(
           callbacksLast: true,
           shorthandFirst: true,
           ignoreCase: true,
-          noSortAlphabetically: false,
+          noSortAlphabetically: true,
           reservedFirst: true,
         },
       ],

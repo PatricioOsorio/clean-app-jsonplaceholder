@@ -1,5 +1,9 @@
 @reference "@styles/app.css";
 
 .post-detail-skeleton-container {
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-8;
+
+  .pdsc__item {
+    @apply flex flex-col gap-4;
+  }
 }

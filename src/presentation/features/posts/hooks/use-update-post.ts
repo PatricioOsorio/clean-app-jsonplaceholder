@@ -8,7 +8,7 @@ export const useUpdatePost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
-    queryKey: QUERY_KEYS.user.posts(),
+    queryKey: QUERY_KEYS.posts.all(),
     mutationFn: async ({ id, input }: { id: number; input: IUpdatePostProps }) => {
       const dto = validators.update.validate(input);
       return posts.update(id, dto);

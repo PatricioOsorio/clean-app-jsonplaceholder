@@ -1,36 +1,7 @@
-import { DomainError, NetworkError } from '@domain/errors';
 import { PostNotFoundError, PostInvalidDataError } from '@domain/post';
-import {} from '@domain/post/errors/post-invalid-data.error';
-import { getQueryParam, resolveDelay, withDelay } from '@infrastructure/utils';
+import { createFaultSimulator } from '@infrastructure/utils';
 
-/**
- * Dev-only: inject post errors via `?fault=` to simulate failures.
- * Shared by mock and local post repositories.
- *
- * - ?fault=network    => NetworkError
- * - ?fault=server     => DomainError('API Error', 500)
- * - ?fault=not-found  => PostNotFoundError
- * - ?fault=invalid    => PostInvalidDataError
- */
-export const simulateFault = async (id?: number, operation?: string): Promise<void> => {
-  const fault = getQueryParam('fault');
-  if (!fault) return;
-
-  const faultOp = getQueryParam('faultOperation'); // opcional: limita a una operación
-  if (faultOp && faultOp !== operation) return;
-
-  await withDelay(null, resolveDelay()); // let the skeleton render before failing
-
-  switch (fault) {
-    case 'network':
-      throw new NetworkError();
-    case 'server':
-      throw new DomainError('API Error', 'Simulated server error (500)', 'INTERNAL_ERROR');
-    case 'not-found':
-      throw new PostNotFoundError(id ?? 0);
-    case 'invalid':
-      throw new PostInvalidDataError('Simulated invalid post data');
-    default:
-      console.warn(`[dev] unknown fault "${fault}" — ignoring`);
-  }
-};
+export const simulateFaultPost = createFaultSimulator((fault, id) => {
+  if (fault === 'not-found') return new PostNotFoundError(id ?? 0);
+  if (fault === 'invalid') return new PostInvalidDataError('Simulated invalid data');
+});

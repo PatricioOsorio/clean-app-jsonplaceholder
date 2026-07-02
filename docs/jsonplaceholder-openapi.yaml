@@ -1,0 +1,670 @@
+openapi: 3.0.3
+info:
+  title: JSONPlaceholder API
+  version: '1.0.0'
+  description: >
+    API REST gratuita y simulada para pruebas y prototipado.
+    Las operaciones de escritura (POST, PUT, PATCH, DELETE) se simulan:
+    el servidor responde como si el cambio se aplicara, pero nada se persiste.
+  contact:
+    name: typicode
+    url: https://github.com/typicode
+servers:
+  - url: https://jsonplaceholder.typicode.com
+
+tags:
+  - name: posts
+    description: 100 posts
+  - name: comments
+    description: 500 comentarios
+  - name: albums
+    description: 100 álbumes
+  - name: photos
+    description: 5000 fotos
+  - name: todos
+    description: 200 tareas
+  - name: users
+    description: 10 usuarios
+
+paths:
+  # ----------------- POSTS -----------------
+  /posts:
+    get:
+      tags: [posts]
+      summary: Listar posts
+      parameters:
+        - { $ref: '#/components/parameters/userIdFilter' }
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+        - { $ref: '#/components/parameters/sort' }
+        - { $ref: '#/components/parameters/order' }
+      responses:
+        '200':
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Post' }
+    post:
+      tags: [posts]
+      summary: Crear post (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPost' }
+      responses:
+        '201':
+          description: Post creado (id = 101)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+  /posts/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [posts]
+      summary: Obtener un post
+      responses:
+        '200':
+          description: Post
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+        '404': { description: No encontrado }
+    put:
+      tags: [posts]
+      summary: Reemplazar post (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Post' }
+      responses:
+        '200':
+          description: Post reemplazado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+    patch:
+      tags: [posts]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPost' }
+      responses:
+        '200':
+          description: Post actualizado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+    delete:
+      tags: [posts]
+      summary: Eliminar post (simulado)
+      responses:
+        '200': { description: Eliminado (objeto vacío) }
+  /posts/{id}/comments:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [posts]
+      summary: Comentarios de un post (equivale a /comments?postId={id})
+      responses:
+        '200':
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Comment' }
+
+  # ----------------- COMMENTS -----------------
+  /comments:
+    get:
+      tags: [comments]
+      summary: Listar comentarios
+      parameters:
+        - { $ref: '#/components/parameters/postIdFilter' }
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+      responses:
+        '200':
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Comment' }
+    post:
+      tags: [comments]
+      summary: Crear comentario (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewComment' }
+      responses:
+        '201':
+          description: Comentario creado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Comment' }
+  /comments/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [comments]
+      summary: Obtener un comentario
+      responses:
+        '200':
+          description: Comentario
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Comment' }
+    put:
+      tags: [comments]
+      summary: Reemplazar comentario (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Comment' }
+      responses:
+        '200': { description: Reemplazado }
+    patch:
+      tags: [comments]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewComment' }
+      responses:
+        '200': { description: Actualizado }
+    delete:
+      tags: [comments]
+      summary: Eliminar comentario (simulado)
+      responses:
+        '200': { description: Eliminado }
+
+  # ----------------- ALBUMS -----------------
+  /albums:
+    get:
+      tags: [albums]
+      summary: Listar álbumes
+      parameters:
+        - { $ref: '#/components/parameters/userIdFilter' }
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+      responses:
+        '200':
+          description: Lista de álbumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Album' }
+    post:
+      tags: [albums]
+      summary: Crear álbum (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewAlbum' }
+      responses:
+        '201': { description: Álbum creado }
+  /albums/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [albums]
+      summary: Obtener un álbum
+      responses:
+        '200':
+          description: Álbum
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Album' }
+    put:
+      tags: [albums]
+      summary: Reemplazar álbum (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Album' }
+      responses:
+        '200': { description: Reemplazado }
+    patch:
+      tags: [albums]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewAlbum' }
+      responses:
+        '200': { description: Actualizado }
+    delete:
+      tags: [albums]
+      summary: Eliminar álbum (simulado)
+      responses:
+        '200': { description: Eliminado }
+  /albums/{id}/photos:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [albums]
+      summary: Fotos de un álbum (equivale a /photos?albumId={id})
+      responses:
+        '200':
+          description: Lista de fotos
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Photo' }
+
+  # ----------------- PHOTOS -----------------
+  /photos:
+    get:
+      tags: [photos]
+      summary: Listar fotos
+      parameters:
+        - { $ref: '#/components/parameters/albumIdFilter' }
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+      responses:
+        '200':
+          description: Lista de fotos
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Photo' }
+    post:
+      tags: [photos]
+      summary: Crear foto (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPhoto' }
+      responses:
+        '201': { description: Foto creada }
+  /photos/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [photos]
+      summary: Obtener una foto
+      responses:
+        '200':
+          description: Foto
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Photo' }
+    put:
+      tags: [photos]
+      summary: Reemplazar foto (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Photo' }
+      responses:
+        '200': { description: Reemplazado }
+    patch:
+      tags: [photos]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPhoto' }
+      responses:
+        '200': { description: Actualizado }
+    delete:
+      tags: [photos]
+      summary: Eliminar foto (simulado)
+      responses:
+        '200': { description: Eliminado }
+
+  # ----------------- TODOS -----------------
+  /todos:
+    get:
+      tags: [todos]
+      summary: Listar tareas
+      parameters:
+        - { $ref: '#/components/parameters/userIdFilter' }
+        - name: completed
+          in: query
+          schema: { type: boolean }
+          description: Filtrar por estado de completado
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Todo' }
+    post:
+      tags: [todos]
+      summary: Crear tarea (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewTodo' }
+      responses:
+        '201': { description: Tarea creada }
+  /todos/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [todos]
+      summary: Obtener una tarea
+      responses:
+        '200':
+          description: Tarea
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Todo' }
+    put:
+      tags: [todos]
+      summary: Reemplazar tarea (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Todo' }
+      responses:
+        '200': { description: Reemplazado }
+    patch:
+      tags: [todos]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewTodo' }
+      responses:
+        '200': { description: Actualizado }
+    delete:
+      tags: [todos]
+      summary: Eliminar tarea (simulado)
+      responses:
+        '200': { description: Eliminado }
+
+  # ----------------- USERS -----------------
+  /users:
+    get:
+      tags: [users]
+      summary: Listar usuarios
+      parameters:
+        - { $ref: '#/components/parameters/page' }
+        - { $ref: '#/components/parameters/limit' }
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/User' }
+    post:
+      tags: [users]
+      summary: Crear usuario (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewUser' }
+      responses:
+        '201': { description: Usuario creado }
+  /users/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [users]
+      summary: Obtener un usuario
+      responses:
+        '200':
+          description: Usuario
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+    put:
+      tags: [users]
+      summary: Reemplazar usuario (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/User' }
+      responses:
+        '200': { description: Reemplazado }
+    patch:
+      tags: [users]
+      summary: Actualizar parcialmente (simulado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewUser' }
+      responses:
+        '200': { description: Actualizado }
+    delete:
+      tags: [users]
+      summary: Eliminar usuario (simulado)
+      responses:
+        '200': { description: Eliminado }
+  /users/{id}/posts:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [users]
+      summary: Posts de un usuario
+      responses:
+        '200':
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Post' }
+  /users/{id}/albums:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [users]
+      summary: Álbumes de un usuario
+      responses:
+        '200':
+          description: Lista de álbumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Album' }
+  /users/{id}/todos:
+    parameters:
+      - { $ref: '#/components/parameters/id' }
+    get:
+      tags: [users]
+      summary: Tareas de un usuario
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Todo' }
+
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer }
+      description: Identificador del recurso
+    userIdFilter:
+      name: userId
+      in: query
+      schema: { type: integer }
+      description: Filtrar por usuario
+    postIdFilter:
+      name: postId
+      in: query
+      schema: { type: integer }
+      description: Filtrar por post
+    albumIdFilter:
+      name: albumId
+      in: query
+      schema: { type: integer }
+      description: Filtrar por álbum
+    page:
+      name: _page
+      in: query
+      schema: { type: integer }
+      description: Número de página (paginación)
+    limit:
+      name: _limit
+      in: query
+      schema: { type: integer }
+      description: Elementos por página
+    sort:
+      name: _sort
+      in: query
+      schema: { type: string }
+      description: Campo por el que ordenar
+    order:
+      name: _order
+      in: query
+      schema:
+        type: string
+        enum: [asc, desc]
+      description: Dirección del ordenamiento
+
+  schemas:
+    Post:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        userId: { type: integer, example: 1 }
+        title: { type: string }
+        body: { type: string }
+    NewPost:
+      type: object
+      properties:
+        userId: { type: integer }
+        title: { type: string }
+        body: { type: string }
+
+    Comment:
+      type: object
+      properties:
+        id: { type: integer }
+        postId: { type: integer }
+        name: { type: string }
+        email: { type: string, format: email }
+        body: { type: string }
+    NewComment:
+      type: object
+      properties:
+        postId: { type: integer }
+        name: { type: string }
+        email: { type: string, format: email }
+        body: { type: string }
+
+    Album:
+      type: object
+      properties:
+        id: { type: integer }
+        userId: { type: integer }
+        title: { type: string }
+    NewAlbum:
+      type: object
+      properties:
+        userId: { type: integer }
+        title: { type: string }
+
+    Photo:
+      type: object
+      properties:
+        id: { type: integer }
+        albumId: { type: integer }
+        title: { type: string }
+        url: { type: string, format: uri }
+        thumbnailUrl: { type: string, format: uri }
+    NewPhoto:
+      type: object
+      properties:
+        albumId: { type: integer }
+        title: { type: string }
+        url: { type: string, format: uri }
+        thumbnailUrl: { type: string, format: uri }
+
+    Todo:
+      type: object
+      properties:
+        id: { type: integer }
+        userId: { type: integer }
+        title: { type: string }
+        completed: { type: boolean }
+    NewTodo:
+      type: object
+      properties:
+        userId: { type: integer }
+        title: { type: string }
+        completed: { type: boolean }
+
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        username: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string }
+        website: { type: string }
+        address: { $ref: '#/components/schemas/Address' }
+        company: { $ref: '#/components/schemas/Company' }
+    NewUser:
+      type: object
+      properties:
+        name: { type: string }
+        username: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string }
+        website: { type: string }
+        address: { $ref: '#/components/schemas/Address' }
+        company: { $ref: '#/components/schemas/Company' }
+    Address:
+      type: object
+      properties:
+        street: { type: string }
+        suite: { type: string }
+        city: { type: string }
+        zipcode: { type: string }
+        geo: { $ref: '#/components/schemas/Geo' }
+    Geo:
+      type: object
+      properties:
+        lat: { type: string, example: '-37.3159' }
+        lng: { type: string, example: '81.1496' }
+    Company:
+      type: object
+      properties:
+        name: { type: string }
+        catchPhrase: { type: string }
+        bs: { type: string }

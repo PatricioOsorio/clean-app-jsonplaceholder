@@ -1,3 +1,4 @@
 export const LOCAL_STORAGE_KEYS = {
-  posts: 'app:posts',
+  posts: 'clean-app:posts',
+  comments: 'clean-app:comments',
 } as const;

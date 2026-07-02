@@ -1,0 +1,29 @@
+@reference "@styles/app.css";
+
+.comment-skeleton-container {
+  @apply flex flex-col gap-4;
+
+  .csc__item {
+    @apply border-border bg-card flex flex-col gap-4 rounded-xl border p-5 shadow-xs;
+  }
+
+  .csc__header {
+    @apply flex items-center gap-3;
+  }
+
+  .csc__header {
+    @apply flex items-center gap-3;
+  }
+
+  .csc__avatar-placeholder {
+    @apply shrink-0;
+  }
+
+  .csc__meta {
+    @apply flex flex-col gap-2;
+  }
+
+  .csc__body {
+    @apply flex flex-col gap-2 pt-1;
+  }
+}

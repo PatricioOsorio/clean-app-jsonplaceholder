@@ -1,4 +1,5 @@
-import { DEFAULT_DELAY } from './delay';
+import { DomainError, NetworkError } from '@domain/errors';
+import { DEFAULT_DELAY, withDelay } from './delay';
 
 export const getQueryParam = (key: string): string | null =>
   new URLSearchParams(window.location.search).get(key);
@@ -37,4 +38,35 @@ export const runDataCommand = (handlers: IDataCommandHandlers): void => {
   const url = new URL(window.location.href);
   url.searchParams.delete('data');
   window.history.replaceState({}, '', url);
+};
+
+export type ICustomFaultMapper = (fault: string, resourceId?: number) => Error | undefined;
+
+/**
+ * Dev-only: inject errors via `?fault=` to simulate failures.
+ * - ?fault=network    => NetworkError
+ * - ?fault=server     => DomainError('API Error', 500)
+ * - ?fault=...        => feature-specific faults via CustomFaultMapper
+ */
+export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
+  return async (id?: number, operation?: string): Promise<void> => {
+    const fault = getQueryParam('fault');
+    if (!fault) return;
+
+    const faultOp = getQueryParam('faultOperation'); // opcional: limita a una operación
+    if (faultOp && faultOp !== operation) return;
+
+    await withDelay(null, resolveDelay()); // let the skeleton render before failing
+
+    if (customMapper) {
+      const customError = customMapper(fault, id);
+      if (customError) throw customError;
+    }
+
+    if (fault === 'network') throw new NetworkError();
+    if (fault === 'server')
+      throw new DomainError('API Error', 'Simulated server error (500)', 'INTERNAL_ERROR');
+
+    console.warn(`[dev] unknown fault "${fault}" — ignoring`);
+  };
 };

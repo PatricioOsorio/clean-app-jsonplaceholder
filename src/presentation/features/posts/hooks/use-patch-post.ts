@@ -8,7 +8,7 @@ export const usePatchPost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
-    queryKey: QUERY_KEYS.user.posts(),
+    queryKey: QUERY_KEYS.posts.all(),
     mutationFn: async ({ id, input }: { id: number; input: IPatchPostProps }) => {
       const dto = validators.patch.validate(input);
       return posts.patch(id, dto);

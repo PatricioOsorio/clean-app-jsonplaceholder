@@ -1,49 +1,77 @@
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { useComments } from '@presentation/features/comments/hooks';
 import { formatError } from '@presentation/utils';
 import { useDeletePost, usePost } from '../../hooks';
 
 export const usePostDetailPage = () => {
   const { id: idPostParam } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
   const idPost = idPostParam ? Number(idPostParam) : undefined;
-  const { data: post, isLoading, isError, error } = usePost(idPost);
-  const isEmpty = !isLoading && !isError && !post;
 
-  const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
+  // ! POST
+  const {
+    data: post,
+    isLoading: isPostLoading,
+    isError: isPostError,
+    error: errorPost,
+  } = usePost(idPost);
 
-  const { errorTitle, errorMessage } = formatError(error, 'Error Loading Post');
+  const { errorTitle: errorPostTitle, errorMessage: errorPostMessage } = formatError(
+    errorPost,
+    'Error Loading Post',
+  );
 
-  // handlers
-  const handleBack = () => {
-    navigate('/posts');
-  };
+  // ! DELETE POST
+  const { mutate: mutateDeletePost, isPending: isDeleting } = useDeletePost();
 
+  // ! COMMENTS
+  const {
+    data: comments,
+    isLoading: isCommentsLoading,
+    isError: isCommentsError,
+    error: errorComments,
+  } = useComments(post ? post.id : undefined);
+
+  const { errorTitle: errorCommentsTitle, errorMessage: errorCommentsMessage } = formatError(
+    errorComments,
+    'Error Loading Comments',
+  );
+
+  // ! Handlers
+  const handleBack = () => navigate('/posts');
+  const handleEdit = () => navigate(`/posts/edit/${idPost}`);
   const handleDelete = () => {
     if (!idPost) return;
-    deletePost(idPost, {
-      onSuccess: () => {
-        navigate('/posts');
-      },
+    mutateDeletePost(idPost, {
+      onSuccess: () => navigate('/posts'),
     });
   };
 
-  const handleEdit = () => {
-    navigate(`/posts/edit/${idPost}`);
-  };
+  const isPostEmpty = !isPostLoading && !isPostError && !post;
+  const shouldShowComments = !isPostError && !isPostEmpty;
 
   return {
-    // props
+    // post
     post,
-    isLoading,
-    isError,
-    errorTitle,
-    errorMessage,
-    isEmpty,
+    isPostLoading,
+    isPostError,
+    errorPostTitle,
+    errorPostMessage,
+    isPostEmpty,
+    shouldShowComments,
+
+    // delete post
     isDeleting,
 
-    // handlers
+    // comments
+    comments: comments ?? [],
+    isCommentsLoading: isCommentsLoading || isPostLoading,
+    isCommentsError,
+    errorCommentsTitle,
+    errorCommentsMessage,
+
+    // Handlers
     handleBack,
     handleDelete,
     handleEdit,

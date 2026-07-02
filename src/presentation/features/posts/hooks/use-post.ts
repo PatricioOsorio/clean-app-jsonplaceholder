@@ -8,8 +8,12 @@ export const usePost = (id?: number) => {
   const { posts } = usePostsDependencies();
 
   const postQuery = useQuery({
-    queryKey: QUERY_KEYS.user.post(id),
-    queryFn: async () => PostMapper.toVM(await posts.getById(id!)),
+    queryKey: QUERY_KEYS.posts.detail(id),
+    queryFn: async () => {
+      if (!id) return [];
+
+      return PostMapper.toVM(await posts.getById(id));
+    },
     enabled: !!id,
   });
 

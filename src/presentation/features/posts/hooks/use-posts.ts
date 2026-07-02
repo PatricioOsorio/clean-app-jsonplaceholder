@@ -8,7 +8,7 @@ export const usePosts = () => {
   const { posts } = usePostsDependencies();
 
   const postsQuery = useQuery({
-    queryKey: QUERY_KEYS.user.posts(),
+    queryKey: QUERY_KEYS.posts.all(),
     queryFn: async () => PostMapper.toVMs(await posts.getAll()),
   });
 

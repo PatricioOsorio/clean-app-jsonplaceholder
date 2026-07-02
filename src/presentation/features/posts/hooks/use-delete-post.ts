@@ -7,7 +7,7 @@ export const useDeletePost = () => {
   const { posts } = usePostsDependencies();
 
   return useToastWithOptimistic({
-    queryKey: QUERY_KEYS.user.posts(),
+    queryKey: QUERY_KEYS.posts.all(),
     mutationFn: async (id: number) => {
       return posts.delete(id);
     },

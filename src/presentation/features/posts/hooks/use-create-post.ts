@@ -8,7 +8,7 @@ export const useCreatePost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
-    queryKey: QUERY_KEYS.user.posts(),
+    queryKey: QUERY_KEYS.posts.all(),
     mutationFn: async (input: ICreatePostProps) => {
       const dto = validators.create.validate(input);
       return posts.create(dto);

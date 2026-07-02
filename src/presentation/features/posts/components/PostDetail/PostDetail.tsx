@@ -9,6 +9,7 @@ import './PostDetail.css';
 
 export const PostDetail = ({
   rootProps,
+
   post,
   isLoading,
   isError,
@@ -19,9 +20,11 @@ export const PostDetail = ({
   errorTemplate,
   errorTitle,
   errorDescription,
+
   onBack,
   onEdit,
   onDelete,
+
   isDeleting,
 }: IPostDetailProps) => {
   const renderContent = () => {
