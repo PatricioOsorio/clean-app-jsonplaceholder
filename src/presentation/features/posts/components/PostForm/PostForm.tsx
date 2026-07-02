@@ -1,8 +1,8 @@
-import { Input } from 'styleguide/input';
-import { Textarea } from 'styleguide/textarea';
-import { Label } from 'styleguide/label';
-import { Button } from 'styleguide/button';
-import { cn } from 'styleguide/utils';
+import { Input } from 'lib-styleguide-simba/input';
+import { Textarea } from 'lib-styleguide-simba/textarea';
+import { Label } from 'lib-styleguide-simba/label';
+import { Button } from 'lib-styleguide-simba/button';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import { Error } from '@presentation/shared/components';
 import type { IPostFormProps } from './PostForm.interfaces';

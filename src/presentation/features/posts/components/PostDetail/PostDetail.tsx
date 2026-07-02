@@ -1,5 +1,5 @@
-import { Button } from 'styleguide/button';
-import { cn } from 'styleguide/utils';
+import { Button } from 'lib-styleguide-simba/button';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IPostDetailProps } from './PostDetail.interfaces';
 

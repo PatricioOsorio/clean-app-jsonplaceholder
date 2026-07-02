@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
-@import 'styleguide/styles/index.css';
+@import 'lib-styleguide-simba/styles/index.css';
 
-/* @source '../node_modules/styleguide/dist'; */
-/* @source '../../node_modules/styleguide/dist'; */
-@source '../../../node_modules/styleguide/dist';
+/* @source '../node_modules/lib-styleguide-simba/dist'; */
+/* @source '../../node_modules/lib-styleguide-simba/dist'; */
+@source '../../../node_modules/lib-styleguide-simba/dist';
 
 @utility optimistic-working {
   @apply border-primary/60 pointer-events-none relative animate-pulse cursor-not-allowed cursor-wait overflow-hidden border-dashed;

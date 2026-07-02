@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { cn } from 'styleguide/utils';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { INavigationProps } from './Navigation.interfaces';
 

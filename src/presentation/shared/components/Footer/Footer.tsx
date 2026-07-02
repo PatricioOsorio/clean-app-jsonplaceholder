@@ -1,4 +1,4 @@
-import { cn } from 'styleguide/utils';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IFooterProps } from './Footer.interfaces';
 

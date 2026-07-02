@@ -4,7 +4,7 @@ import type {
   IWithError,
   IWithLoading,
   IWithRootProps,
-} from 'styleguide/component.interfaces';
+} from 'lib-styleguide-simba/component.interfaces';
 
 export interface ICommentListVM {
   comments: ICommentVM[];

@@ -1,5 +1,5 @@
-import { Spinner } from 'styleguide/spinner';
-import { cn } from 'styleguide/utils';
+import { Spinner } from 'lib-styleguide-simba/spinner';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { ILoadingProps } from './Loading.interfaces';
 

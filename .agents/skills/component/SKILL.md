@@ -95,7 +95,7 @@ The interfaces file is thin: it composes the root props, the model contract, and
 mixins. It does not re-declare the data shape.
 
 ```typescript
-import type { IWithEmpty, IWithLoading, IWithRootProps } from 'styleguide/component.interfaces';
+import type { IWithEmpty, IWithLoading, IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
 import type { IPostMV } from '../../models/post';
 
 export interface IPostProps
@@ -120,7 +120,7 @@ root element with `rootProps` + `cn()` is always rendered around it. Props are d
 from the `IMV` — no `...rest` spread of vm fields.
 
 ```tsx
-import { cn } from 'styleguide/utils';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IPostProps } from './Post.interfaces';
 
@@ -182,7 +182,7 @@ Post.Empty = PostEmpty;
 Simple semantic block. Uses `cn()` like the main component.
 
 ```tsx
-import { cn } from 'styleguide/utils';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IPostEmptyProps } from './Empty.interfaces';
 import './Empty.css';
@@ -200,7 +200,7 @@ export const PostEmpty = ({ rootProps }: IPostEmptyProps) => {
 Interfaces — usually just the root props:
 
 ```typescript
-import type { IWithRootProps } from 'styleguide/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
 
 export interface IPostEmptyProps extends IWithRootProps<'article'> {}
 ```
@@ -241,7 +241,7 @@ export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
 Interfaces — root props plus `items`:
 
 ```typescript
-import type { IWithRootProps } from 'styleguide/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
 
 export interface IPostSkeletonProps extends IWithRootProps<'article'> {
   items?: number;

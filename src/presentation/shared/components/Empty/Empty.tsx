@@ -1,4 +1,4 @@
-import { cn } from 'styleguide/utils';
+import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IEmptyProps } from './Empty.interfaces';
 
