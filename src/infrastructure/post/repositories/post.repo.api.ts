@@ -6,7 +6,7 @@ import { HttpRepository } from '@domain/http/http.repo';
 import { PostMapper } from '../post.mapper';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
-import type { IPostEntity } from '@domain/post';
+import type { PostEntity } from '@domain/post';
 import type { IPostResponse } from '../post.response';
 
 const postErrorHandler = createApiErrorHandler((error, postId) => {
@@ -25,7 +25,7 @@ export class PostRepositoryApi implements PostRepository {
     return postErrorHandler(error, postId);
   }
 
-  async getAll(): Promise<IPostEntity[]> {
+  async getAll(): Promise<PostEntity[]> {
     try {
       const response = await this.httpClient.get<IPostResponse[]>('/posts');
       return PostMapper.toEntities(response);
@@ -34,7 +34,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async getById(id: number): Promise<IPostEntity> {
+  async getById(id: number): Promise<PostEntity> {
     try {
       const response = await this.httpClient.get<IPostResponse>(`/posts/${id}`);
       return PostMapper.toEntity(response);
@@ -43,7 +43,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async create(post: CreatePostDto): Promise<IPostEntity> {
+  async create(post: CreatePostDto): Promise<PostEntity> {
     try {
       const response = await this.httpClient.post<IPostResponse>(
         '/posts',
@@ -55,7 +55,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
+  async update(id: number, post: UpdatePostDto): Promise<PostEntity> {
     try {
       const response = await this.httpClient.put<IPostResponse>(
         `/posts/${id}`,
@@ -67,7 +67,7 @@ export class PostRepositoryApi implements PostRepository {
     }
   }
 
-  async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
+  async patch(id: number, fields: PatchPostDto): Promise<PostEntity> {
     try {
       const response = await this.httpClient.patch<IPostResponse>(
         `/posts/${id}`,

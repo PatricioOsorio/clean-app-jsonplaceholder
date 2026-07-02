@@ -1,12 +1,12 @@
-import type { IPostEntity } from './post.entity';
+import type { PostEntity } from './post.entity';
 import type { CreatePostDto, UpdatePostDto, PatchPostDto } from './dtos';
 
 export abstract class PostRepository {
   static readonly TOKEN = Symbol('PostRepository');
-  abstract getAll(): Promise<IPostEntity[]>;
-  abstract getById(id: number): Promise<IPostEntity>;
-  abstract create(post: CreatePostDto): Promise<IPostEntity>;
-  abstract update(id: number, post: UpdatePostDto): Promise<IPostEntity>;
-  abstract patch(id: number, fields: PatchPostDto): Promise<IPostEntity>;
+  abstract getAll(): Promise<PostEntity[]>;
+  abstract getById(id: number): Promise<PostEntity>;
+  abstract create(post: CreatePostDto): Promise<PostEntity>;
+  abstract update(id: number, post: UpdatePostDto): Promise<PostEntity>;
+  abstract patch(id: number, fields: PatchPostDto): Promise<PostEntity>;
   abstract delete(id: number): Promise<boolean>;
 }

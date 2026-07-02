@@ -1,17 +1,16 @@
 import { PostEntity } from '@domain/post/post.entity';
-import type { IPostEntity } from '@domain/post/post.entity';
 import type { IPostResponse } from './post.response';
 
 export abstract class PostMapper {
-  static toEntity(response: IPostResponse): IPostEntity {
+  static toEntity(response: IPostResponse): PostEntity {
     return new PostEntity(response.id, response.userId, response.title, response.body);
   }
 
-  static toEntities(responses: IPostResponse[]): IPostEntity[] {
+  static toEntities(responses: IPostResponse[]): PostEntity[] {
     return responses.map((response) => this.toEntity(response));
   }
 
-  static toResponse(entity: Partial<IPostEntity>): Partial<IPostResponse> {
+  static toResponse(entity: Partial<PostEntity>): Partial<IPostResponse> {
     const response: Partial<IPostResponse> = {};
 
     if (entity.id !== undefined) response.id = entity.id;

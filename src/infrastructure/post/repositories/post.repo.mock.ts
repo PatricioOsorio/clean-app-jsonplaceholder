@@ -1,20 +1,20 @@
 import { injectable } from 'tsyringe';
 
 import { CreatePostDto, UpdatePostDto, PatchPostDto, PostRepository } from '@domain/post';
-import type { IPostEntity } from '@domain/post';
+import type { PostEntity } from '@domain/post';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
 import { resolveDelay, runDataCommand, withDelay, InMemoryDb } from '@infrastructure/utils';
 import { simulateFaultPost } from './post.dev';
 
 @injectable()
 export class PostRepositoryMock implements PostRepository {
-  private readonly db = new InMemoryDb<IPostEntity>([
+  private readonly db = new InMemoryDb<PostEntity>([
     { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
     { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
     { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
   ]);
 
-  async getAll(): Promise<IPostEntity[]> {
+  async getAll(): Promise<PostEntity[]> {
     runDataCommand({
       onSeed: () => this.db.resetToSeed(),
       onEmpty: () => this.db.clear(),
@@ -25,7 +25,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay(this.db.getAll(), resolveDelay());
   }
 
-  async getById(id: number): Promise<IPostEntity> {
+  async getById(id: number): Promise<PostEntity> {
     await simulateFaultPost(id, 'getById');
 
     const post = this.db.getById(id);
@@ -34,13 +34,13 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay(post, resolveDelay());
   }
 
-  async create(post: CreatePostDto): Promise<IPostEntity> {
+  async create(post: CreatePostDto): Promise<PostEntity> {
     await simulateFaultPost(undefined, 'create');
     const newPost = this.db.create(post);
     return withDelay(newPost, resolveDelay());
   }
 
-  async update(id: number, post: UpdatePostDto): Promise<IPostEntity> {
+  async update(id: number, post: UpdatePostDto): Promise<PostEntity> {
     await simulateFaultPost(id, 'update');
 
     const updated = this.db.update(id, post);
@@ -49,7 +49,7 @@ export class PostRepositoryMock implements PostRepository {
     return withDelay(updated, resolveDelay());
   }
 
-  async patch(id: number, fields: PatchPostDto): Promise<IPostEntity> {
+  async patch(id: number, fields: PatchPostDto): Promise<PostEntity> {
     await simulateFaultPost(id, 'patch');
 
     const patched = this.db.update(id, fields);

@@ -6,5 +6,3 @@ export class PostEntity {
     public content: string,
   ) {}
 }
-
-export type IPostEntity = PostEntity;

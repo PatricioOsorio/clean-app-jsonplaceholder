@@ -1,8 +1,8 @@
-import type { IPostEntity } from '@domain/post';
+import type { PostEntity } from '@domain/post';
 import type { IPostVM } from './post.mv';
 
 export abstract class PostMapper {
-  static toVM(entity: IPostEntity): IPostVM {
+  static toVM(entity: PostEntity): IPostVM {
     return {
       id: entity.id,
       title: entity.title,
@@ -11,12 +11,12 @@ export abstract class PostMapper {
     };
   }
 
-  static toVMs(entities: IPostEntity[]): IPostVM[] {
+  static toVMs(entities: PostEntity[]): IPostVM[] {
     return entities.map((entity) => this.toVM(entity));
   }
 
-  static toEntity(vm: Partial<IPostVM>): Partial<IPostEntity> {
-    const entity: Partial<IPostEntity> = {};
+  static toEntity(vm: Partial<IPostVM>): Partial<PostEntity> {
+    const entity: Partial<PostEntity> = {};
 
     if (vm.id !== undefined) entity.id = vm.id;
     if (vm.idUser !== undefined) entity.idUser = vm.idUser;

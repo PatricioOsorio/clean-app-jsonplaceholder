@@ -1,6 +1,10 @@
 import type { ComponentProps } from 'react';
 import type { Button } from 'lib-styleguide-simba/button';
-import type { IWithError, IWithLoading, IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type {
+  IWithError,
+  IWithLoading,
+  IWithRootProps,
+} from 'lib-styleguide-simba/component.interfaces';
 
 import type { IPostFormVM } from '../../models/post';
 

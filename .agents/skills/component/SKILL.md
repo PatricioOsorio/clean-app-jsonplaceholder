@@ -95,7 +95,11 @@ The interfaces file is thin: it composes the root props, the model contract, and
 mixins. It does not re-declare the data shape.
 
 ```typescript
-import type { IWithEmpty, IWithLoading, IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type {
+  IWithEmpty,
+  IWithLoading,
+  IWithRootProps,
+} from 'lib-styleguide-simba/component.interfaces';
 import type { IPostMV } from '../../models/post';
 
 export interface IPostProps
