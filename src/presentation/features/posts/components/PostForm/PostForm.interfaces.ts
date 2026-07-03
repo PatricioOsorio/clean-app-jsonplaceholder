@@ -8,12 +8,12 @@ import type {
 
 import type { IPostFormVM } from '../../models/post';
 
-export interface IPostFormProps
-  extends IWithRootProps<'form'>, IPostFormVM, IWithLoading, IWithError {
+export interface IPostFormProps extends IWithRootProps<'form'>, IPostFormVM {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onTitleChange: (title: string) => void;
   onContentChange: (content: string) => void;
   btnCancelProps?: ComponentProps<typeof Button>;
   btnOkProps?: ComponentProps<typeof Button>;
   errors?: Record<string, string>;
+  status?: IWithLoading & IWithError;
 }

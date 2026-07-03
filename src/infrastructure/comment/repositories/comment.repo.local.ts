@@ -40,7 +40,6 @@ export class CommentRepositoryLocal implements CommentRepository {
     await simulateFaultComment(id, 'getByPostId');
 
     const comments = this.db.getBy((c) => c.idPost === id);
-    if (!comments || comments.length === 0) throw new CommentNotFoundError(id);
 
     return withDelay(comments, resolveDelay());
   }

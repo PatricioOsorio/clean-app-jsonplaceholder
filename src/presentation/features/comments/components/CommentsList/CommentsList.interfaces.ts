@@ -10,5 +10,6 @@ export interface ICommentListVM {
   comments: ICommentVM[];
 }
 
-export interface ICommentsListProps
-  extends IWithRootProps, ICommentListVM, IWithLoading, IWithEmpty, IWithError {}
+export interface ICommentsListProps extends IWithRootProps, ICommentListVM {
+  status?: IWithLoading & IWithError & IWithEmpty;
+}

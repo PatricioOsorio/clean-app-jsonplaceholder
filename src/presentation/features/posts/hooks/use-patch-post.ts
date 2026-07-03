@@ -3,26 +3,30 @@ import { usePostsDependencies } from '@presentation/features/posts/hooks';
 import { useToastWithOptimistic } from '@presentation/shared/hooks';
 import type { IPatchPostProps } from '@domain/post';
 import type { IPostVM } from '@presentation/features/posts/models/post';
+import type { IPostsListCache } from '@presentation/features/posts/hooks';
 
 export const usePatchPost = () => {
   const { posts, validators } = usePostsDependencies();
 
   return useToastWithOptimistic({
-    queryKey: QUERY_KEYS.posts.all(),
+    queryKey: QUERY_KEYS.posts.list(),
     mutationFn: async ({ id, input }: { id: number; input: IPatchPostProps }) => {
       const dto = validators.patch.validate(input);
       return posts.patch(id, dto);
     },
 
     optimisticUpdate: (
-      old: IPostVM[] = [],
+      old: IPostsListCache = { data: [], total: 0 },
       { id, input }: { id: number; input: IPatchPostProps },
     ) => {
       const defined = Object.fromEntries(Object.entries(input).filter(([, v]) => v !== undefined));
-      return old.map((post): IPostVM => {
-        if (post.id !== id) return post;
-        return { ...post, ...defined, __optimistic: true };
-      });
+      return {
+        ...old,
+        data: old.data.map((post): IPostVM => {
+          if (post.id !== id) return post;
+          return { ...post, ...defined, __optimistic: true };
+        }),
+      };
     },
 
     messages: {

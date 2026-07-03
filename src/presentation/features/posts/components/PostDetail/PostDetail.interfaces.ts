@@ -11,11 +11,11 @@ export interface IPostDetailVM {
   isOptimistic?: boolean;
 }
 
-export interface IPostDetailProps
-  extends IWithRootProps<'article'>, IWithLoading, IWithError, IWithEmpty, IPostDetailVM {
+export interface IPostDetailProps extends IWithRootProps<'article'>, IPostDetailVM {
   onBack?: () => void;
   onEdit?: (post: IPostVM, e: React.MouseEvent<HTMLButtonElement>) => void;
   onDelete?: (id: number, e: React.MouseEvent<HTMLButtonElement>) => void;
 
   isDeleting?: boolean;
+  status?: IWithLoading & IWithError & IWithEmpty;
 }

@@ -1,4 +1,4 @@
-import { Posts } from '../../components';
+import { Post, Posts } from '../../components';
 import { usePostsPage } from './usePostsPage';
 
 import './PostsPage.css';
@@ -39,11 +39,13 @@ export const PostsPage = () => {
 
       <div className="ppc__content">
         <Posts
-          errorDescription={errorMessage}
-          errorTitle={errorTitle}
-          isEmpty={isEmpty}
-          isError={isError}
-          isLoading={isLoading}
+          status={{
+            errorDescription: errorMessage,
+            errorTitle,
+            isEmpty,
+            isError,
+            isLoading,
+          }}
           postProps={{
             onEdit: handleEdit,
             onDelete: handleDelete,

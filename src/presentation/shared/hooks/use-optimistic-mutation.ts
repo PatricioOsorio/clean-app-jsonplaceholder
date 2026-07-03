@@ -19,9 +19,9 @@ export const useOptimistic = <TInput, TCache, TData = unknown>(
     onMutate: async (input: TInput) => {
       await queryClient.cancelQueries({ queryKey: options.queryKey });
 
-      const snapshot = queryClient.getQueryData<TCache>(options.queryKey);
+      const snapshot = queryClient.getQueriesData<TCache>({ queryKey: options.queryKey });
 
-      queryClient.setQueryData<TCache>(options.queryKey, (old) =>
+      queryClient.setQueriesData<TCache>({ queryKey: options.queryKey }, (old) =>
         options.optimisticUpdate(old, input),
       );
 
@@ -33,7 +33,9 @@ export const useOptimistic = <TInput, TCache, TData = unknown>(
     },
 
     onError: (error, _input, context) => {
-      queryClient.setQueryData<TCache>(options.queryKey, context?.snapshot);
+      context?.snapshot.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
       options.onError?.(error);
     },
 

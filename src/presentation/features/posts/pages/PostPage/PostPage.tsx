@@ -46,7 +46,7 @@ export const PostPage = () => {
         }}
         content={content}
         errors={fieldErrors}
-        isLoading={isEditMode && isPostLoading}
+        status={{ isLoading: isEditMode && isPostLoading }}
         title={title}
         onContentChange={handleContentChange}
         onSubmit={handleSubmit}

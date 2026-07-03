@@ -4,6 +4,12 @@ import { PostMapper } from '@presentation/features/posts/models/post';
 import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { usePostsDependencies } from '@presentation/features/posts/hooks';
 import type { IGetPostsParams } from '@domain/post';
+import type { IPostVM } from '@presentation/features/posts/models/post';
+
+export interface IPostsListCache {
+  data: IPostVM[];
+  total: number;
+}
 
 export const usePosts = (params?: IGetPostsParams) => {
   const { posts } = usePostsDependencies();

@@ -6,11 +6,10 @@ import type {
 } from 'lib-styleguide-simba/component.interfaces';
 import type { IPostVM } from '../../models/post';
 
-type IPostVMLocal = Pick<IPostVM, 'id' | 'title' | 'content' | 'idUser'>;
-
-export interface IPostProps
-  extends IWithRootProps<'article'>, IPostVMLocal, IWithLoading, IWithError, IWithEmpty {
+export interface IPostProps extends IWithRootProps<'article'> {
+  post: Pick<IPostVM, 'id' | 'title' | 'content' | 'idUser'>;
   isOptimistic?: boolean;
   onEdit?: (post: IPostVM, e: React.MouseEvent) => void;
   onDelete?: (id: number, e: React.MouseEvent) => void;
+  status?: IWithLoading & IWithError & IWithEmpty;
 }

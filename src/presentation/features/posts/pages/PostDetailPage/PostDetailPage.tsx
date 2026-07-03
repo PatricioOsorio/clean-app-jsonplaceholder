@@ -34,13 +34,15 @@ export const PostDetailPage = () => {
     <section className="post-detail-page">
       <PostDetail
         post={post}
-        isLoading={isPostLoading}
-        isError={isPostError}
-        errorTitle={errorPostTitle}
-        errorDescription={errorPostMessage}
         isDeleting={isDeleting}
-        isEmpty={isPostEmpty}
         isOptimistic={isDeleting}
+        status={{
+          isLoading: isPostLoading,
+          isError: isPostError,
+          errorTitle: errorPostTitle,
+          errorDescription: errorPostMessage,
+          isEmpty: isPostEmpty,
+        }}
         onBack={handleBack}
         onDelete={handleDelete}
         onEdit={handleEdit}
@@ -49,10 +51,12 @@ export const PostDetailPage = () => {
       {shouldShowComments && (
         <CommentsList
           comments={comments}
-          isLoading={isCommentsLoading}
-          isError={isCommentsError}
-          errorTitle={errorCommentsTitle}
-          errorDescription={errorCommentsMessage}
+          status={{
+            isLoading: isCommentsLoading,
+            isError: isCommentsError,
+            errorTitle: errorCommentsTitle,
+            errorDescription: errorCommentsMessage,
+          }}
         />
       )}
     </section>

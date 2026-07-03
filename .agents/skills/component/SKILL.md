@@ -23,12 +23,12 @@ specific**. Pick the archetype first, then apply only its rules. Don't bolt an `
 
 ## Pick the archetype first
 
-| Archetype                   | What it is                                         | Reference                                           | Model                         | `Empty`/`Skeleton`                                                 | Loading/empty render             |
-| --------------------------- | -------------------------------------------------- | --------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------ | -------------------------------- |
-| **Leaf / card**             | One data item, owns its own loading + empty states | `features/posts/components/Post`                    | `Partial<IMV>` in props       | **own subdirs**, attached as `Component.Skeleton`/`.Empty` statics | `renderContent()` helper         |
-| **Composite / list**        | Renders many leaves                                | `features/posts/components/Posts`                   | local `IVM { items?: IMV[] }` | **none** — reuses the leaf's `Leaf.Skeleton`/`Leaf.Empty` statics  | inline `{isLoading && …}` in JSX |
-| **Detail**                  | One full record, bespoke layout                    | `features/posts/components/PostDetail`              | local `IVM { item?: IMV }`    | **none** — inlines its own skeleton/empty markup                   | `renderContent()` helper         |
-| **Presentational / shared** | Static chrome, no data, no states                  | `shared/components/Footer`, `Navigation`, `Loading` | **none**                      | **none**                                                           | none — just renders              |
+| Archetype                   | What it is                                         | Reference                                           | Model                                     | `Empty`/`Skeleton`                                                 | Loading/empty render                                                                                                         |
+| --------------------------- | -------------------------------------------------- | --------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Leaf / card**             | One data item, owns its own loading + empty states | `features/posts/components/Post`                    | `data: IMV` prop (grouped, not flattened) | **own subdirs**, attached as `Component.Skeleton`/`.Empty` statics | `<StatusContent>` wrapper                                                                                                    |
+| **Composite / list**        | Renders many leaves                                | `features/posts/components/Posts`                   | local `IVM { items?: IMV[] }`             | **none** — reuses the leaf's `Leaf.Skeleton`/`Leaf.Empty` statics  | `<StatusContent>` wrapper (list-level state — its own `isLoading/isError/isEmpty`, distinct from each leaf's per-item state) |
+| **Detail**                  | One full record, bespoke layout                    | `features/posts/components/PostDetail`              | local `IVM { item?: IMV }`                | **none** — inlines its own skeleton/empty markup                   | `<StatusContent>` wrapper                                                                                                    |
+| **Presentational / shared** | Static chrome, no data, no states                  | `shared/components/Footer`, `Navigation`, `Loading` | **none**                                  | **none**                                                           | none — just renders                                                                                                          |
 
 The sections below cover every piece. **Apply only the rows your archetype needs.** A leaf uses §1–7.
 A presentational component uses just the core (§2 minus the model/mixins, §3 minus `renderContent`,
@@ -91,25 +91,38 @@ export interface IPostMV {
 
 ## 2. ComponentName.interfaces.ts
 
-The interfaces file is thin: it composes the root props, the model contract, and the loading/empty
-mixins. It does not re-declare the data shape.
+The interfaces file is thin: it composes the root props, the model contract, and one grouped
+`status` prop for the loading/error/empty mixins. It does not re-declare the data shape. The data
+(`IMV`) travels as **one grouped prop**, not flattened into individual fields — this keeps the
+signature short and lets `onEdit`/`onDelete` handlers pass the record straight through instead of
+reassembling it field by field. Same idea for status: `IWithLoading`/`IWithError`/`IWithEmpty` are
+never spread flat into `IProps` — they're intersected into a single optional `status` prop.
 
 ```typescript
 import type {
   IWithEmpty,
+  IWithError,
   IWithLoading,
   IWithRootProps,
 } from 'lib-styleguide-simba/component.interfaces';
-import type { IPostMV } from '../../models/post';
+import type { IPostVM } from '../../models/post';
 
-export interface IPostProps
-  extends IWithRootProps<'article'>, Partial<IPostMV>, IWithLoading, IWithEmpty {}
+export interface IPostProps extends IWithRootProps<'article'> {
+  post: Pick<IPostVM, 'id' | 'title' | 'content' | 'idUser'>;
+  status?: IWithLoading & IWithError & IWithEmpty;
+}
 ```
 
 **Rules:**
 
-- `IProps` = `IWithRootProps<tag>` + `Partial<I<Name>MV>` + `IWithLoading` + `IWithEmpty` + any
+- `IProps` = `IWithRootProps<tag>` + a single grouped data prop (`post: IMV`, or `Pick<IMV, …>` for a
+  subset) + `status?: IWithLoading & IWithError & IWithEmpty` (drop whichever mixin the component
+  doesn't need, e.g. a form with no empty state uses `status?: IWithLoading & IWithError`) + any
   React/lib deps the render needs.
+- `status` is always optional (`status?:`), never required — every `.tsx` gives it a `status = {}`
+  default at the destructuring site (see §3). A required `status` silently breaks at runtime for any
+  caller that spreads a `Partial<IProps>` (TS's JSX spread-prop checker doesn't flag the missing
+  required field through a `Partial<T>` spread), so treat `status?:` as non-negotiable.
 - Import the `IMV` from the feature's models barrel (e.g. `'../../models/post'`), not from a local file.
 - Infer the correct semantic HTML tag for `IWithRootProps<tag>` from the component's purpose
   (`article`, `section`, `aside`, `nav`, `div`, `ul`, `li`, …).
@@ -119,48 +132,42 @@ export interface IPostProps
 
 ## 3. ComponentName.tsx
 
-Conditional states (`isLoading`, `isEmpty`) are handled inside a `renderContent()` helper, and the
-root element with `rootProps` + `cn()` is always rendered around it. Props are destructured by name
-from the `IMV` — no `...rest` spread of vm fields.
+Conditional states (`isLoading`, `isError`, `isEmpty`) are handled by wrapping the real content in
+the shared `<StatusContent>` (`shared/components/StatusContent`) instead of a local
+`renderContent()` helper — it centralizes the same loading/error/empty switch that used to be
+copy-pasted into every leaf/detail component. The root element with `rootProps` + `cn()` is always
+rendered around it, unconditionally. Data comes in as the grouped `post` prop, destructured at the
+point of use (`post.title`, not a flattened `title`). Status comes in as the grouped `status` prop,
+defaulted to `{}` in the signature, and forwarded whole to `<StatusContent {...status} />`, only
+overriding the `*Template` fields that need a component-specific default.
 
 ```tsx
 import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IPostProps } from './Post.interfaces';
 
+import { StatusContent } from '@presentation/shared/components';
 import { PostEmpty } from './Empty/Empty';
 import { PostSkeleton } from './Skeleton/Skeleton';
 import './Post.css';
 
-export const Post = ({ rootProps, id, title, content, idUser, isLoading, isEmpty }: IPostProps) => {
-  const renderContent = () => {
-    if (isLoading) {
-      return <PostSkeleton items={1} />;
-    }
+export const Post = ({ rootProps, post, status = {} }: IPostProps) => (
+  <article {...rootProps} className={cn('post-container', rootProps?.className)}>
+    <StatusContent
+      {...status}
+      emptyTemplate={status.emptyTemplate ?? <PostEmpty />}
+      loadingTemplate={status.loadingTemplate ?? <PostSkeleton items={1} />}
+    >
+      <h2 className="pc__title">{post.title}</h2>
+      <p className="pc__content">{post.content}</p>
 
-    if (isEmpty) {
-      return <PostEmpty />;
-    }
-
-    return (
-      <>
-        <h2 className="pc__title">{title}</h2>
-        <p className="pc__content">{content}</p>
-
-        <div className="pc__footer">
-          {idUser !== undefined && <span className="pc__user">User ID: {idUser}</span>}
-          <span className="pc__id">Post #{id}</span>
-        </div>
-      </>
-    );
-  };
-
-  return (
-    <article {...rootProps} className={cn('post-container', rootProps?.className)}>
-      {renderContent()}
-    </article>
-  );
-};
+      <div className="pc__footer">
+        {post.idUser !== undefined && <span className="pc__user">User ID: {post.idUser}</span>}
+        <span className="pc__id">Post #{post.id}</span>
+      </div>
+    </StatusContent>
+  </article>
+);
 
 Post.Skeleton = PostSkeleton;
 Post.Empty = PostEmpty;
@@ -169,15 +176,21 @@ Post.Empty = PostEmpty;
 **Rules:**
 
 - Named export only (`export const`). No default export.
-- Destructure named `IMV` fields directly in the signature alongside `rootProps`, `isLoading`, `isEmpty`.
-- Use a `renderContent()` helper for the `isLoading` / `isEmpty` / real branches. The root element is
-  rendered once, outside the helper.
+- Destructure `rootProps`, the grouped data prop (`post`), and `status = {}` (with the default) by
+  name — never name `isLoading` / `isError` / `isEmpty` / `*Template` / `*Title` / `*Description`
+  individually in the signature, they live inside `status`.
+  Read data fields off `post.<field>` inside the render, no flattened per-field props.
+- Wrap the real content in `<StatusContent {...status}>`, overriding only the `*Template` props that
+  need this component's own default (its `Skeleton`/`Empty`/`Error`). If content depends on an
+  optional record (e.g. a `post?: IPostVM` in a Detail), fold that into the override:
+  `isEmpty={status.isEmpty || !post}`, and additionally guard the JSX with `{post && (...)}` so the
+  children tree never dereferences an absent record even when unused.
 - Replace `article` with the tag that matches `IWithRootProps<tag>`.
 - Always spread `rootProps` on the root element.
 - Merge classes with `cn()`: base class first, then `rootProps?.className`.
 - Attach sub-components as static properties: `Component.Skeleton = …; Component.Empty = …;`.
-- Import order: `cn` from styleguide → blank → `import type` props → blank → sub-component imports →
-  the `./Component.css` side-effect import last.
+- Import order: `cn` from styleguide → blank → `import type` props → blank → `StatusContent` +
+  sub-component imports → the `./Component.css` side-effect import last.
 
 ---
 
@@ -347,10 +360,10 @@ Examples (all from the real Post component):
 
 - [ ] `IMV` lives in `models/<name>/<name>.mv.ts` — primitives only, no React/lib imports
 - [ ] `interfaces.ts` imports the `IMV` from the models barrel; does not redefine the data shape
-- [ ] `IProps` extends `IWithRootProps<correctTag>`, `Partial<IMV>`, `IWithLoading`, `IWithEmpty`
+- [ ] `IProps` extends `IWithRootProps<correctTag>`, plus a single grouped data prop (`post: IMV` or `Pick<IMV, …>`) and `status?: IWithLoading & IWithError & IWithEmpty` (mixins intersected, dropped if unneeded, always optional)
 - [ ] Root element tag in `.tsx` matches the tag in `IWithRootProps<tag>`
-- [ ] `.tsx` uses a `renderContent()` helper for `isLoading` / `isEmpty` branches
-- [ ] Named `IMV` fields destructured directly (no `...vmProps` spread)
+- [ ] `.tsx` destructures `status = {}` and wraps content in `<StatusContent {...status}>` (no local `renderContent()` switch, no flat `isLoading`/`isError`/`isEmpty` in the signature)
+- [ ] Data read off the grouped prop (`post.field`), not flattened per-field props
 - [ ] `cn()` on parent + Empty roots (base class first, then `rootProps?.className`); Skeleton uses raw className
 - [ ] `Component.Skeleton` and `Component.Empty` attached as static props
 - [ ] Empty & Skeleton each have `.tsx` + `.interfaces.ts` + `.css` (no own barrel)
