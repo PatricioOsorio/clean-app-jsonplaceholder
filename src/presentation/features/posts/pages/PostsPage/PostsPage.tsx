@@ -1,4 +1,4 @@
-import { Post, Posts } from '../../components';
+import { Posts } from '../../components';
 import { usePostsPage } from './usePostsPage';
 
 import './PostsPage.css';
