@@ -2,6 +2,7 @@ import { Posts } from '../../components';
 import { usePostsPage } from './usePostsPage';
 
 import './PostsPage.css';
+import { Pagination } from '@presentation/shared/components';
 
 export const PostsPage = () => {
   const {
@@ -12,6 +13,11 @@ export const PostsPage = () => {
     errorTitle,
     errorMessage,
     isEmpty,
+
+    // paginator
+    page,
+    totalPages,
+    handlePageChange,
 
     // constants
     TITLE,
@@ -44,6 +50,13 @@ export const PostsPage = () => {
           }}
           posts={posts}
           onPostClick={handlePostClick}
+        />
+
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          siblingCount={5}
+          onPageChange={handlePageChange}
         />
       </div>
     </section>

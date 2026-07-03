@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { injectable } from 'tsyringe';
 import axios from 'axios';
-import type { AxiosInstance } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 
 import { ENV } from '@infrastructure/utils';
-import type { HttpRepository } from '@domain/http/http.repo';
+import type { HttpRepository, IHttpResponse } from '@domain/http';
 import { HttpErrorMapper } from '../http-error.mapper';
 
 @injectable()
@@ -38,42 +38,59 @@ export class AxiosHttpClient implements HttpRepository {
     );
   }
 
-  async get<T>(url: string, config?: any): Promise<T> {
+  private toHttpResponse<T>(response: AxiosResponse<T>): IHttpResponse<T> {
+    const headers: Record<string, string> = {};
+
+    if (response.headers) {
+      Object.entries(response.headers).forEach(([key, value]) => {
+        headers[key] = String(value);
+      });
+    }
+
+    return {
+      data: response.data,
+      headers,
+      status: response.status,
+    };
+  }
+
+  async get<T>(url: string, config?: any): Promise<IHttpResponse<T>> {
     try {
       const response = await this.client.get<T>(url, config);
-      return response.data;
+
+      return this.toHttpResponse<T>(response);
     } catch (error) {
       this.handleError(error);
     }
   }
-  async post<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: any): Promise<IHttpResponse<T>> {
     try {
       const response = await this.client.post<T>(url, data, config);
-      return response.data;
+      return this.toHttpResponse<T>(response);
     } catch (error) {
       this.handleError(error);
     }
   }
-  async put<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: any): Promise<IHttpResponse<T>> {
     try {
       const response = await this.client.put<T>(url, data, config);
-      return response.data;
+      return this.toHttpResponse<T>(response);
     } catch (error) {
       this.handleError(error);
     }
   }
-  async patch<T>(url: string, data?: unknown, config?: any): Promise<T> {
+  async patch<T>(url: string, data?: unknown, config?: any): Promise<IHttpResponse<T>> {
     try {
       const response = await this.client.patch<T>(url, data, config);
-      return response.data;
+      return this.toHttpResponse<T>(response);
     } catch (error) {
       this.handleError(error);
     }
   }
-  async delete<T>(url: string, config?: any): Promise<T> {
+  async delete<T>(url: string, config?: any): Promise<IHttpResponse<T>> {
     try {
       const response = await this.client.delete<T>(url, config);
-      return response.data;
+      return this.toHttpResponse<T>(response);
     } catch (error) {
       this.handleError(error);
     }

@@ -1,5 +1,6 @@
 import { PostEntity } from '@domain/post/post.entity';
 import type { IPostResponse } from './post.response';
+import type { IGetPostsParams } from '@domain/post';
 
 export abstract class PostMapper {
   static toEntity(response: IPostResponse): PostEntity {
@@ -19,5 +20,18 @@ export abstract class PostMapper {
     if (entity.content !== undefined) response.body = entity.content;
 
     return response;
+  }
+
+  static toQueryParams(params?: IGetPostsParams): URLSearchParams {
+    const queryParams = new URLSearchParams();
+
+    if (!params) return queryParams;
+
+    if (params.page !== undefined) queryParams.append('_page', params.page.toString());
+    if (params.limit !== undefined) queryParams.append('_limit', params.limit.toString());
+    if (params.sort !== undefined) queryParams.append('_sort', params.sort);
+    if (params.sortOrder !== undefined) queryParams.append('_order', params.sortOrder);
+
+    return queryParams;
   }
 }

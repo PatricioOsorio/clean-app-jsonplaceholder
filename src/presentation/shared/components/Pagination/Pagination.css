@@ -1,0 +1,9 @@
+@reference "@styles/app.css";
+
+.pagination-container {
+  @apply flex justify-center;
+
+  .pc__link--disabled {
+    @apply pointer-events-none opacity-50;
+  }
+}

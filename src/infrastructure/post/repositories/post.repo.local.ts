@@ -2,10 +2,17 @@ import { inject, injectable } from 'tsyringe';
 
 import { CreatePostDto, UpdatePostDto, PatchPostDto, PostRepository } from '@domain/post';
 import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
-import { resolveDelay, runDataCommand, withDelay, LocalDb } from '@infrastructure/utils';
+import {
+  resolveDelay,
+  runDataCommand,
+  withDelay,
+  LocalDb,
+  applyPaginationAndSorting,
+} from '@infrastructure/utils';
 import { simulateFaultPost } from './post.dev';
 import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';
-import type { PostEntity } from '@domain/post';
+import type { IGetPostsParams, PostEntity } from '@domain/post';
+import type { IPaginatedResult } from '@domain/shared';
 
 @injectable()
 export class PostRepositoryLocal implements PostRepository {
@@ -19,7 +26,7 @@ export class PostRepositoryLocal implements PostRepository {
     ]);
   }
 
-  async getAll(): Promise<PostEntity[]> {
+  async getAll(params?: IGetPostsParams): Promise<IPaginatedResult<PostEntity>> {
     runDataCommand({
       onSeed: () => this.db.resetToSeed(),
       onEmpty: () => this.db.clear(),
@@ -27,7 +34,17 @@ export class PostRepositoryLocal implements PostRepository {
 
     await simulateFaultPost(undefined, 'getAll');
 
-    return withDelay(this.db.getAll(), resolveDelay());
+    const allPosts = this.db.getAll();
+    const total = allPosts.length;
+
+    const paginatedPosts = applyPaginationAndSorting(allPosts, params);
+
+    const paginatedResult: IPaginatedResult<PostEntity> = {
+      data: paginatedPosts,
+      total: total,
+    };
+
+    return withDelay(paginatedResult, resolveDelay());
   }
 
   async getById(id: number): Promise<PostEntity> {

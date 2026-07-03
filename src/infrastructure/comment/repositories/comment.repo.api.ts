@@ -24,7 +24,7 @@ export class CommentRepositoryApi implements CommentRepository {
   async getByPostId(id: number): Promise<CommentEntity[]> {
     try {
       const response = await this.httpClient.get<ICommentResponse[]>(`/comments?postId=${id}`);
-      return CommentMapper.toEntities(response);
+      return CommentMapper.toEntities(response.data);
     } catch (error) {
       this.handleError(error, id);
     }
