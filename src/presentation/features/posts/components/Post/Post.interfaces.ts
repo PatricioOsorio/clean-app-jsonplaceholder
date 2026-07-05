@@ -1,4 +1,4 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 import type { IPostVM } from '../../models/post';
 
 export interface IPostProps extends IWithRootProps<'article'> {

@@ -104,7 +104,7 @@ import type {
   IWithError,
   IWithLoading,
   IWithRootProps,
-} from 'lib-styleguide-simba/component.interfaces';
+} from 'lib-styleguide-simba/interfaces';
 import type { IPostVM } from '../../models/post';
 
 export interface IPostProps extends IWithRootProps<'article'> {
@@ -217,7 +217,7 @@ export const PostEmpty = ({ rootProps }: IPostEmptyProps) => {
 Interfaces — usually just the root props:
 
 ```typescript
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
 export interface IPostEmptyProps extends IWithRootProps<'article'> {}
 ```
@@ -258,7 +258,7 @@ export const PostSkeleton = ({ items = 6, rootProps }: IPostSkeletonProps) => {
 Interfaces — root props plus `items`:
 
 ```typescript
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
 export interface IPostSkeletonProps extends IWithRootProps<'article'> {
   items?: number;

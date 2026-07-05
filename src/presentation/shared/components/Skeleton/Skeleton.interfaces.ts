@@ -1,4 +1,4 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
 export type ISkeletonShape = 'text' | 'circle' | 'rect' | 'button';
 export type ISkeletonAnimation = 'shimmer' | 'pulse';

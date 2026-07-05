@@ -1,4 +1,4 @@
-import { Spinner } from 'lib-styleguide-simba/spinner';
+import { Spinner } from 'lib-styleguide-simba/shadcn/spinner';
 import { cn } from 'lib-styleguide-simba/utils';
 
 import type { ILoadingProps } from './Loading.interfaces';

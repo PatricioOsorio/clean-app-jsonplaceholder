@@ -1,4 +1,4 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
 export interface IPaginationProps extends IWithRootProps<'nav'> {
   page: number;

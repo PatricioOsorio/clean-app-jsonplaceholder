@@ -1,5 +1,12 @@
 import { cn } from 'lib-styleguide-simba/utils';
-import { Pagination as UIPagination } from 'lib-styleguide-simba/pagination';
+import {
+  Pagination,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from 'lib-styleguide-simba/shadcn/pagination';
 
 import type { IPaginationProps } from './Pagination.interfaces';
 
@@ -33,7 +40,7 @@ export const getPageRange = (
   return range;
 };
 
-export const Pagination = ({
+export const PaginationCustom = ({
   rootProps,
   page,
   totalPages,
@@ -47,10 +54,10 @@ export const Pagination = ({
   const pages = getPageRange(page, totalPages, siblingCount);
 
   return (
-    <UIPagination {...rootProps} className={cn('pagination-container', rootProps?.className)}>
-      <UIPagination.Content>
-        <UIPagination.Item>
-          <UIPagination.Previous
+    <Pagination {...rootProps} className={cn('pagination-container', rootProps?.className)}>
+      <>
+        <PaginationItem>
+          <PaginationPrevious
             aria-disabled={page === 1}
             className={cn(page === 1 && 'pc__link--disabled')}
             onClick={(e) => {
@@ -58,16 +65,16 @@ export const Pagination = ({
               if (page > 1) onPageChange(page - 1);
             }}
           />
-        </UIPagination.Item>
+        </PaginationItem>
 
         {pages.map((item, index) =>
           item === 'ellipsis' ? (
-            <UIPagination.Item key={`ellipsis-${index}`}>
-              <UIPagination.Ellipsis />
-            </UIPagination.Item>
+            <PaginationItem key={`ellipsis-${index}`}>
+              <PaginationEllipsis />
+            </PaginationItem>
           ) : (
-            <UIPagination.Item key={item}>
-              <UIPagination.Link
+            <PaginationItem key={item}>
+              <PaginationLink
                 isActive={item === page}
                 onClick={(e) => {
                   e.preventDefault();
@@ -75,13 +82,13 @@ export const Pagination = ({
                 }}
               >
                 {item}
-              </UIPagination.Link>
-            </UIPagination.Item>
+              </PaginationLink>
+            </PaginationItem>
           ),
         )}
 
-        <UIPagination.Item>
-          <UIPagination.Next
+        <PaginationItem>
+          <PaginationNext
             aria-disabled={page === totalPages}
             className={cn(page === totalPages && 'pc__link--disabled')}
             onClick={(e) => {
@@ -89,8 +96,8 @@ export const Pagination = ({
               if (page < totalPages) onPageChange(page + 1);
             }}
           />
-        </UIPagination.Item>
-      </UIPagination.Content>
-    </UIPagination>
+        </PaginationItem>
+      </>
+    </Pagination>
   );
 };

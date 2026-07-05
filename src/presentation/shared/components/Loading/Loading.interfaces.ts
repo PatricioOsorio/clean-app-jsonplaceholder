@@ -1,5 +1,5 @@
-import type { Spinner } from 'lib-styleguide-simba/spinner';
-import type { IWithRootProps } from 'lib-styleguide-simba/component.interfaces';
+import type { Spinner } from 'lib-styleguide-simba/shadcn/spinner';
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
 import type { ComponentProps } from 'react';
 

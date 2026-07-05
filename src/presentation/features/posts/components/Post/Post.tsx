@@ -6,13 +6,7 @@ import type { IPostProps } from './Post.interfaces';
 import { PostSkeleton } from './Skeleton/Skeleton';
 import './Post.css';
 
-export const Post = ({
-  rootProps,
-  post,
-  isOptimistic,
-  onEdit,
-  onDelete,
-}: IPostProps) => (
+export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostProps) => (
   <article
     {...rootProps}
     className={cn('post-container', { 'optimistic-working': isOptimistic }, rootProps?.className)}

@@ -3,7 +3,7 @@ import type {
   IWithError,
   IWithLoading,
   IWithRootProps,
-} from 'lib-styleguide-simba/component.interfaces';
+} from 'lib-styleguide-simba/interfaces';
 import type { IPostVM } from '../../models/post';
 import type { IPostProps } from '../Post/Post.interfaces';
 

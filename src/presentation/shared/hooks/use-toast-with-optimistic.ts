@@ -1,4 +1,4 @@
-import { toast } from 'lib-styleguide-simba/sonner';
+import { toast } from 'lib-styleguide-simba/shadcn/sonner';
 import { useOptimistic, type IOptimisticProps } from './use-optimistic-mutation';
 import { formatError } from '@presentation/utils';
 

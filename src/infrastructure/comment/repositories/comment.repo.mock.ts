@@ -1,5 +1,4 @@
 import { CommentEntity, type CommentRepository } from '@domain/comment';
-import { CommentNotFoundError } from '@domain/comment/errors/comment-not-found.error';
 import { simulateFaultComment } from './comment.dev';
 import { resolveDelay, withDelay, InMemoryDb } from '@infrastructure/utils';
 import { injectable } from 'tsyringe';

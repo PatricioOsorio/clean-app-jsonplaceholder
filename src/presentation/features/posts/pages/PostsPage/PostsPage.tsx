@@ -2,7 +2,7 @@ import { Posts } from '../../components';
 import { usePostsPage } from './usePostsPage';
 
 import './PostsPage.css';
-import { Pagination } from '@presentation/shared/components';
+import { PaginationCustom } from '@presentation/shared/components';
 
 export const PostsPage = () => {
   const {
@@ -54,7 +54,7 @@ export const PostsPage = () => {
           onPostClick={handlePostClick}
         />
 
-        <Pagination
+        <PaginationCustom
           page={page}
           totalPages={totalPages}
           siblingCount={5}

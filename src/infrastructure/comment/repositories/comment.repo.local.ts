@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
 import { CommentEntity, CommentRepository } from '@domain/comment';
-import { CommentNotFoundError } from '@domain/comment/errors/comment-not-found.error';
 import { resolveDelay, withDelay, LocalDb } from '@infrastructure/utils';
 import { simulateFaultComment } from './comment.dev';
 import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';

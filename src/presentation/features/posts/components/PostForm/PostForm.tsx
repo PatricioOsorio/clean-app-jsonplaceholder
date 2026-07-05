@@ -1,6 +1,6 @@
-import { Input } from 'lib-styleguide-simba/input';
-import { Textarea } from 'lib-styleguide-simba/textarea';
-import { Label } from 'lib-styleguide-simba/label';
+import { Input } from 'lib-styleguide-simba/shadcn/input';
+import { Textarea } from 'lib-styleguide-simba/shadcn/textarea';
+import { Label } from 'lib-styleguide-simba/shadcn/label';
 import { Button } from 'lib-styleguide-simba/button';
 import { cn } from 'lib-styleguide-simba/utils';
 

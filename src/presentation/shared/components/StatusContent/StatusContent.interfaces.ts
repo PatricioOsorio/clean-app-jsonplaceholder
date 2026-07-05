@@ -1,9 +1,5 @@
 import type { ReactNode } from 'react';
-import type {
-  IWithEmpty,
-  IWithError,
-  IWithLoading,
-} from 'lib-styleguide-simba/component.interfaces';
+import type { IWithEmpty, IWithError, IWithLoading } from 'lib-styleguide-simba/interfaces';
 
 export interface IStatusContentProps extends IWithLoading, IWithError, IWithEmpty {
   children: ReactNode;
