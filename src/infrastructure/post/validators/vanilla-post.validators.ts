@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 
-import { PostInvalidDataError } from '@domain/post/errors';
+import { PostInvalidDataError } from '@domain/auth/errors';
 import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
 import { CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 

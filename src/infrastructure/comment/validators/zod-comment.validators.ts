@@ -12,7 +12,7 @@ import { handleValidationError } from '@infrastructure/utils';
 
 @injectable()
 export class ZodCreateCommentValidator implements IValidatorEntity<CreateCommentDto> {
-  private schema = z.object({
+  private schema: z.ZodType<CreateCommentDto> = z.object({
     idPost: z.number(),
     name: z.string().min(1, 'Name is required'),
     email: z.email(),
@@ -31,7 +31,7 @@ export class ZodCreateCommentValidator implements IValidatorEntity<CreateComment
 
 @injectable()
 export class ZodUpdateCommentValidator implements IValidatorEntity<UpdateCommentDto> {
-  private schema = z.object({
+  private schema: z.ZodType<UpdateCommentDto> = z.object({
     idPost: z.number(),
     name: z.string().min(1, 'Name cannot be empty'),
     email: z.email(),
@@ -50,7 +50,7 @@ export class ZodUpdateCommentValidator implements IValidatorEntity<UpdateComment
 
 @injectable()
 export class ZodPatchCommentValidator implements IValidatorEntity<PatchCommentDto> {
-  private schema = z
+  private schema: z.ZodType<PatchCommentDto> = z
     .object({
       idPost: z.number().optional(),
       name: z.string().min(1, 'Name cannot be empty').optional(),

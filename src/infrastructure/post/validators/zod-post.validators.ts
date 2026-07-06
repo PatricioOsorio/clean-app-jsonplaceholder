@@ -1,14 +1,13 @@
 import { injectable } from 'tsyringe';
 import { z } from 'zod';
 
-import { PostInvalidDataError } from '@domain/post/errors';
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import { CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
+import { CreatePostDto, UpdatePostDto, PatchPostDto, PostInvalidDataError } from '@domain/post';
 import { handleValidationError } from '@infrastructure/utils';
 
 @injectable()
 export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
-  private schema = z.object({
+  private schema: z.ZodType<CreatePostDto> = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title is required'),
     content: z.string().min(1, 'Content is required'),
@@ -26,7 +25,7 @@ export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
 
 @injectable()
 export class ZodUpdatePostValidator implements IValidatorEntity<UpdatePostDto> {
-  private schema = z.object({
+  private schema: z.ZodType<UpdatePostDto> = z.object({
     idUser: z.number(),
     title: z.string().min(1, 'Title cannot be empty'),
     content: z.string().min(1, 'Content cannot be empty'),
@@ -44,7 +43,7 @@ export class ZodUpdatePostValidator implements IValidatorEntity<UpdatePostDto> {
 
 @injectable()
 export class ZodPatchPostValidator implements IValidatorEntity<PatchPostDto> {
-  private schema = z
+  private schema: z.ZodType<PatchPostDto> = z
     .object({
       idUser: z.number().optional(),
       title: z.string().min(1, 'Title cannot be empty').optional(),

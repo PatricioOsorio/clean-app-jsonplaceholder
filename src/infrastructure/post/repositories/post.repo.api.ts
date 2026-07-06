@@ -4,8 +4,13 @@ import { createApiErrorHandler } from '@infrastructure/http';
 import { DomainError } from '@domain/errors/domain.error';
 import { HttpRepository, type IHttpResponse } from '@domain/http/http.repo';
 import { PostMapper } from '../post.mapper';
-import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
-import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
+import {
+  PostRepository,
+  CreatePostDto,
+  UpdatePostDto,
+  PatchPostDto,
+  PostNotFoundError,
+} from '@domain/post';
 import type { IGetPostsParams, PostEntity } from '@domain/post';
 import type { IPostResponse } from '../post.response';
 import type { IPaginatedResult } from '@domain/shared';

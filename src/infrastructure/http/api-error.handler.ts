@@ -1,7 +1,10 @@
 import { HttpError } from '@domain/http';
 import { DomainError, NetworkError } from '@domain/errors';
 
-export type ICustomErrorMapper = (error: HttpError, resourceId?: number) => Error | undefined;
+export type ICustomErrorMapper = (
+  error: HttpError,
+  resourceId?: number | string,
+) => Error | undefined;
 
 export const createApiErrorHandler = (customMapper?: ICustomErrorMapper) => {
   return (error: unknown, resourceId?: number): never => {

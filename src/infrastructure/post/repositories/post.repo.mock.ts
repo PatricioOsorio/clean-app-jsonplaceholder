@@ -2,7 +2,7 @@ import { injectable } from 'tsyringe';
 
 import { CreatePostDto, UpdatePostDto, PatchPostDto, PostRepository } from '@domain/post';
 import type { IGetPostsParams, PostEntity } from '@domain/post';
-import { PostNotFoundError } from '@domain/post/errors/post-not-found.error';
+import { PostNotFoundError } from '@domain/auth/errors/auth-not-found.error';
 import {
   resolveDelay,
   runDataCommand,
