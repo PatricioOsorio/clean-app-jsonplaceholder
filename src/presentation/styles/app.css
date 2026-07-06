@@ -5,16 +5,3 @@
 /* @source '../node_modules/lib-styleguide-simba/dist'; */
 /* @source '../../node_modules/lib-styleguide-simba/dist'; */
 @source '../../../node_modules/lib-styleguide-simba/dist';
-
-@utility optimistic-working {
-  @apply border-primary/60 pointer-events-none relative animate-pulse cursor-not-allowed cursor-wait overflow-hidden border-dashed;
-
-  &::before {
-    content: 'Working…';
-    @apply bg-primary/10 text-primary absolute top-3 right-3 z-10 rounded-full px-2 py-0.5 text-[10px] font-medium;
-  }
-}
-
-@utility optimistic-deleting {
-  @apply pointer-events-none scale-95 opacity-0 transition-all duration-300;
-}
