@@ -14,16 +14,18 @@ import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';
 import type { IGetPostsParams, PostEntity } from '@domain/post';
 import type { IPaginatedResult } from '@domain/shared';
 
+const SEED: PostEntity[] = [
+  { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
+  { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
+  { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
+];
+
 @injectable()
 export class PostRepositoryLocal implements PostRepository {
   private readonly db: LocalDb<PostEntity>;
 
   constructor(@inject(StorageClient.TOKEN) private readonly storage: StorageClient) {
-    this.db = new LocalDb<PostEntity>(this.storage, LOCAL_STORAGE_KEYS.posts, [
-      { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
-      { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
-      { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
-    ]);
+    this.db = new LocalDb<PostEntity>(this.storage, LOCAL_STORAGE_KEYS.posts, SEED);
   }
 
   async getAll(params?: IGetPostsParams): Promise<IPaginatedResult<PostEntity>> {
@@ -41,7 +43,7 @@ export class PostRepositoryLocal implements PostRepository {
 
     const paginatedResult: IPaginatedResult<PostEntity> = {
       data: paginatedPosts,
-      total: total,
+      total,
     };
 
     return withDelay(paginatedResult, resolveDelay());

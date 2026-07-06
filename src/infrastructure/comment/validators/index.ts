@@ -1,1 +1,1 @@
-export * from './zod-post.validators';
+export * from './zod-comment.validators';

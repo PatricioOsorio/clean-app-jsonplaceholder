@@ -13,13 +13,15 @@ import {
 import { simulateFaultPost } from './post.dev';
 import type { IPaginatedResult } from '@domain/shared';
 
+const SEED: PostEntity[] = [
+  { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
+  { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
+  { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
+];
+
 @injectable()
 export class PostRepositoryMock implements PostRepository {
-  private readonly db = new InMemoryDb<PostEntity>([
-    { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
-    { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
-    { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
-  ]);
+  private readonly db = new InMemoryDb<PostEntity>(SEED);
 
   async getAll(params?: IGetPostsParams): Promise<IPaginatedResult<PostEntity>> {
     runDataCommand({
@@ -36,7 +38,7 @@ export class PostRepositoryMock implements PostRepository {
 
     const paginatedResult: IPaginatedResult<PostEntity> = {
       data: sortedPaginatedPosts,
-      total: total,
+      total,
     };
 
     return withDelay(paginatedResult, resolveDelay());

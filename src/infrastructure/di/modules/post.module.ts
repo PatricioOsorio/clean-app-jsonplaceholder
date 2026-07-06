@@ -15,7 +15,7 @@ import {
 import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
-const VALIDATOR_PROVIDER = 'zod'; // zod | vanilla
+const VALIDATOR_PROVIDER = 'zod';
 const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
 
 type IPostRepositoryCtor = ClassProvider<PostRepository>['useClass'];

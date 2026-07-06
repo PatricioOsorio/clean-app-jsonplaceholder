@@ -6,7 +6,7 @@ export type ICreateCommentProps = {
 };
 
 export class CreateCommentDto implements ICreateCommentProps {
-  static readonly VALIDATION_TOKEN = Symbol('CreateCommentDto.Validator');
+  static readonly VALIDATOR_TOKEN = Symbol('CreateCommentDto.Validator');
 
   readonly idPost!: number;
   readonly name!: string;

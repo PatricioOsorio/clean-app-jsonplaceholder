@@ -11,11 +11,15 @@ import type { IPostResponse } from '../post.response';
 import type { IPaginatedResult } from '@domain/shared';
 
 const postErrorHandler = createApiErrorHandler((error, postId) => {
-  if (error.gatewayCode === 'NOT_FOUND') {
-    return postId !== undefined
-      ? new PostNotFoundError(postId)
-      : new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');
+  if (error.gatewayCode !== 'NOT_FOUND') {
+    return;
   }
+
+  if (postId !== undefined) {
+    return new PostNotFoundError(postId);
+  }
+
+  return new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');
 });
 
 @injectable()

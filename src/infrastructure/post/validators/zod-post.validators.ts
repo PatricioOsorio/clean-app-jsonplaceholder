@@ -1,21 +1,10 @@
 import { injectable } from 'tsyringe';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 
 import { PostInvalidDataError } from '@domain/post/errors';
-import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import { CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
-
-function toPostError(error: unknown): never {
-  if (error instanceof ZodError) {
-    const issues: IValidationIssue[] = error.issues.map((issue) => ({
-      field: issue.path.join('.'),
-      message: issue.message,
-    }));
-    const message = issues.map((i) => `${i.field}: ${i.message}`).join(', ');
-    throw new PostInvalidDataError(message || 'Validation error', issues);
-  }
-  throw error;
-}
+import { handleValidationError } from '@infrastructure/utils';
 
 @injectable()
 export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
@@ -30,7 +19,7 @@ export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
       const result = this.schema.parse(input);
       return CreatePostDto.create(result);
     } catch (error) {
-      toPostError(error);
+      return handleValidationError(error, PostInvalidDataError);
     }
   }
 }
@@ -48,7 +37,7 @@ export class ZodUpdatePostValidator implements IValidatorEntity<UpdatePostDto> {
       const result = this.schema.parse(input);
       return UpdatePostDto.create(result);
     } catch (error) {
-      toPostError(error);
+      return handleValidationError(error, PostInvalidDataError);
     }
   }
 }
@@ -70,7 +59,7 @@ export class ZodPatchPostValidator implements IValidatorEntity<PatchPostDto> {
       const result = this.schema.parse(input);
       return PatchPostDto.create(result);
     } catch (error) {
-      toPostError(error);
+      return handleValidationError(error, PostInvalidDataError);
     }
   }
 }
