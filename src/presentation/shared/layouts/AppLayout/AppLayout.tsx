@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router';
-import { Navigation, type INavigationItem } from '../../components/Navigation';
-import { Footer } from '../../components/Footer';
 import './AppLayout.css';
+import { type INavigationItem, Navigation, Footer } from '@presentation/shared/components';
 
 export const AppLayout = () => {
   const navItems: INavigationItem[] = [
@@ -11,10 +10,10 @@ export const AppLayout = () => {
   ];
 
   return (
-    <article className="app-layout">
+    <article className="app-layout-container">
       <Navigation items={navItems} />
 
-      <main className="ap__main">
+      <main className="alc__main">
         <Outlet />
       </main>
 

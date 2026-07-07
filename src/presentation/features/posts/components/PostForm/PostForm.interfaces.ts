@@ -2,14 +2,18 @@ import type { ComponentProps } from 'react';
 import type { Button } from 'lib-styleguide-simba/button';
 import type { IWithError, IWithLoading, IWithRootProps } from 'lib-styleguide-simba/interfaces';
 
-import type { IPostFormVM } from '../../models/post';
+import type { usePostFormConfig } from './usePostForm.config';
 
-export interface IPostFormProps extends IWithRootProps<'form'>, IPostFormVM {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onTitleChange: (title: string) => void;
-  onContentChange: (content: string) => void;
+export interface IPostFormConfigModel {
+  title: string;
+  content: string;
+}
+
+export interface IPostFormProps extends IWithRootProps<'form'> {
+  Input: ReturnType<typeof usePostFormConfig>['Input'];
+
   btnCancelProps?: ComponentProps<typeof Button>;
   btnOkProps?: ComponentProps<typeof Button>;
-  errors?: Record<string, string>;
+
   status?: IWithLoading & IWithError;
 }

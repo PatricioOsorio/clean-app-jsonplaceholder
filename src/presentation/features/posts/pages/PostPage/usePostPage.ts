@@ -1,13 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import { useCreatePost, usePost, useUpdatePost } from '../../hooks';
+import {
+  type IPostFormConfigModel,
+  usePostFormConfig,
+  type IPostFormProps,
+} from '@presentation/features/posts/components';
+import { mapIssuesToForm } from '@presentation/utils';
 
 const USER_ID = 1; // TODO: replace with auth logic when implemented
 
 export const usePostPage = () => {
   const navigate = useNavigate();
-  const isInitialized = useRef(false);
+
+  const { Input, hookForm } = usePostFormConfig();
 
   // edit logic
   const { id: urlPostId } = useParams();
@@ -15,58 +22,29 @@ export const usePostPage = () => {
   const idPost = Number(urlPostId);
 
   const { data: postData, isLoading: isPostLoading } = usePost(idPost);
-  const { mutate: updatePost, isPending: isUpdatingPost, error: updateError } = useUpdatePost();
+  const { mutate: updatePost, isPending: isUpdatingPost } = useUpdatePost();
 
   // create logic
-  const { mutate: createPost, isPending: isCreatingPost, error: createError } = useCreatePost();
+  const { mutate: createPost, isPending: isCreatingPost } = useCreatePost();
 
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
+  const handleMutationError = (err: unknown) =>
+    mapIssuesToForm<IPostFormConfigModel>(err, hookForm.setError);
 
-  // shared logic
-  // const isValid = title.trim().length > 0 && content.trim().length > 0;
+  const handleSubmit = hookForm.handleSubmit((data) => {
+    const { title, content } = data;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const payload = { title, content, idUser: USER_ID };
+    const options = {
+      onSuccess: () => navigate('/posts'),
+      onError: handleMutationError,
+    };
 
-    // if (!isValid) return;
+    if (isEditMode) return updatePost({ id: idPost, input: payload }, options);
 
-    const titleTrimmed = title.trim();
-    const contentTrimmed = content.trim();
-
-    if (isEditMode) {
-      return updatePost(
-        {
-          id: idPost,
-          input: { title: titleTrimmed, content: contentTrimmed, idUser: USER_ID },
-        },
-        {
-          onSuccess: () => navigate('/posts'),
-        },
-      );
-    }
-
-    return createPost(
-      { title: titleTrimmed, content: contentTrimmed, idUser: USER_ID },
-      {
-        onSuccess: () => navigate('/posts'),
-      },
-    );
-  };
-
-  useEffect(() => {
-    if (!isEditMode || isPostLoading || !postData || isInitialized.current) return;
-
-    setTitle(postData.title);
-    setContent(postData.content);
-
-    isInitialized.current = true;
-  }, [isEditMode, isPostLoading, postData]);
+    return createPost(payload, options);
+  });
 
   const handleCancel = () => navigate('/posts');
-
-  const handleContentChange = (value: string) => setContent(value);
-  const handleTitleChange = (value: string) => setTitle(value);
 
   // computed
   const TITLE = isEditMode ? 'EDIT POST' : 'CREATE POST';
@@ -79,37 +57,34 @@ export const usePostPage = () => {
   const okButtonText =
     isUpdatingPost || isCreatingPost ? 'Saving…' : isEditMode ? 'Update Post' : 'Create Post';
 
-  // TODO : checar esto
-  // Obtener error de la mutación activa
-  const mutationError = isEditMode ? updateError : createError;
+  const btnCancelProps: IPostFormProps['btnCancelProps'] = {
+    disabled: isDisabledCancelButton,
+    onClick: handleCancel,
+    children: 'Cancel',
+  };
 
-  // Procesar issues reactivamente
-  const fieldErrors: Record<string, string> = {};
-  if (mutationError && 'issues' in mutationError && Array.isArray(mutationError.issues)) {
-    for (const issue of mutationError.issues) {
-      fieldErrors[issue.field] = issue.message;
-    }
-  }
+  const btnOkProps: IPostFormProps['btnOkProps'] = {
+    disabled: isDisabledOkButton,
+    children: okButtonText,
+    onClick: handleSubmit,
+  };
+
+  useEffect(() => {
+    if (postData) hookForm.reset(postData);
+  }, [postData, hookForm]);
 
   return {
     // props
     isEditMode,
     isPostLoading,
-    title,
-    content,
+    btnCancelProps,
+    btnOkProps,
+
+    // form
+    Input,
 
     // computed
     TITLE,
     SUBTITLE,
-    isDisabledCancelButton,
-    isDisabledOkButton,
-    okButtonText,
-    fieldErrors,
-
-    // handlers
-    handleCancel,
-    handleSubmit,
-    handleContentChange,
-    handleTitleChange,
   };
 };

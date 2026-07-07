@@ -1,0 +1,23 @@
+import { useAuthContext } from '@presentation/features/auth/providers';
+import { Navigate } from 'react-router-dom';
+import type { IProtectedRouteProps } from './ProtectedRoute.interfaces';
+
+export const ProtectedRoute = ({
+  allowedRoles,
+  fallbackPath = '/login',
+  children,
+}: IProtectedRouteProps) => {
+  const auth = useAuthContext();
+
+  if (!auth.isAuthenticated) return <Navigate replace to={fallbackPath} />;
+
+  const userRoles = auth.userSession?.roles ?? [];
+  const hasRoleRequirements = Boolean(allowedRoles?.length);
+  const userHasRoles = userRoles.some((role) => allowedRoles?.includes(role));
+
+  if (hasRoleRequirements && !userHasRoles) {
+    return <Navigate replace to="/unauthorized" />;
+  }
+
+  return children;
+};

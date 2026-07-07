@@ -17,7 +17,7 @@ import type { IPaginatedResult } from '@domain/shared';
 
 const commentErrorHandler = createApiErrorHandler((error, commentId) => {
   if (error.gatewayCode === 'NOT_FOUND' && commentId !== undefined) {
-    return new CommentNotFoundError(commentId);
+    return new CommentNotFoundError(Number(commentId));
   }
 });
 

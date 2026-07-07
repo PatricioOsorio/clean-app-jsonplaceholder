@@ -12,8 +12,7 @@ export const handleValidationError = (
       message: issue.message,
     }));
 
-    const message = issues.map((i) => `${i.field}: ${i.message}`).join('. ');
-    throw new ErrorHandler(message || 'Validation error', issues);
+    throw new ErrorHandler('Invalid input data. Please check the form fields.', issues);
   }
   throw error;
 };

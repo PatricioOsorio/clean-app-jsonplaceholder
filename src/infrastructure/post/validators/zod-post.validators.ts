@@ -9,8 +9,8 @@ import { handleValidationError } from '@infrastructure/utils';
 export class ZodCreatePostValidator implements IValidatorEntity<CreatePostDto> {
   private schema: z.ZodType<CreatePostDto> = z.object({
     idUser: z.number(),
-    title: z.string().min(1, 'Title is required'),
-    content: z.string().min(1, 'Content is required'),
+    title: z.string({ error: 'Title is required' }).min(1, 'Title cannot be empty'),
+    content: z.string({ error: 'Content is required' }).min(1, 'Content cannot be empty'),
   });
 
   validate(input: unknown): CreatePostDto {

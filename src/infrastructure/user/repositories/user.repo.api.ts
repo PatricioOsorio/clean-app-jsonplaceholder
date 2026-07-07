@@ -21,7 +21,7 @@ const userErrorHandler = createApiErrorHandler((error, userId) => {
   }
 
   if (userId !== undefined) {
-    return new UserNotFoundError(userId);
+    return new UserNotFoundError(Number(userId));
   }
 
   return new DomainError('Load Failed', 'Could not load users from server.', 'NOT_FOUND');

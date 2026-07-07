@@ -8,22 +8,15 @@ export const PostPage = () => {
     // props
     isEditMode,
     isPostLoading,
-    title,
-    content,
+    btnCancelProps,
+    btnOkProps,
+
+    // form
+    Input,
 
     // computed
     TITLE,
     SUBTITLE,
-    isDisabledCancelButton,
-    isDisabledOkButton,
-    okButtonText,
-    fieldErrors,
-
-    // handlers
-    handleCancel,
-    handleSubmit,
-    handleContentChange,
-    handleTitleChange,
   } = usePostPage();
 
   return (
@@ -35,22 +28,10 @@ export const PostPage = () => {
       </header>
 
       <PostForm
-        btnCancelProps={{
-          disabled: isDisabledCancelButton,
-          onClick: handleCancel,
-          children: 'Cancel',
-        }}
-        btnOkProps={{
-          disabled: isDisabledOkButton,
-          children: okButtonText,
-        }}
-        content={content}
-        errors={fieldErrors}
+        Input={Input}
+        btnCancelProps={btnCancelProps}
+        btnOkProps={btnOkProps}
         status={{ isLoading: isEditMode && isPostLoading }}
-        title={title}
-        onContentChange={handleContentChange}
-        onSubmit={handleSubmit}
-        onTitleChange={handleTitleChange}
       />
     </section>
   );

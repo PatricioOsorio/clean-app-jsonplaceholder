@@ -21,7 +21,7 @@ const postErrorHandler = createApiErrorHandler((error, postId) => {
   }
 
   if (postId !== undefined) {
-    return new PostNotFoundError(postId);
+    return new PostNotFoundError(Number(postId));
   }
 
   return new DomainError('Load Failed', 'Could not load posts from server.', 'NOT_FOUND');

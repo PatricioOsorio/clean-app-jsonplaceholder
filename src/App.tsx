@@ -4,23 +4,27 @@ import { RouterProvider } from 'react-router';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ThemeProvider } from 'lib-styleguide-simba/theme-provider';
 
-import { appRouter } from '@presentation/router/app.router';
 import { queryClient } from '@presentation/libs/tanstack';
+import { AuthProvider } from '@presentation/features/auth/providers';
+import { mainRouter } from './main.routes';
+
 export const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark">
-        <RouterProvider router={appRouter} />
-      </ThemeProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider defaultTheme="dark">
+          <RouterProvider router={mainRouter} />
+        </ThemeProvider>
 
-      <TanStackDevtools
-        plugins={[
-          {
-            name: 'TanStack Query',
-            render: <ReactQueryDevtoolsPanel />,
-          },
-        ]}
-      />
-    </QueryClientProvider>
+        <TanStackDevtools
+          plugins={[
+            {
+              name: 'TanStack Query',
+              render: <ReactQueryDevtoolsPanel />,
+            },
+          ]}
+        />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 };
