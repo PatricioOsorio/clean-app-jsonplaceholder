@@ -1,5 +1,5 @@
 @reference "@styles/app.css";
 
 .auth-layout-container {
-
+  @apply flex min-h-screen w-full items-center justify-center bg-zinc-950;
 }

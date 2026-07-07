@@ -6,3 +6,4 @@ export * from './Navigation';
 export * from './Pagination';
 export * from './Skeleton';
 export * from './StatusContent';
+export * from './BorderGlow';

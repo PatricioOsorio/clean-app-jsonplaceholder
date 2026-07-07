@@ -3,9 +3,8 @@ import './AuthLayout.css';
 
 export const AuthLayout = () => {
   return (
-    <div className="auth-layout-container">
-      AuthLayout
+    <main className="auth-layout-container">
       <Outlet />
-    </div>
+    </main>
   );
 };
