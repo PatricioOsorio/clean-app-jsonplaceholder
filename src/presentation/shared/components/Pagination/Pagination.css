@@ -1,7 +1,15 @@
 @reference "@styles/app.css";
 
 .pagination-container {
-  @apply flex justify-center;
+  @apply flex justify-center gap-1;
+
+  [data-slot='pagination-link'] {
+    @apply rounded-full!;
+  }
+
+  [data-slot='pagination-link'][data-active='true'] {
+    @apply bg-foreground! text-background! border-foreground!;
+  }
 
   .pc__link--disabled {
     @apply pointer-events-none opacity-50;

@@ -17,7 +17,7 @@
   }
 
   &.skeleton-container--rect {
-    @apply rounded-lg;
+    @apply rounded-2xl;
   }
 
   &.skeleton-container--circle {
@@ -25,7 +25,7 @@
   }
 
   &.skeleton-container--button {
-    @apply h-9 w-24 rounded-md;
+    @apply h-9 w-24 rounded-xl;
   }
 
   &.skeleton-container--pulse {

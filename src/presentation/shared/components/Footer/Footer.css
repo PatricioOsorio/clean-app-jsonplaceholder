@@ -1,7 +1,7 @@
 @reference "@styles/app.css";
 
 .footer-container {
-  @apply border-border bg-card mt-auto w-full border-t;
+  @apply border-border bg-card/60 mt-auto w-full border-t backdrop-blur-md;
 
   .fc__wrapper {
     @apply mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row;

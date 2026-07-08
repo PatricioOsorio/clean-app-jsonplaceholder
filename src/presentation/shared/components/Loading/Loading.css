@@ -1,9 +1,10 @@
 @reference "@styles/app.css";
 
 .loading-container {
-  @apply fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-xs;
+  @apply bg-background/70 fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center backdrop-blur-md;
 
   .lc__spinner {
-    @apply size-8 text-neutral-200;
+    @apply text-primary size-8;
+    filter: drop-shadow(0 0 12px rgba(45, 212, 191, 0.5));
   }
 }

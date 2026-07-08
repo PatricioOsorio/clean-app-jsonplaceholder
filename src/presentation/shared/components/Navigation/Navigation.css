@@ -1,7 +1,7 @@
 @reference "@styles/app.css";
 
 .navigation-container {
-  @apply border-border bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-md;
+  @apply border-border bg-background/70 sticky top-0 z-50 w-full border-b backdrop-blur-xl;
 
   .nc__wrapper {
     @apply mx-auto flex h-16 max-w-7xl items-center justify-between px-6;
@@ -20,7 +20,7 @@
   }
 
   .nc__list {
-    @apply flex items-center space-x-6;
+    @apply flex items-center gap-2;
   }
 
   .nc__item {
@@ -28,15 +28,10 @@
   }
 
   .nc__link {
-    @apply text-muted-foreground hover:text-foreground relative py-1 text-sm font-medium transition-colors duration-200;
+    @apply bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200;
 
     &.nc__link--active {
-      @apply text-primary;
-
-      &::after {
-        content: '';
-        @apply bg-primary absolute bottom-0 left-0 h-0.5 w-full rounded-full;
-      }
+      @apply bg-foreground text-background hover:bg-foreground hover:text-background;
     }
   }
 }

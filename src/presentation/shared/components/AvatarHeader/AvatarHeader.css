@@ -5,8 +5,8 @@
 
   .ahc__trigger {
     @apply flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:outline-none active:scale-95;
-    @apply border-border hover:border-primary focus:ring-ring;
-    background: linear-gradient(135deg, var(--color-indigo-600) 0%, var(--color-purple-600) 100%);
+    @apply bg-primary text-primary-foreground border-primary/40 hover:border-primary focus:ring-ring;
+    box-shadow: 0 0 20px rgba(45, 212, 191, 0.25);
 
     &--image {
       @apply bg-cover bg-center;
@@ -19,8 +19,9 @@
   }
 
   .ahc__dropdown {
-    @apply absolute right-0 z-50 mt-3 w-64 origin-top-right scale-100 transform rounded-2xl border p-4 opacity-100 transition-all duration-200;
-    @apply bg-popover text-popover-foreground border-border shadow-xl;
+    @apply absolute right-0 z-50 mt-3 w-64 origin-top-right scale-100 transform rounded-3xl border p-4 opacity-100 backdrop-blur-xl transition-all duration-200;
+    @apply bg-popover/90 text-popover-foreground border-border;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
     .ahc__user-info {
       @apply mb-3 flex flex-col;
