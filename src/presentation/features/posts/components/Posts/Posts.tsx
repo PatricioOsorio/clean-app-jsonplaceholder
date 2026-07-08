@@ -8,13 +8,6 @@ import './Posts.css';
 
 export const Posts = ({ rootProps, posts, onPostClick, postProps, status = {} }: IPostsProps) => (
   <section {...rootProps} className={cn('posts-container', rootProps?.className)}>
-    <div className="pc__header">
-      <div className="pc__title-group">
-        <h1 className="pc__title">Featured Publications</h1>
-        <p className="pc__subtitle">Latest updates and insights from our community</p>
-      </div>
-    </div>
-
     <StatusContent
       {...status}
       emptyTemplate={

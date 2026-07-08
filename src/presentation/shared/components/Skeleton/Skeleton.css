@@ -41,5 +41,9 @@
     );
     background-size: 300% 100%;
     animation: skeleton-shimmer 1.4s ease-in-out infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
   }
 }

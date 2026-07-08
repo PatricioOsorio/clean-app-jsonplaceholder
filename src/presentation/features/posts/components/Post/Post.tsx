@@ -23,7 +23,7 @@ export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostP
       <div className="pc__actions">
         {onEdit && (
           <Button
-            aria-label="Editar publicación"
+            aria-label="Edit post"
             size="sm"
             type="button"
             variant="outline"
@@ -32,12 +32,12 @@ export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostP
               onEdit(post, e);
             }}
           >
-            Editar
+            Edit
           </Button>
         )}
         {onDelete && (
           <Button
-            aria-label="Borrar publicación"
+            aria-label="Delete post"
             size="sm"
             type="button"
             variant="destructive"
@@ -46,7 +46,7 @@ export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostP
               onDelete(post.id, e);
             }}
           >
-            Borrar
+            Delete
           </Button>
         )}
       </div>

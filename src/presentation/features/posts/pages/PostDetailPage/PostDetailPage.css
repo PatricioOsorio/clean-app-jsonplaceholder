@@ -1,5 +1,5 @@
 @reference "@styles/app.css";
 
 .post-detail-page {
-  @apply bg-background relative flex flex-col gap-4 p-6;
+  @apply bg-background relative flex w-full flex-col gap-8 py-8;
 }

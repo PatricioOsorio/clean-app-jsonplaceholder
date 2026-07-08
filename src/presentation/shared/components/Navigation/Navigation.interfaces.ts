@@ -15,4 +15,6 @@ export interface INavigationProps extends IWithRootProps<'nav'>, INavigationVM {
   user?: IAvatarHeaderVM | null;
   onLogout?: () => void;
   onLoginClick?: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }

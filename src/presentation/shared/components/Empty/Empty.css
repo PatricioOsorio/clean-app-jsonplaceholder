@@ -7,6 +7,15 @@
     @apply text-muted-foreground mb-2 text-3xl;
   }
 
+  .ec__eyebrow {
+    @apply text-primary relative mb-1 pl-3 text-[11px] font-semibold tracking-[0.2em] uppercase;
+
+    &::before {
+      content: '';
+      @apply bg-primary absolute top-1/2 left-0 h-2 w-0.5 -translate-y-1/2 rounded-full;
+    }
+  }
+
   .ec__title {
     @apply text-foreground text-lg font-semibold;
   }

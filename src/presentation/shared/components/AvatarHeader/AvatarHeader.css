@@ -1,26 +1,32 @@
 @reference "@styles/app.css";
 
 .avatar-header-container {
-  @apply relative inline-block;
+  @apply relative block w-full;
 
   .ahc__trigger {
-    @apply flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:outline-none active:scale-95;
-    @apply bg-primary text-primary-foreground border-primary/40 hover:border-primary focus:ring-ring;
+    @apply hover:bg-accent flex w-full cursor-pointer items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none;
+    @apply focus:ring-ring;
+  }
+
+  .ahc__avatar {
+    @apply bg-primary text-primary-foreground flex h-10 w-10 flex-none items-center justify-center rounded-full text-sm font-bold tracking-wider uppercase select-none;
     box-shadow: 0 0 20px rgba(45, 212, 191, 0.25);
+  }
 
-    &--image {
-      @apply bg-cover bg-center;
-    }
+  .ahc__meta {
+    @apply flex min-w-0 flex-col;
+  }
 
-    .ahc__initials {
-      @apply text-sm font-bold tracking-wider uppercase select-none;
-      @apply text-primary-foreground;
-    }
+  .ahc__name-inline {
+    @apply text-foreground truncate text-sm font-semibold;
+  }
+
+  .ahc__email-inline {
+    @apply text-muted-foreground truncate text-xs;
   }
 
   .ahc__dropdown {
-    @apply absolute right-0 z-50 mt-3 w-64 origin-top-right scale-100 transform rounded-3xl border p-4 opacity-100 backdrop-blur-xl transition-all duration-200;
-    @apply bg-popover/90 text-popover-foreground border-border;
+    @apply bg-popover/90 text-popover-foreground border-border absolute bottom-full left-0 z-50 mb-3 w-full origin-bottom rounded-3xl border p-4 backdrop-blur-xl;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 
     .ahc__user-info {
@@ -28,13 +34,11 @@
     }
 
     .ahc__name {
-      @apply truncate text-sm font-semibold;
-      @apply text-foreground;
+      @apply text-foreground truncate text-sm font-semibold;
     }
 
     .ahc__email {
-      @apply mt-0.5 truncate text-xs;
-      @apply text-muted-foreground;
+      @apply text-muted-foreground mt-0.5 truncate text-xs;
     }
 
     .ahc__roles {
@@ -42,23 +46,20 @@
     }
 
     .ahc__role-tag {
-      @apply rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase select-none;
-      @apply bg-secondary text-secondary-foreground border-border;
+      @apply bg-secondary text-secondary-foreground border-border rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase select-none;
     }
 
     .ahc__divider {
-      @apply -mx-4 my-3 h-px;
-      @apply bg-border;
+      @apply bg-border -mx-4 my-3 h-px;
     }
 
     .ahc__logout-btn {
-      @apply flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-2 text-xs font-semibold transition-colors duration-200;
-      @apply text-destructive bg-destructive/10 hover:bg-destructive/20;
+      @apply text-destructive bg-destructive/10 hover:bg-destructive/20 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-2 text-xs font-semibold transition-colors duration-200;
     }
   }
 
   .ahc__login-btn {
-    @apply flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 active:scale-95;
-    @apply text-primary-foreground bg-primary hover:bg-primary/90 shadow-sm;
+    @apply text-primary-foreground bg-primary hover:bg-primary/90 flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 active:scale-95;
+    box-shadow: 0 0 20px rgba(45, 212, 191, 0.25);
   }
 }

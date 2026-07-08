@@ -27,10 +27,6 @@ export const AvatarHeader = ({ rootProps, user, onLogout, onLoginClick }: IAvata
 
   return (
     <div {...rootProps} className={cn('avatar-header-container', rootProps?.className)}>
-      <button className="ahc__trigger" type="button" onClick={handleToggle}>
-        <span className="ahc__initials">{getInitials(user.userName)}</span>
-      </button>
-
       {isOpen && (
         <div className="ahc__dropdown">
           <div className="ahc__user-info">
@@ -55,6 +51,14 @@ export const AvatarHeader = ({ rootProps, user, onLogout, onLoginClick }: IAvata
           </button>
         </div>
       )}
+
+      <button className="ahc__trigger" type="button" onClick={handleToggle}>
+        <span className="ahc__avatar">{getInitials(user.userName)}</span>
+        <span className="ahc__meta">
+          <span className="ahc__name-inline">{user.userName}</span>
+          <span className="ahc__email-inline">{user.email}</span>
+        </span>
+      </button>
     </div>
   );
 };

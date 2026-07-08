@@ -21,7 +21,7 @@ export const PostPage = () => {
   return (
     <section className="post-page">
       <header className="pp__header">
-        <p className="pp__system-tag">Editor de publicaciones</p>
+        <p className="pp__system-tag">Post editor</p>
         <h1 className="pp__title">{TITLE}</h1>
         <p className="pp__subtitle">{SUBTITLE}</p>
       </header>

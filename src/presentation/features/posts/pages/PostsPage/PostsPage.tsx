@@ -32,7 +32,7 @@ export const PostsPage = () => {
   return (
     <section className="posts-page-container">
       <header className="ppc__header">
-        <p className="ppc__system-tag">Publicaciones</p>
+        <p className="ppc__system-tag">Publications</p>
         <h1 className="ppc__title">{TITLE}</h1>
         <p className="ppc__subtitle">{SUBTITLE}</p>
       </header>

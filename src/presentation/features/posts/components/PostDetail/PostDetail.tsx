@@ -65,26 +65,26 @@ export const PostDetail = ({
             <div className="pdc__actions">
               {onEdit && (
                 <Button
-                  aria-label="Editar publicación"
+                  aria-label="Edit post"
                   disabled={isDeleting}
                   size="sm"
                   type="button"
                   variant="outline"
                   onClick={(e) => onEdit(post, e)}
                 >
-                  Editar
+                  Edit
                 </Button>
               )}
               {onDelete && (
                 <Button
-                  aria-label="Borrar publicación"
+                  aria-label="Delete post"
                   disabled={isDeleting}
                   size="sm"
                   type="button"
                   variant="destructive"
                   onClick={(e) => onDelete(post.id, e)}
                 >
-                  {isDeleting ? 'Borrando...' : 'Borrar'}
+                  {isDeleting ? 'Deleting...' : 'Delete'}
                 </Button>
               )}
             </div>

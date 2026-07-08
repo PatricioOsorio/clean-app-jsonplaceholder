@@ -9,21 +9,21 @@ export const HomePage = () => {
 
       <div className="hpc__content">
         <div className="hpc__title-wrapper">
-          <p className="hpc__system-tag">Sandbox de aprendizaje</p>
+          <p className="hpc__system-tag">Learning sandbox</p>
           <h1 className="hpc__title">
             Clean Architecture
             <br />
-            <span className="hpc__title-highlight">en la práctica.</span>
+            <span className="hpc__title-highlight">in practice.</span>
           </h1>
         </div>
 
         <p className="hpc__description">
-          Dominio agnóstico. Infraestructura enchufable. Presentación reactiva. Una app real
-          construida capa por capa.
+          Domain agnostic. Infrastructure pluggable. Presentation reactive. A real app built layer
+          by layer.
         </p>
 
         <Link className="hpc__cta-button" to="/posts">
-          Explorar posts
+          Explore posts
         </Link>
       </div>
     </section>

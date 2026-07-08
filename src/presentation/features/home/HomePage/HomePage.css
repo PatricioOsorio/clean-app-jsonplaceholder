@@ -21,7 +21,12 @@
   }
 
   .hpc__system-tag {
-    @apply text-primary mb-3 text-sm font-medium;
+    @apply text-primary relative mb-3 inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] uppercase;
+
+    &::before {
+      content: '';
+      @apply bg-primary h-2 w-0.5 rounded-full;
+    }
   }
 
   .hpc__title {

@@ -1,10 +1,20 @@
 @reference "@styles/app.css";
 
 .loading-container {
-  @apply bg-background/70 fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center backdrop-blur-md;
+  @apply bg-background/70 fixed top-0 left-0 z-50 flex h-screen w-screen flex-col items-center justify-center gap-3 backdrop-blur-md;
 
   .lc__spinner {
     @apply text-primary size-8;
     filter: drop-shadow(0 0 12px rgba(45, 212, 191, 0.5));
+  }
+
+  .lc__label {
+    @apply text-primary text-[11px] font-semibold tracking-[0.2em] uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc__spinner {
+      animation: none;
+    }
   }
 }

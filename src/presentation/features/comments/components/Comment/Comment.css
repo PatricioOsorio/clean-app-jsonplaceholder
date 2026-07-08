@@ -1,7 +1,7 @@
 @reference "@styles/app.css";
 
 .comment-container {
-  @apply border-border/80 bg-card/65 text-card-foreground hover:border-primary/30 hover:bg-card/90 relative flex flex-col rounded-2xl border p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.08)];
+  @apply border-border bg-card text-card-foreground relative flex flex-col rounded-2xl border p-5 shadow-xs transition-shadow duration-200 hover:shadow-md;
 
   &.optimistic-working {
     @apply pointer-events-none opacity-60;
@@ -11,32 +11,24 @@
     @apply relative flex gap-4;
   }
 
-  /* Interactive thread line anchor */
   .cc__thread-line {
-    @apply bg-muted/40 hover:bg-primary/50 relative w-0.5 shrink-0 rounded-full transition-colors duration-300;
-
-    /* Highlight on comment hover */
-    &::after {
-      content: '';
-      @apply bg-primary absolute inset-0 rounded-full opacity-0 transition-opacity duration-300;
-    }
+    @apply bg-border relative w-0.5 shrink-0 rounded-full transition-colors duration-300;
   }
 
-  &:hover .cc__thread-line::after {
-    @apply opacity-100;
+  &:hover .cc__thread-line {
+    @apply bg-primary/60;
   }
 
   .cc__main-content {
-    @apply flex min-w-0 flex-1 flex-col gap-3.5;
+    @apply flex min-w-0 flex-1 flex-col gap-3;
   }
 
   .cc__header {
-    @apply flex items-center gap-3.5;
+    @apply flex items-center gap-3;
   }
 
-  /* 3D-like Avatar with Glow and Shadow */
   .cc__avatar {
-    @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold tracking-wider shadow-[0_3px_10px_-2px_rgba(0,0,0,0.15)] transition-all duration-300 select-none hover:scale-105 hover:rotate-3;
+    @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold tracking-wider select-none;
   }
 
   .cc__meta {
@@ -44,11 +36,11 @@
   }
 
   .cc__author {
-    @apply text-foreground/90 truncate text-sm font-bold tracking-tight;
+    @apply text-foreground truncate text-sm font-semibold;
   }
 
   .cc__email {
-    @apply text-muted-foreground/80 hover:text-primary truncate text-[11px] transition-colors duration-150;
+    @apply text-muted-foreground truncate text-xs;
   }
 
   .cc__top-actions {
@@ -56,7 +48,7 @@
   }
 
   .cc__id {
-    @apply bg-muted text-muted-foreground border-border/30 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold tracking-wide;
+    @apply bg-muted text-muted-foreground rounded-full px-2.5 py-0.5 text-[11px];
   }
 
   .cc__body {
@@ -64,6 +56,6 @@
   }
 
   .cc__text {
-    @apply text-foreground/85 text-[13.5px] leading-relaxed font-normal whitespace-pre-wrap;
+    @apply text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap;
   }
 }

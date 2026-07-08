@@ -3,22 +3,6 @@
 .posts-container {
   @apply flex w-full flex-col gap-8;
 
-  .pc__header {
-    @apply border-border flex flex-col border-b pb-6 md:flex-row md:items-end md:justify-between;
-  }
-
-  .pc__title-group {
-    @apply space-y-1;
-  }
-
-  .pc__title {
-    @apply text-foreground text-3xl font-bold tracking-tight md:text-4xl;
-  }
-
-  .pc__subtitle {
-    @apply text-muted-foreground text-sm;
-  }
-
   .pc__grid {
     @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
   }

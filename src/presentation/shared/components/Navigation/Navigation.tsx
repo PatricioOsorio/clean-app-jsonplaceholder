@@ -12,10 +12,21 @@ export const Navigation = ({
   user = null,
   onLogout,
   onLoginClick,
+  isOpen = false,
+  onClose,
 }: INavigationProps) => {
   return (
-    <nav {...rootProps} className={cn('navigation-container', rootProps?.className)}>
-      <div className="nc__wrapper">
+    <>
+      {isOpen && <div className="nc__scrim" onClick={onClose} />}
+
+      <nav
+        {...rootProps}
+        className={cn(
+          'navigation-container',
+          isOpen && 'navigation-container--open',
+          rootProps?.className,
+        )}
+      >
         <div className="nc__brand">
           <span className="nc__logo">◈</span>
           <span className="nc__title">CleanApp</span>
@@ -28,6 +39,7 @@ export const Navigation = ({
                 className={({ isActive }) => cn('nc__link', isActive && 'nc__link--active')}
                 end={item.end ?? item.to === '/'}
                 to={item.to}
+                onClick={onClose}
               >
                 {item.label}
               </NavLink>
@@ -35,10 +47,10 @@ export const Navigation = ({
           ))}
         </ul>
 
-        <div>
+        <div className="nc__footer">
           <AvatarHeader user={user} onLoginClick={onLoginClick} onLogout={onLogout} />
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };

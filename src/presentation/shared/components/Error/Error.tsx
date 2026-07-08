@@ -14,6 +14,7 @@ export const Error = ({
   return (
     <div {...rootProps} className={cn('error-container', rootProps?.className)}>
       {icon && <div className="ec__icon">{icon}</div>}
+      <span className="ec__eyebrow">Error</span>
       <h3 className="ec__title">{title}</h3>
       <p className="ec__desc">{description}</p>
       {children && <div className="ec__actions">{children}</div>}

@@ -86,6 +86,9 @@ export const SideRays = ({
   useEffect(() => {
     if (!isVisible || !containerRef.current) return;
 
+    // ponytail: static instead of animated when the OS asks for reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     if (cleanupFunctionRef.current) {
       cleanupFunctionRef.current();
       cleanupFunctionRef.current = null;
@@ -225,7 +228,12 @@ void main() {
 
       window.addEventListener('resize', updateSize);
       updateSize();
-      animationIdRef.current = requestAnimationFrame(loop);
+
+      if (prefersReducedMotion) {
+        renderer.render({ scene: mesh });
+      } else {
+        animationIdRef.current = requestAnimationFrame(loop);
+      }
 
       cleanupFunctionRef.current = () => {
         if (animationIdRef.current) {

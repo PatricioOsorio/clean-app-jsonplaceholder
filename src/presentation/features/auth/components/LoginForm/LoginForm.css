@@ -3,6 +3,10 @@
 .login-form-container {
   @apply flex flex-col gap-5;
 
+  .lfc__skeleton {
+    @apply flex flex-col gap-5;
+  }
+
   .lfc__field {
     @apply flex flex-col items-end gap-1.5;
   }
