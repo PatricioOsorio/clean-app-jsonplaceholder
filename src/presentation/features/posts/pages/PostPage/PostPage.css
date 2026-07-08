@@ -8,14 +8,14 @@
   }
 
   .pp__system-tag {
-    @apply text-primary mb-2 font-mono text-xs tracking-widest uppercase;
+    @apply text-primary mb-2 text-sm font-medium;
   }
 
   .pp__title {
-    @apply text-foreground text-3xl font-bold tracking-tighter md:text-5xl;
+    @apply text-foreground text-3xl font-bold tracking-tight md:text-5xl;
   }
 
   .pp__subtitle {
-    @apply text-muted-foreground mt-4 w-full font-mono text-sm;
+    @apply text-muted-foreground mt-4 w-full text-sm;
   }
 }

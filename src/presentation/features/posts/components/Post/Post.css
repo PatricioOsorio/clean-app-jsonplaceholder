@@ -1,7 +1,7 @@
 @reference "@styles/app.css";
 
 .post-container {
-  @apply border-border bg-card text-card-foreground flex flex-col gap-4 rounded-xl border p-6 shadow-xs transition-shadow duration-200 hover:shadow-md;
+  @apply border-border bg-card text-card-foreground flex flex-col gap-4 rounded-2xl border p-6 shadow-xs transition-shadow duration-200 hover:shadow-md;
 
   .pc__title {
     @apply text-foreground self-start text-start text-xl leading-snug font-semibold;
@@ -28,6 +28,6 @@
   }
 
   .pc__id {
-    @apply bg-muted text-muted-foreground rounded px-2 py-0.5 font-mono text-[10px];
+    @apply bg-muted text-muted-foreground rounded-full px-2.5 py-0.5 text-[11px];
   }
 }

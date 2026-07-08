@@ -16,7 +16,7 @@
   }
 
   .pdc__card {
-    @apply border-border bg-card text-card-foreground flex flex-col gap-8 rounded-2xl border p-8 shadow-xs sm:p-10;
+    @apply border-border bg-card text-card-foreground flex flex-col gap-8 rounded-3xl border p-8 shadow-xs sm:p-10;
   }
 
   .pdc__header {
@@ -24,7 +24,7 @@
   }
 
   .pdc__title {
-    @apply text-foreground text-3xl leading-tight font-extrabold tracking-tight sm:text-4xl;
+    @apply text-foreground text-3xl leading-tight font-bold tracking-tight sm:text-4xl;
   }
 
   .pdc__meta {
@@ -37,6 +37,10 @@
 
   .pdc__author {
     @apply text-foreground;
+  }
+
+  .pdc__id {
+    @apply bg-muted text-muted-foreground rounded-full px-2.5 py-0.5 text-[11px];
   }
 
   .pdc__body {
