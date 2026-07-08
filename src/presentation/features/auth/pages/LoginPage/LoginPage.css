@@ -1,4 +1,44 @@
 @reference "@styles/app.css";
 
 .login-page-container {
+  .lpc__background {
+    @apply pointer-events-none absolute top-0 left-0;
+  }
+
+  .lpc__border-glow {
+    @apply w-full max-w-[26rem] min-w-[30rem] backdrop-blur-md;
+  }
+
+  .lpc__inner {
+    @apply flex flex-col gap-8;
+    @apply px-6 pt-8 pb-7;
+    @apply sm:gap-10 sm:px-8 sm:pt-9 sm:pb-8;
+  }
+
+  .lpc__header {
+    @apply relative flex flex-col gap-3;
+    @apply pl-4;
+
+    &::before {
+      content: '';
+      @apply absolute top-1 left-0 h-2 w-0.5 rounded-full;
+      @apply bg-primary-400;
+      @apply light:bg-primary-500;
+    }
+  }
+
+  .lpc__eyebrow {
+    @apply text-[11px] font-semibold tracking-[0.2em] uppercase;
+    @apply text-primary-400 light:text-primary-500;
+  }
+
+  .lpc__title {
+    @apply text-3xl leading-none font-bold tracking-tight;
+    @apply text-foreground;
+  }
+
+  .lpc__subtitle {
+    @apply text-sm leading-relaxed;
+    @apply text-muted-foreground;
+  }
 }

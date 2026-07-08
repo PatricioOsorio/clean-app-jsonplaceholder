@@ -13,6 +13,7 @@ export interface ILoginFormProps extends IWithRootProps<'form'> {
 
   btnLoginProps?: ComponentProps<typeof Button>;
   btnRegisterProps?: ComponentProps<typeof Button>;
+  btnForgotPasswordProps?: ComponentProps<typeof Button>;
 
   status?: IWithLoading & IWithError;
 }

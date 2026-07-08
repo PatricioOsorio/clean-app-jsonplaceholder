@@ -1,7 +1,30 @@
 @reference "@styles/app.css";
 
 .login-form-container {
+  @apply flex flex-col gap-5;
+
+  .lfc__field {
+    @apply flex flex-col items-end gap-1.5;
+  }
+
+  .lfc__forgot {
+    @apply h-auto p-0 text-xs;
+    @apply text-muted-foreground;
+    @apply hover:text-primary-400 light:hover:text-primary-500;
+  }
+
   .lfc__actions {
     @apply flex flex-col gap-3;
+    @apply mt-1;
+
+    button {
+      @apply w-full;
+    }
+
+    button[data-variant='ghost'] {
+      @apply opacity-60;
+      @apply hover:opacity-100;
+      transition: opacity 0.2s ease;
+    }
   }
 }

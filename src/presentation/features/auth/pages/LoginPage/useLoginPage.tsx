@@ -28,9 +28,14 @@ export const useLoginPage = () => {
   });
 
   const handleRegister = () => {};
+  const handleForgotPassword = () => {};
 
   const btnRegisterProps: ILoginFormProps['btnRegisterProps'] = {
     onClick: handleRegister,
+  };
+
+  const btnForgotPasswordProps: ILoginFormProps['btnForgotPasswordProps'] = {
+    onClick: handleForgotPassword,
   };
 
   const btnLoginProps: ILoginFormProps['btnLoginProps'] = {
@@ -42,6 +47,7 @@ export const useLoginPage = () => {
     // props
     btnRegisterProps,
     btnLoginProps,
+    btnForgotPasswordProps,
 
     // form
     Input,

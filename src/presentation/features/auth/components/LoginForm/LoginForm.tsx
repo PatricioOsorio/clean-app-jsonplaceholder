@@ -10,17 +10,35 @@ export const LoginForm = ({
   status,
   btnRegisterProps,
   btnLoginProps,
+  btnForgotPasswordProps,
   rootProps,
 }: ILoginFormProps) => {
   return (
     <form className={cn('login-form-container', rootProps?.className)}>
       <StatusContent {...status} loadingTemplate={<div>Loading...</div>}>
-        <Input.Email inputProps={{ defaultValue: 'Sincere@april.biz' }} />
-        <Input.Password inputProps={{ defaultValue: 'pass' }} />
+        <Input.Email />
+
+        <div className="lfc__field">
+          <Input.Password />
+          <Button
+            children="Forgot password?"
+            type="button"
+            variant="link"
+            size="sm"
+            className="lfc__forgot"
+            {...btnForgotPasswordProps}
+          />
+        </div>
 
         <div className="lfc__actions">
-          <Button children="Login" type="button" {...btnLoginProps} />
-          <Button children="Register" type="button" variant="ghost" {...btnRegisterProps} />
+          <Button children="Sign in" type="button" {...btnLoginProps} />
+
+          <Button
+            children="Create an account"
+            type="button"
+            variant="ghost"
+            {...btnRegisterProps}
+          />
         </div>
       </StatusContent>
     </form>

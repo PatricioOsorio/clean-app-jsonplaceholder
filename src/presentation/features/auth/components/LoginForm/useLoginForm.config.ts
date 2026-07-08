@@ -38,7 +38,12 @@ export const useLoginFormConfig = () => {
     });
   }, []);
 
-  const formBuilder = useFormBuilder(configForm);
+  const formBuilder = useFormBuilder(configForm, {
+    defaultValues: {
+      email: 'Sincere@april.biz',
+      password: 'pass',
+    },
+  });
 
   return { ...formBuilder };
 };

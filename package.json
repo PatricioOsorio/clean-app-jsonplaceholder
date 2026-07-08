@@ -17,6 +17,7 @@
     "axios": "^1.17.0",
     "clsx": "^2.1.1",
     "form-builder": "./resources/form-builder-0.1.0.tgz",
+    "ogl": "^1.0.11",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.17.0",
