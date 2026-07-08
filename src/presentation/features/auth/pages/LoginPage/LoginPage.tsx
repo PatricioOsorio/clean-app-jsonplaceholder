@@ -19,8 +19,8 @@ export const LoginPage = () => {
     <article className="login-page-container">
       <SideRays
         speed={2.5}
-        rayColor1="#5617da"
-        rayColor2="#4985c3"
+        rayColor1="#2dd4bf"
+        rayColor2="#14b8a6"
         intensity={2}
         spread={2}
         origin="top-right"
@@ -35,12 +35,12 @@ export const LoginPage = () => {
       <BorderGlow
         animated
         edgeSensitivity={30}
-        glowColor="40 80 80"
+        glowColor="45 212 191"
         borderRadius={28}
         glowRadius={24}
         glowIntensity={1}
         coneSpread={25}
-        colors={['#c084fc', '#f472b6', '#38bdf8']}
+        colors={['#2dd4bf', '#5eead4', '#14b8a6']}
         fillOpacity={0.3}
         backgroundColor="hsl(var(--card))"
         className="lpc__border-glow"

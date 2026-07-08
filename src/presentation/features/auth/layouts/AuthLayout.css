@@ -1,5 +1,5 @@
 @reference "@styles/app.css";
 
 .auth-layout-container {
-  @apply flex min-h-screen w-full items-center justify-center overflow-hidden;
+  @apply bg-background flex min-h-screen w-full items-center justify-center overflow-hidden;
 }
