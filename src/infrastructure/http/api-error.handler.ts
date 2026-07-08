@@ -8,6 +8,10 @@ export type ICustomErrorMapper = (
 
 export const createApiErrorHandler = (customMapper?: ICustomErrorMapper) => {
   return (error: unknown, resourceId?: number): never => {
+    if (error instanceof DomainError) {
+      throw error;
+    }
+
     if (!(error instanceof HttpError)) {
       throw new NetworkError();
     }

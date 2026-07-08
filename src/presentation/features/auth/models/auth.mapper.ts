@@ -5,7 +5,7 @@ export abstract class AuthMapper {
   static toVM(entity: AuthEntity): IAuthVM {
     return {
       id: entity.id,
-      email: entity.mail,
+      email: entity.email,
       createdAt: entity.createdAt,
       userName: entity.userName,
       roles: entity.roles,

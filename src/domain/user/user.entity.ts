@@ -18,7 +18,7 @@ export interface ICompany {
 export class UserEntity {
   constructor(
     public id: number,
-    public mail: string,
+    public email: string,
     public name: string,
     public userName: string,
     public address?: IAddress,

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { useCreatePost, usePost, useUpdatePost } from '../../hooks';
 import {
-  type IPostFormConfigModel,
+  type IPostFormModel,
   usePostFormConfig,
   type IPostFormProps,
 } from '@presentation/features/posts/components';
@@ -28,7 +28,7 @@ export const usePostPage = () => {
   const { mutate: createPost, isPending: isCreatingPost } = useCreatePost();
 
   const handleMutationError = (err: unknown) =>
-    mapIssuesToForm<IPostFormConfigModel>(err, hookForm.setError);
+    mapIssuesToForm<IPostFormModel>(err, hookForm.setError);
 
   const handleSubmit = hookForm.handleSubmit((data) => {
     const { title, content } = data;
@@ -51,6 +51,7 @@ export const usePostPage = () => {
   const SUBTITLE = isEditMode
     ? 'Edit your entry. Saved through Clean Architecture Use Cases with an optimistic update.'
     : 'Write a new entry. Saved through Clean Architecture Use Cases with an optimistic update.';
+  const isLoadingForm = isEditMode && isPostLoading;
 
   const isDisabledCancelButton = isUpdatingPost || isCreatingPost;
   const isDisabledOkButton = isUpdatingPost || isCreatingPost;
@@ -75,8 +76,7 @@ export const usePostPage = () => {
 
   return {
     // props
-    isEditMode,
-    isPostLoading,
+    isLoadingForm,
     btnCancelProps,
     btnOkProps,
 

@@ -1,6 +1,7 @@
 import { type RouteObject } from 'react-router-dom';
 import { lazyWithFallback } from 'lib-styleguide-simba/remote-loader';
 import AppLayout from '@presentation/shared/layouts/AppLayout';
+import { ProtectedRoute } from '@presentation/features/auth/components';
 
 const PostDetailPage = lazyWithFallback(
   () => import('@presentation/features/posts/pages/PostDetailPage'),
@@ -10,7 +11,11 @@ const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pa
 
 export const postRoutes: RouteObject[] = [
   {
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

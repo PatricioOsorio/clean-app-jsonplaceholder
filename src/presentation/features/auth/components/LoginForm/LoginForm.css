@@ -1,0 +1,7 @@
+@reference "@styles/app.css";
+
+.login-form-container {
+  .lfc__actions {
+    @apply flex flex-col gap-3;
+  }
+}

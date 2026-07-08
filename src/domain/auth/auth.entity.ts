@@ -5,7 +5,7 @@ export class AuthEntity {
   constructor(
     public id: number,
     public userName: string,
-    public mail: string,
+    public email: string,
     public roles: IRoles[],
     public permissions: IPermissions[],
     public createdAt: Date,

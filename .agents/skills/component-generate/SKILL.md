@@ -9,7 +9,7 @@ Esta skill dicta cómo los agentes de IA deben generar o editar componentes en e
 
 ## Reglas Irrompibles
 
-- **Directiva CSS Obligatoria**: TODO archivo `.css` de componente DEBE comenzar con `@reference "@styles/app.css";` en la primera línea.
+- **Directiva CSS Obligatoria**: TODO archivo `.css` de componente DEBE comenzar con `@reference "@presentation/App.css";` en la primera línea.
 - **Tailwind v4 y CSS Nesting**: No uses utilidades ad-hoc en el HTML (`className="flex flex-col p-4"`). Usa CSS nesting nativo junto con directivas `@apply` de Tailwind CSS v4 exclusivamente dentro del archivo `.css` del componente.
 - **Named Exports**: Todos los componentes se exportan como constantes de flecha (`export const MyComponent = ...`). NUNCA uses `export default` ni la palabra clave `function`.
 - **Tipado de Elementos Raíz**: Todos los componentes deben tipar sus props extendiendo `IWithRootProps<'tag'>` de `lib-styleguide-simba/interfaces`, y propagar `{...rootProps}` en el elemento contenedor raíz.
@@ -89,3 +89,28 @@ MyComponent/
     ├── Skeleton.interfaces.ts
     └── Skeleton.tsx          # Exporta MyComponentSkeleton
 ```
+
+## 3. `ComponentName.css`
+
+- La primera línea siempre debe ser: `@reference "@presentation/App.css";`
+- Priorizar el uso de tokens semánticos de shadcn definidos en [styles-and-tokens.md](file:///Users/1147839/Documents/dev/labs/clean-app-new/.agents/skills/component-generate/references/styles-and-tokens.md).
+- Dark mode es el **default** — no usar el prefijo `dark:`.
+- Light mode usa la variante `light:`.
+- Tailwind v4: usar `@apply` para aplicar utilidades.
+- CSS anidado: las clases hijas deben estar dentro del contenedor padre.
+- Nombre del contenedor en kebab-case: `component-name-container`.
+- Variantes semánticas: `variant-primary`, `variant-success`, etc.
+
+### Orden del bloque `@apply` (obligatorio)
+
+Cada clase CSS sigue **3 reglas de `@apply` en este orden estricto**:
+
+```text
+1. @apply <structure>   → sizes, spacing, layout, position, base typography
+2. @apply <dark styles> → colors, shadows, borders — dark theme (default)
+3. @apply <light styles> → mismos tokens con prefijo light: — light theme
+```
+
+Si un bloque no tiene estilos de color, omitir `@apply` 2 y 3. Si no tiene estructura, omitir 1. Nunca mezclar utilidades de estructura y color en el mismo `@apply`.
+
+- **Sin Comentarios**: No incluir comentarios aclaratorios o etiquetas de bloque en el archivo CSS (ej. evitar `/* 1. Structure */` o `/* 2. Dark styles */`). Las directivas `@apply` deben estar limpias de anotaciones de este tipo.

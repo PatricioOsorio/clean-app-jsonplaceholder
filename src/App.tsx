@@ -12,7 +12,7 @@ export const App = () => {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="system">
           <RouterProvider router={mainRouter} />
         </ThemeProvider>
 

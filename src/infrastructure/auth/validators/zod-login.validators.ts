@@ -8,8 +8,8 @@ import type { IValidatorEntity } from '@domain/shared';
 @injectable()
 export class ZodLoginValidator implements IValidatorEntity<LoginDto> {
   private schema: z.ZodType<LoginDto> = z.object({
-    mail: z.email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
+    email: z.email('Invalid email address'),
+    password: z.string().min(1, 'Password is required'),
   });
 
   validate(input: unknown): LoginDto {

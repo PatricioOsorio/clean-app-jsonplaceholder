@@ -4,7 +4,7 @@ import type { IWithError, IWithLoading, IWithRootProps } from 'lib-styleguide-si
 
 import type { usePostFormConfig } from './usePostForm.config';
 
-export interface IPostFormConfigModel {
+export interface IPostFormModel {
   title: string;
   content: string;
 }

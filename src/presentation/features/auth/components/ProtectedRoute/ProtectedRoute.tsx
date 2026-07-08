@@ -4,7 +4,7 @@ import type { IProtectedRouteProps } from './ProtectedRoute.interfaces';
 
 export const ProtectedRoute = ({
   allowedRoles,
-  fallbackPath = '/login',
+  fallbackPath = '/auth/login',
   children,
 }: IProtectedRouteProps) => {
   const auth = useAuthContext();

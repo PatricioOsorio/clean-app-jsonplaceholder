@@ -34,7 +34,7 @@ export abstract class UserMapper {
   static toVM(entity: UserEntity): IUserVM {
     return {
       id: entity.id,
-      email: entity.mail,
+      email: entity.email,
       name: entity.name,
       userName: entity.userName,
       address: this.mapAddress(entity.address),

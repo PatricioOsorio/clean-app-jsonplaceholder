@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         setUserSession(AuthMapper.toVM(userSession));
       } catch (error) {
         setUserSession(null);
-        throw error;
+        console.error('Error loading user session:', error);
       } finally {
         setIsLoading(false);
       }
@@ -56,14 +56,13 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const handleLogin = async (email: string, password: string) => {
     setIsLoading(true);
-
-    const dto = validators.login.validate({ mail: email, password });
-
-    const userSession = await auth.login(dto);
-
-    setUserSession(AuthMapper.toVM(userSession));
-
-    setIsLoading(false);
+    try {
+      const dto = validators.login.validate({ email, password });
+      const userSession = await auth.login(dto);
+      setUserSession(AuthMapper.toVM(userSession));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogout = async () => {

@@ -77,9 +77,9 @@ export class UserRepositoryApi implements UserRepository {
     }
   }
 
-  async getByMail(mail: string): Promise<UserEntity | null> {
+  async getByEmail(email: string): Promise<UserEntity | null> {
     try {
-      const queryParams = new URLSearchParams({ email: mail });
+      const queryParams = new URLSearchParams({ email });
 
       const response = await this.httpClient.get<IUserResponse[]>('/users', {
         params: queryParams,

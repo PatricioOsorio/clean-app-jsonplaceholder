@@ -3,7 +3,7 @@ import type { IAddress, IContact, ICompany } from '@domain/user';
 export type ICreateUserProps = {
   name: string;
   userName: string;
-  mail: string;
+  email: string;
   address?: IAddress;
   contact?: IContact;
   company?: ICompany;
@@ -14,7 +14,7 @@ export class CreateUserDto implements ICreateUserProps {
 
   readonly name!: string;
   readonly userName!: string;
-  readonly mail!: string;
+  readonly email!: string;
   readonly address?: IAddress;
   readonly contact?: IContact;
   readonly company?: ICompany;

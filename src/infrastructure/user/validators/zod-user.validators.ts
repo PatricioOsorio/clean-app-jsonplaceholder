@@ -24,7 +24,7 @@ const companySchema = z.object({
 @injectable()
 export class ZodCreateUserValidator implements IValidatorEntity<CreateUserDto> {
   private schema: z.ZodType<CreateUserDto> = z.object({
-    mail: z.email('Invalid email address'),
+    email: z.email('Invalid email address'),
     name: z.string().min(1, 'Name is required'),
     userName: z.string().min(1, 'Username is required'),
     address: z.object(addressSchema.shape).optional(),
@@ -45,7 +45,7 @@ export class ZodCreateUserValidator implements IValidatorEntity<CreateUserDto> {
 @injectable()
 export class ZodUpdateUserValidator implements IValidatorEntity<UpdateUserDto> {
   private schema: z.ZodType<UpdateUserDto> = z.object({
-    mail: z.email('Invalid email address'),
+    email: z.email('Invalid email address'),
     name: z.string().min(1, 'Name cannot be empty'),
     userName: z.string().min(1, 'Username cannot be empty'),
     address: z.object(addressSchema.shape).optional(),
@@ -67,7 +67,7 @@ export class ZodUpdateUserValidator implements IValidatorEntity<UpdateUserDto> {
 export class ZodPatchUserValidator implements IValidatorEntity<PatchUserDto> {
   private schema: z.ZodType<PatchUserDto> = z
     .object({
-      mail: z.email('Invalid email address').optional(),
+      email: z.email('Invalid email address').optional(),
       name: z.string().min(1, 'Name cannot be empty').optional(),
       userName: z.string().min(1, 'Username cannot be empty').optional(),
       address: z.object(addressSchema.shape).optional(),

@@ -57,7 +57,7 @@ export abstract class UserMapper {
     const response: Partial<IUserResponse> = {};
 
     if (entity.id !== undefined) response.id = entity.id;
-    if (entity.mail !== undefined) response.email = entity.mail;
+    if (entity.email !== undefined) response.email = entity.email;
     if (entity.name !== undefined) response.name = entity.name;
     if (entity.userName !== undefined) response.username = entity.userName;
 

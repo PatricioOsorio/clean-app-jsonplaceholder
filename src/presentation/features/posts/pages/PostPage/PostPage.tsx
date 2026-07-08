@@ -6,8 +6,7 @@ import './PostPage.css';
 export const PostPage = () => {
   const {
     // props
-    isEditMode,
-    isPostLoading,
+    isLoadingForm,
     btnCancelProps,
     btnOkProps,
 
@@ -31,7 +30,7 @@ export const PostPage = () => {
         Input={Input}
         btnCancelProps={btnCancelProps}
         btnOkProps={btnOkProps}
-        status={{ isLoading: isEditMode && isPostLoading }}
+        status={{ isLoading: isLoadingForm }}
       />
     </section>
   );

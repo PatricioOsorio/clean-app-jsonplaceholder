@@ -14,7 +14,7 @@ import { LOCAL_STORAGE_KEYS, StorageClient } from '@infrastructure/storage';
 
 interface IUserWithRolesAndPermissions {
   userId: number;
-  mail: string;
+  email: string;
   password: string;
   roles: AuthEntity['roles'];
   permissions: AuthEntity['permissions'];
@@ -23,22 +23,22 @@ interface IUserWithRolesAndPermissions {
 const USERS_WITH_ROLES_AND_PERMISSIONS: IUserWithRolesAndPermissions[] = [
   {
     userId: 1,
-    mail: 'Sincere@april.biz',
-    password: 'pass1',
+    email: 'Sincere@april.biz',
+    password: 'pass',
     roles: ['admin', 'user'],
     permissions: ['read', 'write', 'delete'],
   },
   {
     userId: 2,
-    mail: 'Shanna@melissa.tv',
-    password: 'pass2',
+    email: 'Shanna@melissa.tv',
+    password: 'pass',
     roles: ['user'],
     permissions: ['read', 'write'],
   },
   {
     userId: 3,
-    mail: 'Nathan@yesenia.net',
-    password: 'pass3',
+    email: 'Nathan@yesenia.net',
+    password: 'pass',
     roles: ['guest'],
     permissions: ['read'],
   },
@@ -69,12 +69,14 @@ export class AuthRepositoryApi implements AuthRepository {
 
   async login(loginDto: LoginDto): Promise<AuthEntity> {
     try {
-      const userFromApi = await this.userRepository.getByMail(loginDto.mail);
-      if (!userFromApi) throw new AuthNotFoundError(loginDto.mail);
+      const userFromApi = await this.userRepository.getByEmail(loginDto.email);
+      if (!userFromApi) throw new AuthNotFoundError(loginDto.email);
 
       // search from local simulation
-      const userMock = USERS_WITH_ROLES_AND_PERMISSIONS.find((user) => user.mail === loginDto.mail);
-      if (!userMock) throw new AuthNotFoundError(loginDto.mail);
+      const userMock = USERS_WITH_ROLES_AND_PERMISSIONS.find(
+        (user) => user.email === loginDto.email,
+      );
+      if (!userMock) throw new AuthNotFoundError(loginDto.email);
 
       // validate mock password
       const isPasswordValid = userMock.password === loginDto.password;
@@ -84,7 +86,7 @@ export class AuthRepositoryApi implements AuthRepository {
       const authEntity = new AuthEntity(
         userMock.userId,
         userFromApi.userName,
-        userMock.mail,
+        userMock.email,
         userMock.roles,
         userMock.permissions,
         new Date(),

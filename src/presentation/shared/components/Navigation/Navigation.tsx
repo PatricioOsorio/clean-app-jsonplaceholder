@@ -4,8 +4,15 @@ import { cn } from 'lib-styleguide-simba/utils';
 import type { INavigationProps } from './Navigation.interfaces';
 
 import './Navigation.css';
+import { AvatarHeader } from '@presentation/shared/components/AvatarHeader';
 
-export const Navigation = ({ rootProps, items }: INavigationProps) => {
+export const Navigation = ({
+  rootProps,
+  items,
+  user = null,
+  onLogout,
+  onLoginClick,
+}: INavigationProps) => {
   return (
     <nav {...rootProps} className={cn('navigation-container', rootProps?.className)}>
       <div className="nc__wrapper">
@@ -27,6 +34,10 @@ export const Navigation = ({ rootProps, items }: INavigationProps) => {
             </li>
           ))}
         </ul>
+
+        <div>
+          <AvatarHeader user={user} onLoginClick={onLoginClick} onLogout={onLogout} />
+        </div>
       </div>
     </nav>
   );

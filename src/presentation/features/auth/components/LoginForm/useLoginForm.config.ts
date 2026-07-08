@@ -1,37 +1,37 @@
-import { useMemo } from 'react';
 import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/hooks';
-import type { IPostFormModel } from './PostForm.interfaces';
 import { FB } from 'form-builder';
+import { useMemo } from 'react';
 
-export const usePostFormConfig = () => {
+import type { ILoginFormModel } from '@presentation/features/auth/components/LoginForm';
+
+export const useLoginFormConfig = () => {
   const configForm = useMemo(() => {
-    return createFormConfig<IPostFormModel>()({
-      title: {
+    return createFormConfig<ILoginFormModel>()({
+      email: {
         type: 'text',
-        label: FB.LabelRequired.fn('Title'),
+        label: FB.LabelRequired.fn('Email'),
         rules: {
           required: {
             value: true,
-            message: 'Title is required',
+            message: 'Email is required',
           },
           minLength: {
             value: 1,
-            message: 'Title must be at least 1 characters',
+            message: 'Email must be at least 1 characters',
           },
         },
       },
-
-      content: {
-        type: 'textarea',
-        label: FB.LabelRequired.fn('Content'),
+      password: {
+        type: 'text',
+        label: FB.LabelRequired.fn('Password'),
         rules: {
           required: {
             value: true,
-            message: 'Content is required',
+            message: 'Password is required',
           },
           minLength: {
             value: 1,
-            message: 'Content must be at least 1 characters',
+            message: 'Password must be at least 1 characters',
           },
         },
       },

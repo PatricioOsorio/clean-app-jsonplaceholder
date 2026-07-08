@@ -21,7 +21,7 @@ export const PostForm = ({
 
       <div className="pfc__actions">
         <Button type="button" variant="ghost" {...btnCancelProps} />
-        <Button type="submit" {...btnOkProps} />
+        <Button type="button" {...btnOkProps} />
       </div>
     </StatusContent>
   </form>
