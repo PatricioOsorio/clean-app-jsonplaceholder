@@ -37,7 +37,7 @@ export const LoginPage = () => {
         edgeSensitivity={30}
         glowColor="40 80 80"
         borderRadius={28}
-        glowRadius={40}
+        glowRadius={24}
         glowIntensity={1}
         coneSpread={25}
         colors={['#c084fc', '#f472b6', '#38bdf8']}

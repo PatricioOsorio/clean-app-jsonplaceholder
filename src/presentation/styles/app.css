@@ -2,6 +2,16 @@
 
 @import 'lib-styleguide-simba/styles/index.css';
 
-/* @source '../node_modules/lib-styleguide-simba/dist'; */
-/* @source '../../node_modules/lib-styleguide-simba/dist'; */
 @source '../../../node_modules/lib-styleguide-simba/dist';
+
+@import '@fontsource-variable/plus-jakarta-sans';
+
+:root {
+  --radius: 1rem;
+  --font-sans: 'lus Jakarta Sans Variable', sans-serif;
+  --default-font-family: 'lus Jakarta Sans Variable', sans-serif;
+}
+
+.rounded {
+  border-radius: var(--radius);
+}
