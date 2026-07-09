@@ -1,8 +1,7 @@
 ---
 name: Nebula
-description: Dark-first cinematic media UI — teal on deep navy-slate, glass surfaces, generous rounded corners. Built on shadcn + Tailwind v4 tokens.
+description: Dark-first workspace console for a team directory, post feed, and task/photo browser — teal on deep navy-slate, glass surfaces, generous rounded corners. Built on shadcn + Tailwind v4 tokens.
 colors:
-  # shadcn core (dark theme values)
   background: '#0e1320'
   foreground: '#ffffff'
   card: '#141a28'
@@ -32,13 +31,11 @@ colors:
   border: '#232b3d'
   input: '#141a28'
   ring: '#2dd4bf'
-  # charts
   chart-1: '#14b8a6'
   chart-2: '#5eead4'
   chart-3: '#5b7fff'
   chart-4: '#f59e0b'
   chart-5: '#a855f7'
-  # sidebar
   sidebar: '#0b0f18'
   sidebar-foreground: '#909eb3'
   sidebar-primary: '#14b8a6'
@@ -47,7 +44,6 @@ colors:
   sidebar-accent-foreground: '#e2e8f0'
   sidebar-border: '#232b3d'
   sidebar-ring: '#2dd4bf'
-  # extended teal (brand) scale — exposed as primary-*
   primary-50: '#ecfdf5'
   primary-100: '#ccfbf1'
   primary-200: '#99f6e4'
@@ -59,7 +55,6 @@ colors:
   primary-800: '#115e59'
   primary-900: '#134e4a'
   primary-950: '#042f2e'
-  # extended navy-slate scale — exposed as secondary-*
   secondary-50: '#f1f5f9'
   secondary-100: '#e2e8f0'
   secondary-200: '#cbd5e1'
@@ -112,7 +107,6 @@ typography:
     lineHeight: 1.4
     letterSpacing: '0.01em'
 rounded:
-  # base --radius = 1rem; matches lib calc scale
   sm: 0.6rem
   md: 0.8rem
   lg: 1rem
@@ -169,30 +163,13 @@ components:
 
 ## Overview
 
-**Nebula** is a dark-first, cinematic media interface. The mood is a premium
-streaming console at night: deep navy-slate space, content lit by imagery, and a
-single electric teal driving every interaction. Surfaces feel like frosted glass
-floating over a dark backdrop; corners are generously rounded so the UI reads
-soft and modern, never boxy. Restraint on color, drama on depth and glow.
-
-## Token Usage (read first)
-
-This system is built on the project's **shadcn + Tailwind v4** token layer. All
-values above map onto the app's existing CSS variables and Tailwind theme.
-
-- **Always** style via tokens — utilities (`bg-primary`, `text-muted-foreground`,
-  `border-border`, `rounded-2xl`) or CSS vars (`var(--primary)`). **Never raw hex.**
-- The hex values here define what each token _resolves to_ in dark theme; they are
-  the source of truth for the theme, not values to inline in components.
-- Core semantic tokens: `background foreground card card-foreground popover
-popover-foreground primary primary-foreground secondary secondary-foreground
-muted muted-foreground accent accent-foreground destructive danger warning
-success info help border input ring chart-1…5 sidebar*`.
-- Extended ramps `primary-50…950` (teal / brand) and `secondary-50…950`
-  (navy-slate) exist for fine control — use `bg-primary-400`, `text-secondary-300`.
-- Radius: `--radius` base = 1rem → `rounded-sm md lg xl 2xl 3xl 4xl` (calc scale).
-- Fonts: `--font-sans` = Plus Jakarta Sans (primary). `--font-heading`,
-  `--font-display`, `--font-mono` slots exist if a distinct display face is added.
+**Nebula** is a dark-first workspace console for browsing a small organization's
+activity: people, posts, tasks, and photo albums. The mood is a focused night
+shift — deep navy-slate space lit only by content and a single electric teal
+marking what's active or actionable. Surfaces feel like frosted glass floating
+over a dark backdrop; corners are generously rounded so the UI reads soft and
+modern, never boxy. Restraint on color, drama on depth and glow — the interface
+gets out of the way of the directory, the feed, and the task list it's showing.
 
 ## Colors
 
@@ -220,10 +197,10 @@ active media card. Sparingly — glow marks the one thing that matters on a view
 ## Typography
 
 Plus Jakarta Sans (`--font-sans`) throughout — one family, weight + size carry
-hierarchy. (`--font-heading/display` slots available for a future display face.)
+hierarchy.
 
 - **Display / H1:** Bold (700), tight tracking (-0.02em). Hero titles, page headers.
-- **H2:** Semibold (600). Section headers ("Continue Watching", "Trending").
+- **H2:** Semibold (600). Section headers ("Recent activity", "Team directory").
 - **Body:** Regular (400), 1.6 line-height for readability on dark.
 - **Label:** Medium (500), 0.8125rem. Buttons, chips, nav items.
 - **Caption:** 0.75rem, `muted-foreground`. Metadata, ratings, timestamps.
@@ -231,19 +208,19 @@ hierarchy. (`--font-heading/display` slots available for a future display face.)
 ## Layout
 
 - **Spacing scale:** 4 / 8 / 16 / 24 / 40 / 64px. Default gutter 24px; section gap 40px.
-- **App shell:** persistent left sidebar (`sidebar` tokens) + scrollable content,
-  or top nav for media views. Generous outer padding (24–40px).
-- **Grids:** poster/media cards in responsive grids, 16–24px gaps. Horizontal
-  scroll rows for carousels (genre tabs, continue-watching).
-- **Density:** comfortable, not compact. Whitespace is part of the cinematic feel.
+- **App shell:** persistent left sidebar (`sidebar` tokens) + scrollable content
+  for directory/feed/task views. Generous outer padding (24–40px).
+- **Grids:** people and photo cards in responsive grids, 16–24px gaps. Horizontal
+  scroll rows for carousels (recent posts, recent albums).
+- **Density:** comfortable, not compact. Whitespace is part of the focused feel.
 
 ## Elevation & Depth
 
 Depth comes from blur, glow, and subtle shadow — not heavy drop shadows.
 
 - **Surface lift:** `card`/`secondary` over `background` + `border` hairline.
-- **Glass:** translucent `card` + `backdrop-filter: blur(20px)` for heroes/overlays.
-- **Glow:** teal `box-shadow` on the single focal element (active card, primary CTA).
+- **Glass:** translucent `card` + `backdrop-filter: blur(20px)` for profile/album overlays.
+- **Glow:** teal `box-shadow` on the single focal element (selected user, primary CTA).
 - **Card shadow (optional):** `0 8px 32px rgba(0,0,0,0.4)` for floating cards.
 
 ## Shapes
@@ -253,12 +230,12 @@ Everything rounds. Base radius is 1rem (`rounded-lg`); scale up for larger surfa
 - **sm (0.6rem) / md (0.8rem):** nested elements, small tiles, inline controls.
 - **lg (1rem):** buttons, default controls — the base.
 - **xl (1.4rem):** prominent buttons, small cards.
-- **2xl (1.8rem):** media/poster cards.
-- **3xl (2.2rem):** main content cards, panels.
-- **4xl (2.6rem):** hero surfaces, large feature cards.
+- **2xl (1.8rem):** photo/album and person cards.
+- **3xl (2.2rem):** main content cards, panels (post feed, task lists).
+- **4xl (2.6rem):** hero surfaces, profile headers.
 - **full (9999px):** chips, filter tabs, search inputs, avatar/icon buttons, pills.
 
-Pills everywhere for controls (search bar, genre tabs, ghost buttons) — the
+Pills everywhere for controls (search bar, status filters, ghost buttons) — the
 signature move. Big rounded rectangles for content.
 
 ## Components
@@ -266,19 +243,19 @@ signature move. Big rounded rectangles for content.
 - **button-primary:** `bg-primary text-primary-foreground rounded-xl` + teal glow. The one CTA.
 - **button-ghost:** `bg-secondary text-foreground rounded-full`. Secondary actions.
 - **chip / chip-active:** glass pill (`bg-card text-muted-foreground`) → active
-  `bg-foreground text-background`. Genre/filter tabs, category selectors.
-- **card:** `bg-card rounded-3xl` 24px padding. Standard content container.
-- **card-hero:** translucent `card`, `rounded-4xl`, blur, optional teal glow. Featured/hero.
+  `bg-foreground text-background`. Status/filter tabs (e.g. todo completed/pending).
+- **card:** `bg-card rounded-3xl` 24px padding. Standard content container (post, todo row, album tile).
+- **card-hero:** translucent `card`, `rounded-4xl`, blur, optional teal glow. Selected user's profile panel.
 - **input:** `bg-input rounded-full`, 20px horizontal padding. Search-first.
 
 ## Do's and Don'ts
 
 - **Do** consume tokens (utilities / CSS vars) — never inline hex in components.
 - **Do** keep teal rare — one accent moment per view. Its power is scarcity.
-- **Do** use glass + blur for overlays on imagery (chips, play controls, badges).
-- **Do** let poster/media imagery provide the color; chrome stays neutral navy.
+- **Do** use glass + blur for overlays on avatars and photo tiles.
+- **Do** let avatar/photo imagery provide the color; chrome stays neutral navy.
 - **Do** round generously — pills for controls, big radii for cards.
 - **Don't** introduce a second accent hue. Semantic colors are for status only.
 - **Don't** use pure black backgrounds — base is navy-slate (`background`), not #000.
 - **Don't** stack heavy drop shadows; depth is blur + glow + subtle lift.
-- **Don't** tighten spacing to cram content — the cinematic feel needs room.
+- **Don't** tighten spacing to cram content — the focused feel needs room.
