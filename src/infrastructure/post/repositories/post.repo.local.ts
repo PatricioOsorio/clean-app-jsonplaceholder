@@ -6,6 +6,7 @@ import {
   PatchPostDto,
   PostRepository,
   PostNotFoundError,
+  PostEntity,
 } from '@domain/post';
 import {
   resolveDelay,
@@ -16,7 +17,8 @@ import {
 } from '@infrastructure/utils';
 import { simulateFaultPost } from './post.dev';
 import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';
-import type { IGetPostsParams, PostEntity } from '@domain/post';
+import type { IGetPostsParams } from '@domain/post';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
 
 const SEED: PostEntity[] = [
@@ -29,7 +31,10 @@ const SEED: PostEntity[] = [
 export class PostRepositoryLocal implements PostRepository {
   private readonly db: LocalDb<PostEntity>;
 
-  constructor(@inject(StorageClient.TOKEN) private readonly storage: StorageClient) {
+  constructor(
+    @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
+    @inject(PostEntity.TOKEN) private readonly validator: IValidatorEntity<PostEntity>,
+  ) {
     this.db = new LocalDb<PostEntity>(this.storage, LOCAL_STORAGE_KEYS.posts, SEED);
   }
 
@@ -41,7 +46,7 @@ export class PostRepositoryLocal implements PostRepository {
 
     await simulateFaultPost(undefined, 'getAll');
 
-    const allPosts = this.db.getAll();
+    const allPosts = this.db.getAll().map((post) => this.validator.validate(post));
     const total = allPosts.length;
 
     const paginatedPosts = applyPaginationAndSorting(allPosts, params);
@@ -60,13 +65,13 @@ export class PostRepositoryLocal implements PostRepository {
     const post = this.db.getById(id);
     if (!post) throw new PostNotFoundError(id);
 
-    return withDelay(post, resolveDelay());
+    return withDelay(this.validator.validate(post), resolveDelay());
   }
 
   async create(post: CreatePostDto): Promise<PostEntity> {
     await simulateFaultPost(undefined, 'create');
     const newPost = this.db.create(post);
-    return withDelay(newPost, resolveDelay());
+    return withDelay(this.validator.validate(newPost), resolveDelay());
   }
 
   async update(id: number, post: UpdatePostDto): Promise<PostEntity> {
@@ -75,7 +80,7 @@ export class PostRepositoryLocal implements PostRepository {
     const updated = this.db.update(id, post);
     if (!updated) throw new PostNotFoundError(id);
 
-    return withDelay(updated, resolveDelay());
+    return withDelay(this.validator.validate(updated), resolveDelay());
   }
 
   async patch(id: number, fields: PatchPostDto): Promise<PostEntity> {
@@ -84,7 +89,7 @@ export class PostRepositoryLocal implements PostRepository {
     const patched = this.db.update(id, fields);
     if (!patched) throw new PostNotFoundError(id);
 
-    return withDelay(patched, resolveDelay());
+    return withDelay(this.validator.validate(patched), resolveDelay());
   }
 
   async delete(id: number): Promise<boolean> {

@@ -1,4 +1,6 @@
 export class PostEntity {
+  static readonly TOKEN = Symbol('PostEntity.Validator');
+
   constructor(
     public id: number,
     public idUser: number,

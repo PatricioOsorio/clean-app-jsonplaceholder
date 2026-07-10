@@ -2,7 +2,13 @@ import { injectable } from 'tsyringe';
 import { z } from 'zod';
 
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import { CreatePostDto, UpdatePostDto, PatchPostDto, PostInvalidDataError } from '@domain/post';
+import {
+  CreatePostDto,
+  UpdatePostDto,
+  PatchPostDto,
+  PostEntity,
+  PostInvalidDataError,
+} from '@domain/post';
 import { handleValidationError } from '@infrastructure/utils';
 
 @injectable()
@@ -57,6 +63,25 @@ export class ZodPatchPostValidator implements IValidatorEntity<PatchPostDto> {
     try {
       const result = this.schema.parse(input);
       return PatchPostDto.create(result);
+    } catch (error) {
+      return handleValidationError(error, PostInvalidDataError);
+    }
+  }
+}
+
+@injectable()
+export class ZodPostEntityValidator implements IValidatorEntity<PostEntity> {
+  private schema: z.ZodType<PostEntity> = z.object({
+    id: z.number(),
+    idUser: z.number(),
+    title: z.string().min(1, 'Title cannot be empty'),
+    content: z.string().min(1, 'Content cannot be empty'),
+  });
+
+  validate(input: unknown): PostEntity {
+    try {
+      const result = this.schema.parse(input);
+      return new PostEntity(result.id, result.idUser, result.title, result.content);
     } catch (error) {
       return handleValidationError(error, PostInvalidDataError);
     }

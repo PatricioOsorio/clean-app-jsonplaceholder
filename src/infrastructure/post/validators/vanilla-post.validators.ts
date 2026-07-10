@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 
-import { PostInvalidDataError } from '@domain/post';
+import { PostInvalidDataError, PostEntity } from '@domain/post';
 import type { IValidatorEntity, IValidationIssue } from '@domain/shared/validator.entity';
 import { CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
 
@@ -92,5 +92,33 @@ export class VanillaPatchPostValidator implements IValidatorEntity<PatchPostDto>
     }
 
     return PatchPostDto.create({ idUser, title, content });
+  }
+}
+
+@injectable()
+export class VanillaPostEntityValidator implements IValidatorEntity<PostEntity> {
+  validate(input: unknown): PostEntity {
+    const raw = (input || {}) as Partial<PostEntity>;
+
+    const id = Number(raw.id);
+    const idUser = Number(raw.idUser);
+    const title = typeof raw.title === 'string' ? raw.title.trim() : '';
+    const content = typeof raw.content === 'string' ? raw.content.trim() : '';
+
+    const issues: IValidationIssue[] = [];
+    if (!id || isNaN(id)) issues.push({ field: 'id', message: 'Must be a valid post ID' });
+    if (!idUser || isNaN(idUser))
+      issues.push({ field: 'idUser', message: 'Must be a valid user ID' });
+    if (!title) issues.push({ field: 'title', message: 'Title is required' });
+    if (!content) issues.push({ field: 'content', message: 'Content is required' });
+
+    if (issues.length > 0) {
+      throw new PostInvalidDataError(
+        issues.map((i) => `${i.field}: ${i.message}`).join(', '),
+        issues,
+      );
+    }
+
+    return new PostEntity(id, idUser, title, content);
   }
 }

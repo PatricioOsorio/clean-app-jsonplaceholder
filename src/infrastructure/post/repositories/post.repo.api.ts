@@ -10,9 +10,11 @@ import {
   UpdatePostDto,
   PatchPostDto,
   PostNotFoundError,
+  PostEntity,
 } from '@domain/post';
-import type { IGetPostsParams, PostEntity } from '@domain/post';
+import type { IGetPostsParams } from '@domain/post';
 import type { IPostResponse } from '../post.response';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
 
 const postErrorHandler = createApiErrorHandler((error, postId) => {
@@ -29,7 +31,10 @@ const postErrorHandler = createApiErrorHandler((error, postId) => {
 
 @injectable()
 export class PostRepositoryApi implements PostRepository {
-  constructor(@inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository) {}
+  constructor(
+    @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
+    @inject(PostEntity.TOKEN) private readonly validator: IValidatorEntity<PostEntity>,
+  ) {}
 
   /*
    * Handles errors that occur during HTTP requests.
@@ -72,7 +77,7 @@ export class PostRepositoryApi implements PostRepository {
       });
 
       return this.toPaginatedResult<IPostResponse, PostEntity>(response, (responses) =>
-        PostMapper.toEntities(responses),
+        PostMapper.toEntities(responses).map((post) => this.validator.validate(post)),
       );
     } catch (error) {
       this.handleError(error);
@@ -82,7 +87,7 @@ export class PostRepositoryApi implements PostRepository {
   async getById(id: number): Promise<PostEntity> {
     try {
       const response = await this.httpClient.get<IPostResponse>(`/posts/${id}`);
-      return PostMapper.toEntity(response.data);
+      return this.validator.validate(PostMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }
@@ -94,7 +99,7 @@ export class PostRepositoryApi implements PostRepository {
         '/posts',
         PostMapper.toResponse(post),
       );
-      return PostMapper.toEntity(response.data);
+      return this.validator.validate(PostMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }
@@ -106,7 +111,7 @@ export class PostRepositoryApi implements PostRepository {
         `/posts/${id}`,
         PostMapper.toResponse(post),
       );
-      return PostMapper.toEntity(response.data);
+      return this.validator.validate(PostMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }
@@ -118,7 +123,7 @@ export class PostRepositoryApi implements PostRepository {
         `/posts/${id}`,
         PostMapper.toResponse(fields),
       );
-      return PostMapper.toEntity(response.data);
+      return this.validator.validate(PostMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }

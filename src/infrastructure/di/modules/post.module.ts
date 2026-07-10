@@ -8,11 +8,19 @@ import {
   ZodCreatePostValidator,
   ZodUpdatePostValidator,
   ZodPatchPostValidator,
+  ZodPostEntityValidator,
   VanillaCreatePostValidator,
   VanillaUpdatePostValidator,
   VanillaPatchPostValidator,
+  VanillaPostEntityValidator,
 } from '@infrastructure/post';
-import { PostRepository, CreatePostDto, UpdatePostDto, PatchPostDto } from '@domain/post';
+import {
+  PostRepository,
+  CreatePostDto,
+  UpdatePostDto,
+  PatchPostDto,
+  PostEntity,
+} from '@domain/post';
 import { ENV } from '@infrastructure/utils';
 
 const VALIDATOR_PROVIDER = 'zod';
@@ -31,11 +39,13 @@ const VALIDATORS_REPOSITORIES = {
     create: ZodCreatePostValidator,
     update: ZodUpdatePostValidator,
     patch: ZodPatchPostValidator,
+    entity: ZodPostEntityValidator,
   },
   vanilla: {
     create: VanillaCreatePostValidator,
     update: VanillaUpdatePostValidator,
     patch: VanillaPatchPostValidator,
+    entity: VanillaPostEntityValidator,
   },
 };
 
@@ -49,6 +59,9 @@ container.register(UpdatePostDto.VALIDATOR_TOKEN, {
 });
 container.register(PatchPostDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
+});
+container.register(PostEntity.TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });
 
 export { container };
