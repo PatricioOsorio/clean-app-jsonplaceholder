@@ -35,7 +35,7 @@ import { Button } from 'lib-styleguide-simba/button';
 import { Spinner } from 'lib-styleguide-simba/shadcn/spinner';
 
 // Hooks de construcción de formularios
-import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/hooks';
+import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-builder';
 ```
 
 ---

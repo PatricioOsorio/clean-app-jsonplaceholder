@@ -1,4 +1,4 @@
-import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/hooks';
+import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-builder';
 import { FB } from 'form-builder';
 import { useMemo } from 'react';
 

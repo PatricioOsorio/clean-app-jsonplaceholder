@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/hooks';
+import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-builder';
 import type { IPostFormModel } from './PostForm.interfaces';
 import { FB } from 'form-builder';
 
