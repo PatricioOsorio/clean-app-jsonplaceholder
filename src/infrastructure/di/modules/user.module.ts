@@ -1,12 +1,19 @@
 import { container, type ClassProvider } from 'tsyringe';
 
-import { CreateUserDto, PatchUserDto, UpdateUserDto, UserRepository } from '@domain/user';
+import {
+  CreateUserDto,
+  PatchUserDto,
+  UpdateUserDto,
+  UserRepository,
+  UserEntity,
+} from '@domain/user';
 import { ENV } from '@infrastructure/utils';
 import {
   UserRepositoryApi,
   ZodCreateUserValidator,
   ZodPatchUserValidator,
   ZodUpdateUserValidator,
+  ZodUserEntityValidator,
 } from '@infrastructure/user';
 
 const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
@@ -24,6 +31,7 @@ const VALIDATORS_REPOSITORIES = {
     create: ZodCreateUserValidator,
     update: ZodUpdateUserValidator,
     patch: ZodPatchUserValidator,
+    entity: ZodUserEntityValidator,
   },
 };
 
@@ -39,6 +47,10 @@ container.register(UpdateUserDto.VALIDATOR_TOKEN, {
 
 container.register(PatchUserDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES.zod.patch,
+});
+
+container.register(UserEntity.VALIDATOR_TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES.zod.entity,
 });
 
 export { container };

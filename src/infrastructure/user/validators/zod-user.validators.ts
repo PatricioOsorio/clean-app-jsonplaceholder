@@ -1,5 +1,11 @@
 import type { IValidatorEntity } from '@domain/shared';
-import { UserInvalidDataError, CreateUserDto, UpdateUserDto, PatchUserDto } from '@domain/user';
+import {
+  UserInvalidDataError,
+  CreateUserDto,
+  UpdateUserDto,
+  PatchUserDto,
+  UserEntity,
+} from '@domain/user';
 import { handleValidationError } from '@infrastructure/utils';
 import { injectable } from 'tsyringe';
 import z from 'zod';
@@ -82,6 +88,36 @@ export class ZodPatchUserValidator implements IValidatorEntity<PatchUserDto> {
     try {
       const result = this.schema.parse(input);
       return PatchUserDto.create(result);
+    } catch (error) {
+      return handleValidationError(error, UserInvalidDataError);
+    }
+  }
+}
+
+@injectable()
+export class ZodUserEntityValidator implements IValidatorEntity<UserEntity> {
+  private schema: z.ZodType<UserEntity> = z.object({
+    id: z.number(),
+    email: z.email('Invalid email address'),
+    name: z.string().min(1, 'Name cannot be empty'),
+    userName: z.string().min(1, 'Username cannot be empty'),
+    address: z.object(addressSchema.shape).optional(),
+    contact: z.object(contactSchema.shape).optional(),
+    company: z.object(companySchema.shape).optional(),
+  });
+
+  validate(input: unknown): UserEntity {
+    try {
+      const result = this.schema.parse(input);
+      return new UserEntity(
+        result.id,
+        result.email,
+        result.name,
+        result.userName,
+        result.address,
+        result.contact,
+        result.company,
+      );
     } catch (error) {
       return handleValidationError(error, UserInvalidDataError);
     }

@@ -1,8 +1,12 @@
+import { Link } from 'react-router';
+import { Button } from 'lib-styleguide-simba/button';
+import { IconArrowLeft, IconShieldCheck } from 'lib-styleguide-simba/icons';
+
 import { LoginForm } from '@presentation/features/auth/components';
 import { BorderGlow } from '@presentation/shared/components/BorderGlow';
+import { SideRays } from '@presentation/shared/components/SideRays';
 import { useLoginPage } from './useLoginPage';
 import './LoginPage.css';
-import { SideRays } from '@presentation/shared/components/SideRays';
 
 export const LoginPage = () => {
   const {
@@ -18,11 +22,11 @@ export const LoginPage = () => {
   return (
     <article className="login-page-container">
       <SideRays
-        speed={2.5}
+        speed={0.5}
         rayColor1="#2dd4bf"
         rayColor2="#14b8a6"
-        intensity={2}
-        spread={2}
+        intensity={1.5}
+        spread={1}
         origin="top-right"
         tilt={0}
         saturation={1.5}
@@ -35,7 +39,7 @@ export const LoginPage = () => {
       <BorderGlow
         animated
         edgeSensitivity={30}
-        glowColor="45 212 191"
+        glowColor="20 183 166"
         borderRadius={28}
         glowRadius={24}
         glowIntensity={1}
@@ -45,11 +49,25 @@ export const LoginPage = () => {
         backgroundColor="hsl(var(--card))"
         className="lpc__border-glow"
       >
-        <section className="lpc__inner">
+        <section className="lpc__content">
+          <Button
+            asChild
+            variant="text"
+            size="icon-sm"
+            className="lpc__back"
+            aria-label="Back to home"
+          >
+            <Link to="/">
+              <IconArrowLeft />
+            </Link>
+          </Button>
+
           <header className="lpc__header">
-            <span className="lpc__eyebrow">Secure sign-in</span>
+            <span className="lpc__logo" aria-hidden="true">
+              <IconShieldCheck />
+            </span>
             <h1 className="lpc__title">Welcome back</h1>
-            <p className="lpc__subtitle">Sign in to continue</p>
+            <p className="lpc__subtitle">Enter your credentials to access your account.</p>
           </header>
 
           <LoginForm
@@ -60,6 +78,9 @@ export const LoginPage = () => {
           />
         </section>
       </BorderGlow>
+
+      <div className="circle-glow circle-glow-1" />
+      <div className="circle-glow circle-glow-2" />
     </article>
   );
 };

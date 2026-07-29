@@ -16,6 +16,8 @@ export interface ICompany {
 }
 
 export class UserEntity {
+  static readonly VALIDATOR_TOKEN = Symbol('UserEntity.Validator');
+
   constructor(
     public id: number,
     public email: string,

@@ -11,6 +11,7 @@ import { createApiErrorHandler } from '@infrastructure/http';
 import { DomainError } from '@domain/errors';
 import { UserRepository } from '@domain/user';
 import { LOCAL_STORAGE_KEYS, StorageClient } from '@infrastructure/storage';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 
 interface IUserWithRolesAndPermissions {
   userId: number;
@@ -61,6 +62,7 @@ export class AuthRepositoryApi implements AuthRepository {
   constructor(
     @inject(UserRepository.TOKEN) private readonly userRepository: UserRepository,
     @inject(StorageClient.TOKEN) private readonly storageClient: StorageClient,
+    @inject(AuthEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<AuthEntity>,
   ) {}
 
   private handleError(error: unknown, authId?: number): never {
@@ -106,6 +108,9 @@ export class AuthRepositoryApi implements AuthRepository {
   }
 
   async getCurrentUser(): Promise<AuthEntity | null> {
-    return this.storageClient.get(LOCAL_STORAGE_KEYS.authSession);
+    const session = this.storageClient.get<AuthEntity>(LOCAL_STORAGE_KEYS.authSession);
+    if (!session) return null;
+
+    return this.validator.validate(session);
   }
 }

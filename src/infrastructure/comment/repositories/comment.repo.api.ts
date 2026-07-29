@@ -3,8 +3,8 @@ import { inject, injectable } from 'tsyringe';
 import { CommentMapper } from '@infrastructure/comment/comment.mapper';
 import { HttpRepository, type IHttpResponse } from '@domain/http';
 import { createApiErrorHandler } from '@infrastructure/http';
+import { CommentEntity } from '@domain/comment';
 import type {
-  CommentEntity,
   CommentRepository,
   CreateCommentDto,
   IGetCommentsParams,
@@ -13,6 +13,7 @@ import type {
 } from '@domain/comment';
 import type { ICommentResponse } from '@infrastructure/comment/comment.response';
 import { CommentNotFoundError } from '@domain/comment/errors/comment-not-found.error';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
 
 const commentErrorHandler = createApiErrorHandler((error, commentId) => {
@@ -23,7 +24,11 @@ const commentErrorHandler = createApiErrorHandler((error, commentId) => {
 
 @injectable()
 export class CommentRepositoryApi implements CommentRepository {
-  constructor(@inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository) {}
+  constructor(
+    @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
+    @inject(CommentEntity.VALIDATOR_TOKEN)
+    private readonly validator: IValidatorEntity<CommentEntity>,
+  ) {}
 
   private handleError(error: unknown, commentId?: number): never {
     return commentErrorHandler(error, commentId);
@@ -54,7 +59,7 @@ export class CommentRepositoryApi implements CommentRepository {
       });
 
       return this.toPaginatedResult<ICommentResponse, CommentEntity>(response, (responses) =>
-        CommentMapper.toEntities(responses),
+        CommentMapper.toEntities(responses).map((comment) => this.validator.validate(comment)),
       );
     } catch (error) {
       this.handleError(error);
@@ -64,7 +69,7 @@ export class CommentRepositoryApi implements CommentRepository {
   async getById(id: number): Promise<CommentEntity> {
     try {
       const response = await this.httpClient.get<ICommentResponse>(`/comments/${id}`);
-      return CommentMapper.toEntity(response.data);
+      return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }
@@ -73,7 +78,9 @@ export class CommentRepositoryApi implements CommentRepository {
   async getByPostId(id: number): Promise<CommentEntity[]> {
     try {
       const response = await this.httpClient.get<ICommentResponse[]>(`/comments?postId=${id}`);
-      return CommentMapper.toEntities(response.data);
+      return CommentMapper.toEntities(response.data).map((comment) =>
+        this.validator.validate(comment),
+      );
     } catch (error) {
       this.handleError(error, id);
     }
@@ -86,7 +93,7 @@ export class CommentRepositoryApi implements CommentRepository {
         CommentMapper.toResponse(comment),
       );
 
-      return CommentMapper.toEntity(response.data);
+      return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }
@@ -99,7 +106,7 @@ export class CommentRepositoryApi implements CommentRepository {
         CommentMapper.toResponse(comment),
       );
 
-      return CommentMapper.toEntity(response.data);
+      return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }
@@ -112,7 +119,7 @@ export class CommentRepositoryApi implements CommentRepository {
         CommentMapper.toResponse(fields),
       );
 
-      return CommentMapper.toEntity(response.data);
+      return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }

@@ -3,32 +3,25 @@
 .login-form-container {
   @apply flex flex-col gap-5;
 
-  .lfc__skeleton {
-    @apply flex flex-col gap-5;
-  }
-
   .lfc__field {
     @apply flex flex-col items-end gap-1.5;
   }
 
   .lfc__forgot {
     @apply h-auto p-0 text-xs;
-    @apply text-muted-foreground;
-    @apply hover:text-primary-400 light:hover:text-primary-500;
+    @apply text-muted-foreground hover:text-primary-400 hover:text-primary-500;
   }
 
   .lfc__actions {
-    @apply flex flex-col gap-3;
-    @apply mt-1;
+    @apply mt-1 flex flex-col gap-3;
 
     button {
       @apply w-full;
     }
+  }
 
-    button[data-variant='ghost'] {
-      @apply opacity-60;
-      @apply hover:opacity-100;
-      transition: opacity 0.2s ease;
-    }
+  .lfc__register {
+    @apply text-center text-sm;
+    @apply text-muted-foreground;
   }
 }

@@ -5,7 +5,6 @@ export * from './Loading';
 export * from './Navigation';
 export * from './Pagination';
 export * from './Skeleton';
-export * from './StatusContent';
 export * from './BorderGlow';
 export * from './AvatarHeader';
 export * from './Aurora';

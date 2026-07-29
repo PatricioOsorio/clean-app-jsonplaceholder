@@ -1,7 +1,7 @@
 import { cn } from 'lib-styleguide-simba/utils';
 import { Button } from 'lib-styleguide-simba/button';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 
-import { Skeleton, StatusContent } from '@presentation/shared/components';
 import type { ILoginFormProps } from './LoginForm.interfaces';
 import './LoginForm.css';
 
@@ -15,16 +15,7 @@ export const LoginForm = ({
 }: ILoginFormProps) => {
   return (
     <form className={cn('login-form-container', rootProps?.className)}>
-      <StatusContent
-        {...status}
-        loadingTemplate={
-          <div className="lfc__skeleton">
-            <Skeleton.Text className="h-10 w-full" />
-            <Skeleton.Text className="h-10 w-full" />
-            <Skeleton.Button className="ml-auto w-full" />
-          </div>
-        }
-      >
+      <StatusContent {...status}>
         <Input.Email />
 
         <div className="lfc__field">
@@ -32,7 +23,7 @@ export const LoginForm = ({
           <Button
             children="Forgot password?"
             type="button"
-            variant="link"
+            variant="text"
             size="sm"
             className="lfc__forgot"
             {...btnForgotPasswordProps}
@@ -41,14 +32,18 @@ export const LoginForm = ({
 
         <div className="lfc__actions">
           <Button children="Sign in" type="button" {...btnLoginProps} />
+        </div>
 
+        <p className="lfc__register">
+          Don&apos;t have an account?{' '}
           <Button
-            children="Create an account"
+            children="Create account"
             type="button"
-            variant="ghost"
+            variant="text"
+            size="sm"
             {...btnRegisterProps}
           />
-        </div>
+        </p>
       </StatusContent>
     </form>
   );

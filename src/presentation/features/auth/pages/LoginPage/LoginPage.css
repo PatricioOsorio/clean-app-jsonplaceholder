@@ -9,27 +9,32 @@
     @apply w-full max-w-[26rem] min-w-[30rem] backdrop-blur-md;
   }
 
-  .lpc__inner {
-    @apply flex flex-col gap-8;
-    @apply px-6 pt-8 pb-7;
+  .lpc__content {
+    @apply relative flex flex-col gap-8 px-6 pt-8 pb-7;
     @apply sm:gap-10 sm:px-8 sm:pt-9 sm:pb-8;
   }
 
-  .lpc__header {
-    @apply relative flex flex-col gap-3;
-    @apply pl-4;
+  .lpc__back {
+    @apply absolute top-4 left-4 sm:top-5 sm:left-5;
+    @apply text-muted-foreground hover:text-foreground;
 
-    &::before {
-      content: '';
-      @apply absolute top-1 left-0 h-2 w-0.5 rounded-full;
-      @apply bg-primary-400;
-      @apply light:bg-primary-500;
+    svg {
+      @apply h-4.5 w-4.5;
     }
   }
 
-  .lpc__eyebrow {
-    @apply text-[11px] font-semibold tracking-[0.2em] uppercase;
-    @apply text-primary-400 light:text-primary-500;
+  .lpc__header {
+    @apply flex flex-col items-center gap-3 text-center;
+  }
+
+  .lpc__logo {
+    @apply flex h-14 w-14 items-center justify-center rounded-2xl;
+    @apply bg-primary-500/10 text-primary-500;
+    @apply dark:bg-primary-400/10 dark:text-primary-400;
+
+    svg {
+      @apply h-7 w-7;
+    }
   }
 
   .lpc__title {
@@ -40,5 +45,17 @@
   .lpc__subtitle {
     @apply text-sm leading-relaxed;
     @apply text-muted-foreground;
+  }
+
+  .circle-glow-1 {
+    @apply top-24 left-48 h-[24rem] w-[24rem] blur-[10rem];
+    @apply bg-primary-500 opacity-25;
+    @apply dark:bg-primary-400 dark:opacity-20;
+  }
+
+  .circle-glow-2 {
+    @apply right-48 bottom-24 h-[48rem] w-[48rem] blur-[20rem];
+    @apply bg-primary-500 opacity-25;
+    @apply dark:bg-primary-400 dark:opacity-15;
   }
 }

@@ -1,5 +1,4 @@
-import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-builder';
-import { FB } from 'form-builder';
+import { createFormConfig, useFormBuilder, FB } from 'lib-styleguide-simba/form-builder';
 import { useMemo } from 'react';
 
 import type { ILoginFormModel } from '@presentation/features/auth/components/LoginForm';

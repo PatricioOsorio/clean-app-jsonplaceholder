@@ -12,6 +12,7 @@ import {
   type IGetUsersParams,
 } from '@domain/user';
 import { createApiErrorHandler } from '@infrastructure/http';
+import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
 import { UserMapper, type IUserResponse } from '@infrastructure/user';
 
@@ -29,7 +30,10 @@ const userErrorHandler = createApiErrorHandler((error, userId) => {
 
 @injectable()
 export class UserRepositoryApi implements UserRepository {
-  constructor(@inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository) {}
+  constructor(
+    @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
+    @inject(UserEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<UserEntity>,
+  ) {}
 
   private handleError(error: unknown, userId?: number): never {
     return userErrorHandler(error, userId);
@@ -60,7 +64,7 @@ export class UserRepositoryApi implements UserRepository {
       });
 
       return this.toPaginatedResult<IUserResponse, UserEntity>(response, (responses) =>
-        UserMapper.toEntities(responses),
+        UserMapper.toEntities(responses).map((user) => this.validator.validate(user)),
       );
     } catch (error) {
       this.handleError(error);
@@ -71,7 +75,7 @@ export class UserRepositoryApi implements UserRepository {
     try {
       const response = await this.httpClient.get<IUserResponse>(`/users/${id}`);
 
-      return UserMapper.toEntity(response.data);
+      return this.validator.validate(UserMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }
@@ -89,7 +93,7 @@ export class UserRepositoryApi implements UserRepository {
 
       if (!user) return null;
 
-      return UserMapper.toEntity(user);
+      return this.validator.validate(UserMapper.toEntity(user));
     } catch (error) {
       this.handleError(error);
     }
@@ -101,7 +105,7 @@ export class UserRepositoryApi implements UserRepository {
         '/users',
         UserMapper.toResponse(user),
       );
-      return UserMapper.toEntity(response.data);
+      return this.validator.validate(UserMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error);
     }
@@ -114,7 +118,7 @@ export class UserRepositoryApi implements UserRepository {
         UserMapper.toResponse(user),
       );
 
-      return UserMapper.toEntity(response.data);
+      return this.validator.validate(UserMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }
@@ -127,7 +131,7 @@ export class UserRepositoryApi implements UserRepository {
         UserMapper.toResponse(fields),
       );
 
-      return UserMapper.toEntity(response.data);
+      return this.validator.validate(UserMapper.toEntity(response.data));
     } catch (error) {
       this.handleError(error, id);
     }

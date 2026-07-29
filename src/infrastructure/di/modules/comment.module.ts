@@ -5,6 +5,7 @@ import {
   CreateCommentDto,
   PatchCommentDto,
   UpdateCommentDto,
+  CommentEntity,
 } from '@domain/comment';
 import { ENV } from '@infrastructure/utils';
 import { container } from 'tsyringe';
@@ -15,6 +16,7 @@ import {
   ZodCreateCommentValidator,
   ZodPatchCommentValidator,
   ZodUpdateCommentValidator,
+  ZodCommentEntityValidator,
 } from '@infrastructure/comment';
 
 const VALIDATOR_PROVIDER = 'zod';
@@ -33,6 +35,7 @@ const VALIDATORS_REPOSITORIES = {
     create: ZodCreateCommentValidator,
     update: ZodUpdateCommentValidator,
     patch: ZodPatchCommentValidator,
+    entity: ZodCommentEntityValidator,
   },
 };
 
@@ -48,6 +51,10 @@ container.register(UpdateCommentDto.VALIDATOR_TOKEN, {
 
 container.register(PatchCommentDto.VALIDATOR_TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
+});
+
+container.register(CommentEntity.VALIDATOR_TOKEN, {
+  useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });
 
 export { container };

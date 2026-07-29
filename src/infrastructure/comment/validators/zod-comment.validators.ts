@@ -6,6 +6,7 @@ import {
   CreateCommentDto,
   PatchCommentDto,
   UpdateCommentDto,
+  CommentEntity,
 } from '@domain/comment';
 import type { IValidatorEntity } from '@domain/shared';
 import { handleValidationError } from '@infrastructure/utils';
@@ -65,6 +66,26 @@ export class ZodPatchCommentValidator implements IValidatorEntity<PatchCommentDt
     try {
       const result = this.schema.parse(input);
       return PatchCommentDto.create(result);
+    } catch (error) {
+      return handleValidationError(error, CommentInvalidDataError);
+    }
+  }
+}
+
+@injectable()
+export class ZodCommentEntityValidator implements IValidatorEntity<CommentEntity> {
+  private schema: z.ZodType<CommentEntity> = z.object({
+    id: z.number(),
+    idPost: z.number(),
+    name: z.string().min(1, 'Name cannot be empty'),
+    email: z.email(),
+    content: z.string().min(1, 'Content cannot be empty'),
+  });
+
+  validate(input: unknown): CommentEntity {
+    try {
+      const result = this.schema.parse(input);
+      return new CommentEntity(result.id, result.idPost, result.name, result.email, result.content);
     } catch (error) {
       return handleValidationError(error, CommentInvalidDataError);
     }
