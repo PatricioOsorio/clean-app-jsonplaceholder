@@ -1,2 +1,2 @@
-export * from './Comment';
-export * from './CommentsList';
+export * from './comment';
+export * from './comments-list';

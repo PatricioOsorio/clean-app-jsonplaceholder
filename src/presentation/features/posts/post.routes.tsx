@@ -1,6 +1,6 @@
 import { type RouteObject } from 'react-router-dom';
 import { lazyWithFallback } from 'lib-styleguide-simba/remote-loader';
-import AppLayout from '@presentation/shared/layouts/AppLayout';
+import AppLayout from '@presentation/shared/layouts/app-layout';
 import { ProtectedRoute } from '@presentation/features/auth/components';
 
 const PostDetailPage = lazyWithFallback(
