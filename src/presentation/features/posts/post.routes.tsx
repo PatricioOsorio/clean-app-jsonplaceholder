@@ -4,10 +4,10 @@ import AppLayout from '@presentation/shared/layouts/app-layout';
 import { ProtectedRoute } from '@presentation/features/auth/components';
 
 const PostDetailPage = lazyWithFallback(
-  () => import('@presentation/features/posts/pages/PostDetailPage'),
+  () => import('@presentation/features/posts/pages/post-detail-page'),
 );
-const PostPage = lazyWithFallback(() => import('@presentation/features/posts/pages/PostPage'));
-const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pages/PostsPage'));
+const PostPage = lazyWithFallback(() => import('@presentation/features/posts/pages/post-page'));
+const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pages/posts-page'));
 
 export const postRoutes: RouteObject[] = [
   {
