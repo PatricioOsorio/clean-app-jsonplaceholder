@@ -6,7 +6,7 @@
   }
 
   .lpc__border-glow {
-    @apply w-full max-w-[26rem] min-w-[30rem] backdrop-blur-md;
+    @apply w-full max-w-[26rem] min-w-[30rem] bg-white backdrop-blur-md dark:bg-black;
   }
 
   .lpc__content {
