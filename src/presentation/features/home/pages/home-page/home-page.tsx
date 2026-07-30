@@ -1,6 +1,6 @@
 import { Badge } from 'lib-styleguide-simba/badge';
 
-import { FeaturedPosts, HomeCtaBanner, HomeGallery, HomeMetricsStrip } from '../components';
+import { FeaturedPosts, HomeCtaBanner, HomeGallery, HomeMetricsStrip } from '../../components';
 import { useHomePage } from './use-home-page';
 import './home-page.css';
 

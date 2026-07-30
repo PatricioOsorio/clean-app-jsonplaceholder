@@ -2,7 +2,7 @@ import {
   type IFeaturedPostVM,
   type IHomeGalleryItemVM,
   type IHomeMetricItemVM,
-} from '../components';
+} from '../../components';
 
 export const useHomePage = () => {
   const metricsData: IHomeMetricItemVM[] = [
