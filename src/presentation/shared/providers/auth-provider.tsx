@@ -3,7 +3,6 @@ import { createContext, use, useEffect, useMemo, useState, type PropsWithChildre
 import { AuthMapper, type IAuthVM } from '@presentation/features/auth/models';
 import { useAuthDependencies } from '@presentation/features/auth/hooks';
 
-// ! interfaces
 export interface IAuthContext {
   userSession: IAuthVM | null;
   isAuthenticated: boolean;
@@ -12,7 +11,6 @@ export interface IAuthContext {
   logout: () => void;
 }
 
-// ! context
 export const AuthContext = createContext<IAuthContext | null>(null);
 
 export const useAuthContext = (): IAuthContext => {
@@ -25,7 +23,6 @@ export const useAuthContext = (): IAuthContext => {
   return context;
 };
 
-// ! provider
 interface IAuthProviderProps extends PropsWithChildren {}
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {

@@ -8,7 +8,7 @@ import {
 } from 'lib-styleguide-simba/icons-svg';
 
 import { type IAsideItemsVM, type INotificationItemVM } from '@presentation/shared/components';
-import { useAuthContext } from '@presentation/features/auth/providers';
+import { useAuthContext } from '@presentation/shared/providers';
 
 const DEFAULT_NOTIFICATIONS: INotificationItemVM[] = [
   { id: '1', title: 'New comment on Post #1', time: '2 mins ago', isRead: false },

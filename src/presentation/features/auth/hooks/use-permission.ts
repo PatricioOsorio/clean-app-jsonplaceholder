@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import { useAuthContext } from '@presentation/features/auth/providers';
 import type { IPermissionsVM } from '@presentation/features/auth/models';
+import { useAuthContext } from '@presentation/shared/providers';
 
 export const usePermission = () => {
   const { userSession } = useAuthContext();

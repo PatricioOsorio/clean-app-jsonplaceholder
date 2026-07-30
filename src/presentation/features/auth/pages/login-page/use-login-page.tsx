@@ -3,7 +3,7 @@ import {
   type ILoginFormModel,
   type ILoginFormProps,
 } from '@presentation/features/auth/components';
-import { useAuthContext } from '@presentation/features/auth/providers';
+import { useAuthContext } from '@presentation/shared/providers';
 import { mapIssuesToForm } from '@presentation/utils';
 import { toastService } from 'lib-styleguide-simba/toast';
 import { useNavigate } from 'react-router-dom';

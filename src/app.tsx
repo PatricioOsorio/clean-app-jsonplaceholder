@@ -5,7 +5,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import { ThemeProvider } from 'lib-styleguide-simba/theme-provider';
 
 import { queryClient } from '@presentation/libs/tanstack';
-import { AuthProvider } from '@presentation/features/auth/providers';
+import { AuthProvider } from '@presentation/shared/providers';
 import { mainRouter } from './main.routes';
 
 export const App = () => {

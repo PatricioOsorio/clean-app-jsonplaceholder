@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router';
-import { useAuthContext } from '@presentation/features/auth/providers';
+import { useAuthContext } from '@presentation/shared/providers';
 import { usePermission } from '@presentation/features/auth/hooks';
 import type { IPermissionsVM, IRolesVM } from '@presentation/features/auth/models';
 
