@@ -18,13 +18,8 @@ export const postRoutes: RouteObject[] = [
         element: <PostsPage />,
       },
       {
-        element: <ProtectedRouteGuard requiredPermission="posts:read" />,
-        children: [
-          {
-            path: ':id',
-            element: <PostDetailPage />,
-          },
-        ],
+        path: ':id',
+        element: <PostDetailPage />,
       },
       {
         element: <ProtectedRouteGuard requiredPermission="posts:create" />,
