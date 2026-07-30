@@ -10,6 +10,7 @@
   --radius: 1rem;
   --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
   --default-font-family: 'Plus Jakarta Sans Variable', sans-serif;
+  --border: transparent;
 
   --primary-50: #ecfdf5;
   --primary-100: #ccfbf1;

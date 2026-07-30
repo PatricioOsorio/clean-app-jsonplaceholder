@@ -46,7 +46,8 @@ export const LoginPage = () => {
         coneSpread={25}
         colors={['#2dd4bf', '#5eead4', '#14b8a6']}
         fillOpacity={0.3}
-        backgroundColor="hsl(var(--card))"
+        // backgroundColor="hsl(var(--card))"
+        backgroundColor="black"
         className="lpc__border-glow"
       >
         <section className="lpc__content">

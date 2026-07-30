@@ -1,51 +1,52 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet } from 'react-router';
+
+import { SidebarInset, SidebarProvider } from 'lib-styleguide-simba/shadcn/sidebar';
+import { Aside, Footer, Header } from '@presentation/shared/components';
+import { useAppLayout } from '@presentation/shared/layouts/app-layout/use-app-layout';
 import './app-layout.css';
-import { type INavigationItem, Navigation, Footer } from '@presentation/shared/components';
-import { useAuthContext } from '@presentation/features/auth/providers';
 
 export const AppLayout = () => {
-  const { userSession, logout } = useAuthContext();
-  const navigate = useNavigate();
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const {
+    // Aside props & handlers
+    user,
+    asideItems,
+    handleLogout,
+    handleLoginClick,
 
-  const handleLoginClick = () => {
-    navigate('/auth/login');
-  };
-
-  const navItems: INavigationItem[] = [
-    { label: 'Home', to: '/' },
-    { label: 'Publications', to: '/posts', end: true },
-    { label: 'Create Post', to: '/posts/create' },
-  ];
+    // Header props & handlers
+    searchQuery,
+    handleSearchChange,
+    notifications,
+    unreadCount,
+    theme,
+    handleToggleTheme,
+  } = useAppLayout();
 
   return (
-    <div className="app-layout-container">
-      <Navigation
-        items={navItems}
-        user={userSession}
-        isOpen={isMobileNavOpen}
+    <SidebarProvider defaultOpen={true}>
+      <Aside
+        items={asideItems}
+        user={user}
+        onLogout={handleLogout}
         onLoginClick={handleLoginClick}
-        onLogout={logout}
-        onClose={() => setIsMobileNavOpen(false)}
       />
 
-      <div className="alc__column">
-        <button
-          aria-label="Open menu"
-          className="alc__menu-btn"
-          type="button"
-          onClick={() => setIsMobileNavOpen(true)}
-        >
-          <span className="alc__menu-icon" />
-        </button>
+      <SidebarInset className="app-layout-container">
+        <Header
+          searchQuery={searchQuery}
+          notifications={notifications}
+          unreadCount={unreadCount}
+          theme={theme}
+          onSearchChange={handleSearchChange}
+          onToggleTheme={handleToggleTheme}
+        />
 
-        <main className="alc__main">
+        <div className="alc__viewport">
           <Outlet />
-        </main>
+        </div>
 
         <Footer />
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };

@@ -5,6 +5,7 @@ export interface IAvatarHeaderVM {
   email: string;
   roles?: string[];
   avatarUrl?: string;
+  status?: 'online' | 'offline' | 'away';
 }
 
 export interface IAvatarHeaderProps extends IWithRootProps<'div'> {

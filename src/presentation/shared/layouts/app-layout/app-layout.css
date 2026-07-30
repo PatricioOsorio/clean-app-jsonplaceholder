@@ -1,36 +1,10 @@
 @reference "@styles/app.css";
 
 .app-layout-container {
-  @apply bg-background flex min-h-screen w-full;
+  @apply bg-muted/50;
+  @apply dark:bg-background;
 
-  .alc__column {
-    @apply flex min-h-screen w-full min-w-0 flex-1 flex-col;
-  }
-
-  .alc__menu-btn {
-    @apply border-border bg-card/80 text-foreground m-4 flex h-10 w-10 items-center justify-center self-start rounded-xl border backdrop-blur-xl lg:hidden;
-    @apply focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none;
-  }
-
-  .alc__menu-icon {
-    @apply bg-foreground relative block h-0.5 w-4;
-
-    &::before,
-    &::after {
-      content: '';
-      @apply bg-foreground absolute left-0 h-0.5 w-4;
-    }
-
-    &::before {
-      @apply -top-1.5;
-    }
-
-    &::after {
-      @apply top-1.5;
-    }
-  }
-
-  .alc__main {
-    @apply mx-auto w-full max-w-6xl flex-1 px-6 py-8 sm:px-10;
+  .alc__viewport {
+    @apply flex-1 px-4 py-4 sm:px-6;
   }
 }

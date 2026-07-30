@@ -1,0 +1,30 @@
+@reference "@styles/app.css";
+
+.header-container {
+  @apply sticky top-0 z-40 w-full px-4 py-3 sm:px-6;
+
+  .hc__wrapper {
+    @apply flex items-center justify-between gap-4;
+  }
+
+  .hc__search {
+    @apply relative flex h-11 max-w-xl flex-1 items-center rounded-full border px-4 transition-all duration-200;
+    @apply border-border bg-background;
+    @apply dark:border-white/10 dark:bg-white/5;
+
+    /* States */
+    @apply focus-within:shadow-primary/10 focus-within:shadow-lg;
+  }
+
+  .hc__search-icon {
+    @apply text-muted-foreground mr-2.5 h-4 w-4 shrink-0;
+  }
+
+  .hc__search-input {
+    @apply text-foreground placeholder:text-muted-foreground/70 w-full bg-transparent text-xs font-medium focus:outline-none;
+  }
+
+  .hc__actions {
+    @apply flex items-center gap-2;
+  }
+}

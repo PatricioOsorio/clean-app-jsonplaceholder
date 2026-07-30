@@ -1,3 +1,9 @@
 {
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "css.customData": [".vscode/tailwind.json"],
+
+  "tailwindCSS.experimental.classRegex": [
+    "className\\s*[:=]\\s*[\"'`]([^\"'`]*)[\"'`]",
+    "rootProps\\s*={{[^}}]*className:\\s*[\"'`]([^\"'`]*)[\"'`]"
+  ]
 }

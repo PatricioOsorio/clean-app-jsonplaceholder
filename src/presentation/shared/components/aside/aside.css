@@ -1,0 +1,79 @@
+@reference "@styles/app.css";
+
+.sidebar-container {
+  @apply transition-all duration-300;
+  @apply bg-background border-border;
+  @apply dark:border-white/10;
+
+  .sc__header {
+    @apply flex-row items-center justify-between px-4 py-5;
+  }
+
+  .sc__logo-full {
+    @apply flex items-center gap-2.5;
+    @apply group-data-[state=collapsed]:hidden;
+  }
+
+  .sc__logo-symbol {
+    @apply text-primary text-2xl font-black;
+  }
+
+  .sc__logo-text {
+    @apply text-foreground text-sm font-bold tracking-wider uppercase;
+  }
+
+  .sc__logo-icon {
+    @apply text-primary text-2xl font-bold;
+    @apply group-data-[state=expanded]:hidden;
+  }
+
+  .sc__trigger {
+    @apply h-8 w-8 rounded-lg border-0 p-0 transition-colors;
+    @apply text-muted-foreground;
+    @apply group-data-[state=collapsed]:hidden;
+
+    /* States */
+    @apply hover:bg-muted hover:text-foreground;
+    @apply dark:hover:bg-white/10;
+  }
+
+  .sc__trigger-icon {
+    @apply h-4 w-4;
+  }
+
+  [data-slot='sidebar-inner'] {
+    @apply bg-transparent;
+  }
+
+  .sc__content {
+    @apply px-2 py-2;
+  }
+
+  .sc__group {
+    @apply p-0;
+  }
+
+  .sc__group-label {
+    @apply text-muted-foreground/60 px-3 text-[10px] font-semibold tracking-widest uppercase;
+  }
+
+  .sc__menu {
+    @apply gap-1.5;
+  }
+
+  .sc__menu-button {
+    @apply flex h-11 w-full items-center gap-3 rounded-xl border border-transparent px-3 text-xs font-medium transition-all duration-200;
+    @apply text-muted-foreground bg-transparent;
+    @apply dark:text-muted-foreground dark:bg-transparent;
+
+    /* States */
+    @apply hover:bg-muted hover:text-foreground;
+    @apply dark:hover:text-foreground dark:hover:bg-white/10;
+    @apply data-[active=true]:bg-muted data-[active=true]:text-foreground data-[active=true]:[&_svg]:text-primary data-[active=true]:font-semibold;
+    @apply dark:data-[active=true]:text-foreground dark:data-[active=true]:bg-white/10;
+  }
+
+  .sc__footer {
+    @apply p-2;
+  }
+}

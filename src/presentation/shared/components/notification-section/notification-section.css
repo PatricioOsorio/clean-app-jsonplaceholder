@@ -1,0 +1,64 @@
+@reference "@styles/app.css";
+
+.notification-section-container {
+  @apply relative inline-block;
+
+  .nsc__trigger {
+    @apply relative;
+  }
+
+  .nsc__trigger-icon {
+    @apply h-4 w-4;
+  }
+
+  .nsc__badge {
+    @apply ring-background absolute top-2.5 right-2.5 h-2 w-2 rounded-full ring-2;
+    @apply bg-primary;
+    @apply dark:bg-primary;
+  }
+
+  .nsc__dropdown {
+    @apply shadow-primary/5 absolute right-0 mt-2.5 w-72 rounded-2xl border p-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300;
+    @apply text-foreground border-white/40 bg-white/80;
+    @apply dark:bg-card/80 dark:text-card-foreground dark:border-white/10;
+  }
+
+  .nsc__header {
+    @apply flex items-center justify-between border-b pb-2.5 text-xs;
+    @apply border-black/5;
+    @apply dark:border-white/10;
+  }
+
+  .nsc__header-title {
+    @apply font-semibold;
+  }
+
+  .nsc__unread-tag {
+    @apply font-mono text-[10px] font-bold;
+    @apply text-primary;
+    @apply dark:text-primary;
+  }
+
+  .nsc__list {
+    @apply mt-2 flex flex-col gap-1.5;
+  }
+
+  .nsc__item {
+    @apply rounded-xl p-2.5 transition-colors;
+    @apply bg-transparent;
+    @apply dark:bg-transparent;
+
+    /* States */
+    @apply hover:bg-white/50;
+    @apply dark:hover:bg-white/10;
+  }
+
+  .nsc__item-title {
+    @apply text-xs font-medium;
+  }
+
+  .nsc__item-time {
+    @apply text-muted-foreground text-[10px];
+    @apply dark:text-muted-foreground;
+  }
+}
