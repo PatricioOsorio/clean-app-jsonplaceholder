@@ -1,9 +1,8 @@
 import { Button } from 'lib-styleguide-simba/button';
 import { cn } from 'lib-styleguide-simba/utils';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 
-import { StatusContent } from '@presentation/shared/components';
 import type { IPostFormProps } from './post-form.interfaces';
-
 import { PostFormSkeleton } from './skeleton/skeleton';
 import './post-form.css';
 

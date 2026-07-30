@@ -1,8 +1,9 @@
 import { cn } from 'lib-styleguide-simba/utils';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 
 import type { IPostsProps } from './posts.interfaces';
 
-import { Empty, Error, StatusContent } from '@presentation/shared/components';
+import { Empty, Error } from '@presentation/shared/components';
 import { Post } from '../post';
 import './posts.css';
 

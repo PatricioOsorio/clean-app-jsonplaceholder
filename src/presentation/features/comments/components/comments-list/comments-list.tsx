@@ -1,8 +1,9 @@
 import { cn } from 'lib-styleguide-simba/utils';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 
 import type { ICommentsListProps } from './comments-list.interfaces';
 import { Comment } from '@presentation/features/comments/components';
-import { Empty, Error, StatusContent } from '@presentation/shared/components';
+import { Empty, Error } from '@presentation/shared/components';
 import './comments-list.css';
 
 export const CommentsList = ({ comments, rootProps, status = {} }: ICommentsListProps) => (

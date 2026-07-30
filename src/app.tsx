@@ -12,7 +12,7 @@ export const App = () => {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="system">
+        <ThemeProvider defaultTheme="system" viewTransition={{ animation: 'CircleBlurTopRight' }}>
           <RouterProvider router={mainRouter} />
         </ThemeProvider>
 

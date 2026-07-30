@@ -31,7 +31,7 @@
   }
 
   .hpc__status-dot {
-    @apply h-2 w-2 rounded-full;
+    @apply h-2 w-2 rounded-full bg-emerald-500;
   }
 
   .hpc__arch-pill {

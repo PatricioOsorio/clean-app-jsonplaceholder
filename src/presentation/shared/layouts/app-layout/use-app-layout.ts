@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { useTheme } from 'lib-styleguide-simba/theme-provider';
-import { type IAsideItemsVM, type INotificationItemVM } from '@presentation/shared/components';
-import { useAuthContext } from '@presentation/features/auth/providers';
 import {
   IconHome,
   IconSquareRoundedPlus,
   IconFileDescription,
 } from 'lib-styleguide-simba/icons-svg';
+
+import { type IAsideItemsVM, type INotificationItemVM } from '@presentation/shared/components';
+import { useAuthContext } from '@presentation/features/auth/providers';
 
 const DEFAULT_NOTIFICATIONS: INotificationItemVM[] = [
   { id: '1', title: 'New comment on Post #1', time: '2 mins ago', isRead: false },
@@ -17,7 +18,7 @@ const DEFAULT_NOTIFICATIONS: INotificationItemVM[] = [
 
 export const useAppLayout = () => {
   const { userSession, logout: handleLogout } = useAuthContext();
-  const { resolvedTheme, setPreference } = useTheme();
+  const { preference, setPreference } = useTheme();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +31,7 @@ export const useAppLayout = () => {
   };
 
   const handleToggleTheme = () => {
-    setPreference(resolvedTheme === 'dark' ? 'light' : 'dark');
+    setPreference(preference === 'dark' ? 'light' : 'dark');
   };
 
   const handleSearchChange = (query: string) => {
@@ -60,12 +61,12 @@ export const useAppLayout = () => {
           href: '/posts',
           isActive: location.pathname.startsWith('/posts'),
         },
-        {
-          icon: IconSquareRoundedPlus,
-          label: 'Create Post',
-          href: '/posts/create',
-          isActive: location.pathname === '/posts/create',
-        },
+        // {
+        //   icon: IconSquareRoundedPlus,
+        //   label: 'Create Post',
+        //   href: '/posts/create',
+        //   isActive: location.pathname === '/posts/create',
+        // },
       ],
     },
   ];
@@ -82,7 +83,7 @@ export const useAppLayout = () => {
     handleSearchChange,
     notifications,
     unreadCount: notifications.filter((n) => !n.isRead).length,
-    theme: resolvedTheme,
+    theme: preference,
     handleToggleTheme,
   };
 };

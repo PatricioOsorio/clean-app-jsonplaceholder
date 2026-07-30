@@ -12,9 +12,11 @@ const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pa
 export const postRoutes: RouteObject[] = [
   {
     element: (
-      <ProtectedRoute>
+      <>
+        {/* <ProtectedRoute> */}
         <AppLayout />
-      </ProtectedRoute>
+        {/* </ProtectedRoute> */}
+      </>
     ),
     children: [
       {

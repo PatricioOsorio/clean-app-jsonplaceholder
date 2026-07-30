@@ -1,10 +1,10 @@
 import { Button } from 'lib-styleguide-simba/button';
 import { cn } from 'lib-styleguide-simba/utils';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 
-import type { IPostDetailProps } from './post-detail.interfaces';
-
-import { Empty, StatusContent } from '@presentation/shared/components';
+import { Empty } from '@presentation/shared/components';
 import { PostDetailSkeleton } from './skeleton/skeleton';
+import type { IPostDetailProps } from './post-detail.interfaces';
 import './post-detail.css';
 
 export const PostDetail = ({
