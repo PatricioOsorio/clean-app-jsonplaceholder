@@ -1,5 +1,14 @@
 export type IRoles = 'admin' | 'user' | 'guest';
-export type IPermissions = 'read' | 'write' | 'delete' | 'manage_roles';
+export type IPermissions =
+  | 'posts:read'
+  | 'posts:create'
+  | 'posts:update'
+  | 'posts:delete'
+  | 'comments:read'
+  | 'comments:create'
+  | 'comments:update'
+  | 'comments:delete'
+  | 'users:manage';
 
 export class AuthEntity {
   static readonly VALIDATOR_TOKEN = Symbol('AuthEntity.Validator');

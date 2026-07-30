@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { formatError } from '@presentation/utils';
 import { useDeletePost, usePosts } from '../../hooks';
 import type { IPostVM } from '../../models/post';
-import { useMemo } from 'react';
+import { useMemo, type ComponentProps } from 'react';
 import type { IGetPostsParams, PostEntity } from '@domain/post';
+import { usePermission } from '@presentation/features/auth/hooks';
+import type { Post } from '@presentation/features/posts/components';
 
 const DEFAULT_PARAMS: IGetPostsParams = {
   page: 1,
@@ -16,6 +18,10 @@ const DEFAULT_PARAMS: IGetPostsParams = {
 export const usePostsPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { hasPermission } = usePermission();
+
+  const canEdit = hasPermission('posts:update');
+  const canDelete = hasPermission('posts:delete');
 
   const page = useMemo(
     () => Number(searchParams.get('page') ?? DEFAULT_PARAMS.page),
@@ -71,9 +77,14 @@ export const usePostsPage = () => {
     deletePost(postId);
   };
 
-  // constants
-  const TITLE = 'SYSTEM POSTS';
-  const SUBTITLE = 'Data fetched via TanStack Query + Clean Architecture Use Cases.';
+  // components
+  const btnEditProps: ComponentProps<typeof Post>['btnEditProps'] = canEdit
+    ? { onClick: handleEdit }
+    : undefined;
+
+  const btnDeleteProps: ComponentProps<typeof Post>['btnDeleteProps'] = canDelete
+    ? { onClick: handleDelete }
+    : undefined;
 
   return {
     // props
@@ -89,13 +100,11 @@ export const usePostsPage = () => {
     totalPages,
     handlePageChange,
 
-    // constants
-    TITLE,
-    SUBTITLE,
+    // components
+    btnEditProps,
+    btnDeleteProps,
 
     // handlers
     handlePostClick,
-    handleEdit,
-    handleDelete,
   };
 };

@@ -6,7 +6,13 @@ import type { IPostProps } from './post.interfaces';
 import { PostSkeleton } from './skeleton/skeleton';
 import './post.css';
 
-export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostProps) => (
+export const Post = ({
+  rootProps,
+  post,
+  isOptimistic,
+  btnEditProps,
+  btnDeleteProps,
+}: IPostProps) => (
   <article
     {...rootProps}
     className={cn('post-container', { 'optimistic-working': isOptimistic }, rootProps?.className)}
@@ -21,29 +27,29 @@ export const Post = ({ rootProps, post, isOptimistic, onEdit, onDelete }: IPostP
       </div>
 
       <div className="pc__actions">
-        {onEdit && (
+        {btnEditProps && (
           <Button
             aria-label="Edit post"
             size="sm"
             type="button"
-            variant="outline"
+            variant="outlined"
             onClick={(e) => {
               e.stopPropagation();
-              onEdit(post, e);
+              btnEditProps?.onClick?.(post, e);
             }}
           >
             Edit
           </Button>
         )}
-        {onDelete && (
+        {btnDeleteProps && (
           <Button
             aria-label="Delete post"
             size="sm"
             type="button"
-            variant="destructive"
+            severity="danger"
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(post.id, e);
+              btnDeleteProps?.onClick?.(post.id, e);
             }}
           >
             Delete

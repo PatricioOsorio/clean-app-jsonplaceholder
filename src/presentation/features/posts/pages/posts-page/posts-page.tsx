@@ -19,22 +19,22 @@ export const PostsPage = () => {
     totalPages,
     handlePageChange,
 
-    // constants
-    TITLE,
-    SUBTITLE,
+    // components
+    btnEditProps,
+    btnDeleteProps,
 
     // handlers
     handlePostClick,
-    handleEdit,
-    handleDelete,
   } = usePostsPage();
 
   return (
     <section className="posts-page-container">
       <header className="ppc__header">
         <p className="ppc__system-tag">Publications</p>
-        <h1 className="ppc__title">{TITLE}</h1>
-        <p className="ppc__subtitle">{SUBTITLE}</p>
+        <h1 className="ppc__title">SYSTEM POSTS</h1>
+        <p className="ppc__subtitle">
+          Data fetched via TanStack Query + Clean Architecture Use Cases.
+        </p>
       </header>
 
       <div className="ppc__content">
@@ -47,8 +47,8 @@ export const PostsPage = () => {
             isLoading,
           }}
           postProps={{
-            onEdit: handleEdit,
-            onDelete: handleDelete,
+            btnEditProps,
+            btnDeleteProps,
           }}
           posts={posts}
           onPostClick={handlePostClick}

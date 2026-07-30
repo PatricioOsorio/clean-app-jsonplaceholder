@@ -1,7 +1,7 @@
 import { type RouteObject } from 'react-router-dom';
 import { lazyWithFallback } from 'lib-styleguide-simba/remote-loader';
 import AppLayout from '@presentation/shared/layouts/app-layout';
-import { ProtectedRoute } from '@presentation/features/auth/components';
+import { ProtectedRouteGuard } from '@presentation/shared/guards';
 
 const PostDetailPage = lazyWithFallback(
   () => import('@presentation/features/posts/pages/post-detail-page'),
@@ -11,29 +11,28 @@ const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pa
 
 export const postRoutes: RouteObject[] = [
   {
-    element: (
-      <>
-        {/* <ProtectedRoute> */}
-        <AppLayout />
-        {/* </ProtectedRoute> */}
-      </>
-    ),
+    element: <AppLayout />,
     children: [
       {
         index: true,
         element: <PostsPage />,
       },
       {
-        path: ':id',
-        element: <PostDetailPage />,
+        element: <ProtectedRouteGuard requiredPermission="posts:read" />,
+        children: [
+          {
+            path: ':id',
+            element: <PostDetailPage />,
+          },
+        ],
       },
       {
-        path: 'create',
-        element: <PostPage />,
+        element: <ProtectedRouteGuard requiredPermission="posts:create" />,
+        children: [{ path: 'create', element: <PostPage /> }],
       },
       {
-        path: 'edit/:id',
-        element: <PostPage />,
+        element: <ProtectedRouteGuard requiredPermission="posts:update" />,
+        children: [{ path: 'edit/:id', element: <PostPage /> }],
       },
     ],
   },

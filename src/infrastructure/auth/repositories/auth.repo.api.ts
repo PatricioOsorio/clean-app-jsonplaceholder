@@ -27,21 +27,21 @@ const USERS_WITH_ROLES_AND_PERMISSIONS: IUserWithRolesAndPermissions[] = [
     email: 'Sincere@april.biz',
     password: 'pass',
     roles: ['admin', 'user'],
-    permissions: ['read', 'write', 'delete'],
+    permissions: ['posts:read'],
   },
   {
     userId: 2,
     email: 'Shanna@melissa.tv',
     password: 'pass',
     roles: ['user'],
-    permissions: ['read', 'write'],
+    permissions: ['posts:read', 'posts:create'],
   },
   {
     userId: 3,
     email: 'Nathan@yesenia.net',
     password: 'pass',
     roles: ['guest'],
-    permissions: ['read'],
+    permissions: ['posts:read'],
   },
 ];
 
