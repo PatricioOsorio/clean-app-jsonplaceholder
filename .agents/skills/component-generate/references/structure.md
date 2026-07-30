@@ -45,22 +45,22 @@ confirmation-section/
 
 ## Naming conventions
 
-| What | Convention | Example |
-|---|---|---|
-| Component folder | kebab-case | `card-preticket`, `table-recent-folios` |
-| Files | kebab-case, matching folder | `card-preticket.tsx` |
-| Interface file suffix | `.interfaces.ts` (plural) — always, even for a single type | `card-preticket.interfaces.ts` |
-| Child folder | kebab-case | `summary/`, `cost-center/` |
-| Hook/config file | `use-<name>.config.ts(x)` | `use-table-recent-folios.config.tsx` |
-| Exported component | PascalCase, named export | `export const CardPreticket = (...)` |
-| Compound child export | PascalCase, **full parent-name prefix** | `CardDashboardSkeleton`, `ConfirmationSectionSummary`, `StepperPreticketHeader` |
-| Props interface | `I<Component>Props` | `ICardPreticketProps` |
-| View-model interface | `I<Component>VM` or `I<Item>VM` | `ICardDashboardVM`, `ISummaryItemVM` |
-| Form model interface | `I<Name>FormModel` | `IClassificationFormModel` |
-| Config hook | `use<Name>Config` / `use<Name>FormConfig` | `useTableRecentFoliosConfig`, `useGeneralInformationFormConfig` |
-| Slot props | `<name>Slot` | `headerEndSlot` |
-| Button prop bundles | `btn<Name>Props` | `btnNextProps`, `btnActionProps` |
-| Passthrough element props | `props<Name>` | `propsLabel`, `propsValue` |
+| What                      | Convention                                                 | Example                                                                         |
+| ------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Component folder          | kebab-case                                                 | `card-preticket`, `table-recent-folios`                                         |
+| Files                     | kebab-case, matching folder                                | `card-preticket.tsx`                                                            |
+| Interface file suffix     | `.interfaces.ts` (plural) — always, even for a single type | `card-preticket.interfaces.ts`                                                  |
+| Child folder              | kebab-case                                                 | `summary/`, `cost-center/`                                                      |
+| Hook/config file          | `use-<name>.config.ts(x)`                                  | `use-table-recent-folios.config.tsx`                                            |
+| Exported component        | PascalCase, named export                                   | `export const CardPreticket = (...)`                                            |
+| Compound child export     | PascalCase, **full parent-name prefix**                    | `CardDashboardSkeleton`, `ConfirmationSectionSummary`, `StepperPreticketHeader` |
+| Props interface           | `I<Component>Props`                                        | `ICardPreticketProps`                                                           |
+| View-model interface      | `I<Component>VM` or `I<Item>VM`                            | `ICardDashboardVM`, `ISummaryItemVM`                                            |
+| Form model interface      | `I<Name>FormModel`                                         | `IClassificationFormModel`                                                      |
+| Config hook               | `use<Name>Config` / `use<Name>FormConfig`                  | `useTableRecentFoliosConfig`, `useGeneralInformationFormConfig`                 |
+| Slot props                | `<name>Slot`                                               | `headerEndSlot`                                                                 |
+| Button prop bundles       | `btn<Name>Props`                                           | `btnNextProps`, `btnActionProps`                                                |
+| Passthrough element props | `props<Name>`                                              | `propsLabel`, `propsValue`                                                      |
 
 Never use PascalCase folders, singular `.interface.ts`, or dot-separated filenames
 (`name.section.tsx`) — these appear once or twice in the codebase but are not the
@@ -84,13 +84,15 @@ standard to replicate.
 ## `index.ts` barrel rules
 
 **Leaf component** — view + interfaces:
+
 ```ts
 export * from './label-value';
 export * from './label-value.interfaces';
 ```
 
 **Compound parent** — view + own interfaces + every child's interfaces (children
-themselves are reached via `Parent.Child`, so only their *types* need re-exporting):
+themselves are reached via `Parent.Child`, so only their _types_ need re-exporting):
+
 ```ts
 export * from './confirmation-section';
 export * from './confirmation-section.interfaces';
@@ -101,6 +103,7 @@ export * from './cost-center/cost-center.interfaces';
 
 **Form folder** — view + interfaces + config (so a page can import both the component
 and its `use<Name>FormConfig` from one path):
+
 ```ts
 export * from './classification-form';
 export * from './classification-form.interfaces';
@@ -108,6 +111,7 @@ export * from './classification-form.config';
 ```
 
 **Page** — default export only (router lazy-loading):
+
 ```ts
 import { NewPreticketPage } from './new-preticket-page';
 export default NewPreticketPage;

@@ -38,16 +38,19 @@ import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-buil
 import type { IGeneralInformationFormModel } from './general-information-form.interfaces';
 
 export const useGeneralInformationFormConfig = () => {
-  const configForm = useMemo(() =>
-    createFormConfig<IGeneralInformationFormModel>()({
-      companyName: {
-        type: 'combobox',
-        label: FB.LabelRequired.fn('Empresa'),
-        props: { defaultValue: 'Seleccionar empresa...', items: [] },
-        rules: { required: { value: true, message: 'El nombre de la empresa es requerido' } },
-      },
-      // ... more fields
-    }), []);
+  const configForm = useMemo(
+    () =>
+      createFormConfig<IGeneralInformationFormModel>()({
+        companyName: {
+          type: 'combobox',
+          label: FB.LabelRequired.fn('Empresa'),
+          props: { defaultValue: 'Seleccionar empresa...', items: [] },
+          rules: { required: { value: true, message: 'El nombre de la empresa es requerido' } },
+        },
+        // ... more fields
+      }),
+    [],
+  );
   const formBuilder = useFormBuilder(configForm);
   return { ...formBuilder };
 };
@@ -64,9 +67,15 @@ export const useGeneralInformationFormConfig = () => {
 - If a field needs custom JSX rendering, the config file becomes `.tsx` and defines a
   module-scope template helper:
   ```tsx
-  const countriesTemplate = ({ label, value, checkbox }: { label: string; value: string; checkbox: React.ReactNode }) => (
-    <section className="checkbox-country-container">{/* ... */}</section>
-  );
+  const countriesTemplate = ({
+    label,
+    value,
+    checkbox,
+  }: {
+    label: string;
+    value: string;
+    checkbox: React.ReactNode;
+  }) => <section className="checkbox-country-container">{/* ... */}</section>;
   ```
 
 ## Form view
@@ -76,8 +85,11 @@ the config's field keys — `companyName` → `Input.CompanyName`) and renders t
 
 ```tsx
 export const GeneralInformationForm = ({ Input, rootProps }: IGeneralInformationFormProps) => (
-  <CardPreticket title="Datos Generales" {...rootProps}
-    rootProps={{ className: 'general-information-form-container', ...rootProps }}>
+  <CardPreticket
+    title="Datos Generales"
+    {...rootProps}
+    rootProps={{ className: 'general-information-form-container', ...rootProps }}
+  >
     <Input.CompanyName />
     <Input.RequirementType />
     <Input.BenefitType />
@@ -87,12 +99,15 @@ export const GeneralInformationForm = ({ Input, rootProps }: IGeneralInformation
 
 Its props interface derives `Input`'s type from the config hook via `ReturnType`, so
 the shape never has to be hand-typed twice:
+
 ```ts
 import type { ComponentProps } from 'react';
 import type { CardPreticket } from '@presentation/components/card-preticket';
 import type { useGeneralInformationFormConfig } from './general-information-form.config';
 
-export interface IGeneralInformationFormProps extends Partial<ComponentProps<typeof CardPreticket>> {
+export interface IGeneralInformationFormProps extends Partial<
+  ComponentProps<typeof CardPreticket>
+> {
   Input: ReturnType<typeof useGeneralInformationFormConfig>['Input'];
 }
 ```
@@ -131,6 +146,7 @@ with `_` rather than omitting the destructure, so the shape stays visible.
 
 Unlike every other barrel in this repo, a page's `index.ts` is a **default export**
 (needed for router lazy-loading):
+
 ```ts
 import { NewPreticketPage } from './new-preticket-page';
 export default NewPreticketPage;

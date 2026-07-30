@@ -52,13 +52,18 @@ export type IButtonWithCustomOnClick<TData> = Omit<ComponentProps<typeof Button>
   `status` prop bundle: `status?: IWithLoading & IWithError & IWithEmpty`.
 - **Not exported from the barrel**: `ILabelValue` lives in the library's
   `label-value.interfaces.ts` but the library's own `interfaces/index.ts` does not
-  re-export it — so it is *not* available via `lib-styleguide-simba/interfaces`. If you
+  re-export it — so it is _not_ available via `lib-styleguide-simba/interfaces`. If you
   need a label/value pair type, define it locally in the consuming component.
 
 Import style — both are equivalent, pick based on count:
+
 ```ts
-import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';               // single type
-import { type IWithRootProps, type IWithLoading, type IWithEmpty } from 'lib-styleguide-simba/interfaces'; // multiple
+import type { IWithRootProps } from 'lib-styleguide-simba/interfaces'; // single type
+import {
+  type IWithRootProps,
+  type IWithLoading,
+  type IWithEmpty,
+} from 'lib-styleguide-simba/interfaces'; // multiple
 ```
 
 ## Local `.interfaces.ts` conventions
@@ -70,8 +75,7 @@ import type { IWithChildren, IWithRootProps } from 'lib-styleguide-simba/interfa
 import type { Card } from 'lib-styleguide-simba/shadcn/card';
 import type { ReactNode } from 'react';
 
-export interface ICardPreticketProps
-  extends IWithRootProps<typeof Card>, IWithChildren {
+export interface ICardPreticketProps extends IWithRootProps<typeof Card>, IWithChildren {
   title: string;
   headerEndSlot?: ReactNode;
 }
@@ -91,9 +95,13 @@ Patterns, by situation:
   import type { ComponentProps } from 'react';
   import type { CardPreticket } from '@presentation/components/card-preticket';
 
-  export interface ISummaryItemVM { enterprise: string; detailedDescription?: string; }
-  export interface IConfirmationSectionSummaryProps
-    extends Partial<ComponentProps<typeof CardPreticket>> {
+  export interface ISummaryItemVM {
+    enterprise: string;
+    detailedDescription?: string;
+  }
+  export interface IConfirmationSectionSummaryProps extends Partial<
+    ComponentProps<typeof CardPreticket>
+  > {
     items: ISummaryItemVM;
   }
   ```

@@ -23,6 +23,7 @@ ConfirmationSection.CostCenter = ConfirmationSectionCostCenter;
 ```
 
 Consumed as:
+
 ```tsx
 <ConfirmationSection>
   <ConfirmationSection.Summary items={itemsSummary} />
@@ -48,9 +49,16 @@ export const useStepperPreticketContext = () => {
   return ctx;
 };
 
-export const StepperPreticket = ({ steps, children, rootProps, ...props }: IStepperPreticketProps) => (
+export const StepperPreticket = ({
+  steps,
+  children,
+  rootProps,
+  ...props
+}: IStepperPreticketProps) => (
   <StepperPreticketContext.Provider value={{ steps }}>
-    <Stepper {...rootProps} {...props}>{children}</Stepper>
+    <Stepper {...rootProps} {...props}>
+      {children}
+    </Stepper>
   </StepperPreticketContext.Provider>
 );
 
@@ -60,6 +68,7 @@ StepperPreticket.Footer = StepperPreticketFooter;
 ```
 
 Children then take almost no props, reading shared data from context instead:
+
 ```tsx
 export const StepperPreticketHeader = ({ className }: { className?: string }) => {
   const { steps } = useStepperPreticketContext();
@@ -74,20 +83,33 @@ Non-trivial logic (table columns, form fields, derived config) lives in a hook; 
 
 ```tsx
 // table-recent-folios.tsx
-export const TableRecentFolios = ({ values, isLoading, rootProps, btnActionProps }: ITableRecentFoliosProps) => {
+export const TableRecentFolios = ({
+  values,
+  isLoading,
+  rootProps,
+  btnActionProps,
+}: ITableRecentFoliosProps) => {
   const { columnsConfig, tableConfig } = useTableRecentFoliosConfig({ btnActionProps });
   return (
     <section {...rootProps} className={cn('table-recent-folios-container', rootProps?.className)}>
-      <DataTable columnConfig={columnsConfig()} data={values} isLoading={isLoading} {...tableConfig} />
+      <DataTable
+        columnConfig={columnsConfig()}
+        data={values}
+        isLoading={isLoading}
+        {...tableConfig}
+      />
     </section>
   );
 };
 ```
 
 The hook is `.tsx` (not `.ts`) precisely because it returns JSX cell renderers:
+
 ```tsx
 // use-table-recent-folios.config.tsx
-export const useTableRecentFoliosConfig = ({ btnActionProps }: IUseTableRecentFoliosConfigProps) => {
+export const useTableRecentFoliosConfig = ({
+  btnActionProps,
+}: IUseTableRecentFoliosConfigProps) => {
   const columnsConfig = (): IColumnConfig<IRecentFoliosItemVM>[] => [
     { key: 'col-id', header: 'Folio', body: (row) => <span>{row.folio}</span> },
     {
@@ -113,8 +135,11 @@ see `pages-and-forms.md`.
 - **Props spread then override**, so the caller's props apply but the component's own
   container class always wins the merge:
   ```tsx
-  <CardPreticket title="Costos" {...props}
-    rootProps={{ className: 'costs-container', ...props.rootProps }} />
+  <CardPreticket
+    title="Costos"
+    {...props}
+    rootProps={{ className: 'costs-container', ...props.rootProps }}
+  />
   ```
   and at the DOM level:
   ```tsx
@@ -123,13 +148,20 @@ see `pages-and-forms.md`.
   `cn(<own-class>, rootProps?.className)` — own class first, caller's merges in after —
   is universal across every component.
 - **Button `onClick` composition** — spread the caller's button props, then wrap
-  `onClick` to run internal logic *and* call through to the caller's handler, with
+  `onClick` to run internal logic _and_ call through to the caller's handler, with
   `children`/`disabled` fallbacks:
   ```tsx
-  <Button variant="outline" {...btnNextProps}
+  <Button
+    variant="outline"
+    {...btnNextProps}
     disabled={activeStep === stepsCount || btnNextProps?.disabled}
-    onClick={(e) => { setActiveStep(activeStep + 1); btnNextProps?.onClick?.(e); }}>
-    {btnNextProps?.children || (activeStep === stepsCount ? 'Confirmar y generar folio' : 'Siguiente')}
+    onClick={(e) => {
+      setActiveStep(activeStep + 1);
+      btnNextProps?.onClick?.(e);
+    }}
+  >
+    {btnNextProps?.children ||
+      (activeStep === stepsCount ? 'Confirmar y generar folio' : 'Siguiente')}
   </Button>
   ```
 - **Optional slots guarded inline**: `{headerEndSlot && <div>{headerEndSlot}</div>}`.

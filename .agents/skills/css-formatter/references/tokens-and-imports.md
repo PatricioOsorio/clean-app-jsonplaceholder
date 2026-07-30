@@ -31,11 +31,13 @@ that most background tokens have a matching `-foreground` token for text readabi
 (e.g., `bg-card` and `text-card-foreground`).
 
 **Layout & Text:**
+
 - `background`, `foreground`
 - `card`, `card-foreground`
 - `popover`, `popover-foreground`
 
 **Action Colors:**
+
 - `primary`, `primary-foreground`
 - `secondary`, `secondary-foreground`
 - `muted`, `muted-foreground`
@@ -48,24 +50,28 @@ that most background tokens have a matching `-foreground` token for text readabi
 - `help`, `help-foreground`
 
 **Forms & Borders:**
+
 - `border`
 - `input`
 - `ring`
 
 **Sidebar (Specific):**
+
 - `sidebar`, `sidebar-foreground`
 - `sidebar-primary`, `sidebar-primary-foreground`
 - `sidebar-accent`, `sidebar-accent-foreground`
 - `sidebar-border`, `sidebar-ring`
 
 **Charts:**
+
 - `chart-1`, `chart-2`, `chart-3`, `chart-4`, `chart-5`
 
 **Radius:**
+
 - `radius-sm`, `radius-md`, `radius-lg`, `radius-xl`, `radius-2xl`, `radius-3xl`, `radius-4xl`
 
-*Note: Apply these in Tailwind classes directly (e.g., `text-foreground`, `bg-card`,
-`border-border`, `ring-ring`, `rounded-xl`).*
+_Note: Apply these in Tailwind classes directly (e.g., `text-foreground`, `bg-card`,
+`border-border`, `ring-ring`, `rounded-xl`)._
 
 ## Theme Variants
 

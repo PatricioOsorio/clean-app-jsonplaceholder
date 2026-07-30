@@ -199,8 +199,10 @@ but the TSX builds a double-dash class name, so the two never match and the colo
 applies:
 
 ```tsx
-{/* ❌ mismatched selector, style silently dead */}
-<p className={cn(variant && `cdc__footer--${variant}`)}>{estimate}</p>
+{
+  /* ❌ mismatched selector, style silently dead */
+}
+<p className={cn(variant && `cdc__footer--${variant}`)}>{estimate}</p>;
 ```
 
 Fix by making both sides agree — prefer the double-dash BEM form since that's what most

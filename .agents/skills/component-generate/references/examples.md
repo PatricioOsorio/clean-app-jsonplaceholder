@@ -28,7 +28,9 @@ import './thing.css';
 export const Thing = ({ items = [], rootProps }: IThingProps) => (
   <section {...rootProps} className={cn('thing-container', rootProps?.className)}>
     {items.map((item, i) => (
-      <div key={`${item.label}-${i}`}>{item.label}: {item.value}</div>
+      <div key={`${item.label}-${i}`}>
+        {item.label}: {item.value}
+      </div>
     ))}
   </section>
 );
@@ -132,19 +134,22 @@ import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-buil
 import type { IContactFormModel } from './contact-form.interfaces';
 
 export const useContactFormConfig = () => {
-  const configForm = useMemo(() =>
-    createFormConfig<IContactFormModel>()({
-      fullName: {
-        type: 'text',
-        label: FB.LabelRequired.fn('Nombre completo'),
-        rules: { required: { value: true, message: 'El nombre es requerido' } },
-      },
-      email: {
-        type: 'text',
-        label: FB.LabelRequired.fn('Correo'),
-        rules: { required: { value: true, message: 'El correo es requerido' } },
-      },
-    }), []);
+  const configForm = useMemo(
+    () =>
+      createFormConfig<IContactFormModel>()({
+        fullName: {
+          type: 'text',
+          label: FB.LabelRequired.fn('Nombre completo'),
+          rules: { required: { value: true, message: 'El nombre es requerido' } },
+        },
+        email: {
+          type: 'text',
+          label: FB.LabelRequired.fn('Correo'),
+          rules: { required: { value: true, message: 'El correo es requerido' } },
+        },
+      }),
+    [],
+  );
   const formBuilder = useFormBuilder(configForm);
   return { ...formBuilder };
 };
@@ -157,8 +162,11 @@ import type { IContactFormProps } from './contact-form.interfaces';
 import './contact-form.css';
 
 export const ContactForm = ({ Input, ...rootProps }: IContactFormProps) => (
-  <CardPreticket title="Contacto" {...rootProps}
-    rootProps={{ className: 'contact-form-container' }}>
+  <CardPreticket
+    title="Contacto"
+    {...rootProps}
+    rootProps={{ className: 'contact-form-container' }}
+  >
     <Input.FullName />
     <Input.Email />
   </CardPreticket>

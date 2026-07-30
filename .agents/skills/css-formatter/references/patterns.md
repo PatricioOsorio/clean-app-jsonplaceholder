@@ -17,8 +17,8 @@ The file's first line is always:
 
 ```css
 @reference "@presentation/App.css";
-
 ```
+
 (followed by a blank line). This is the Tailwind v4 mechanism that makes `@apply` and
 theme tokens resolve inside a module without re-emitting `App.css`'s own output. Using
 `@import '@presentation/App.css';` instead is a bug — it works but silently duplicates
@@ -38,18 +38,18 @@ styleguide.
 className={cn('card-dashboard-container', rootProps?.className)}
 ```
 
-**Child classes**: nested *inside* the parent selector (native CSS nesting — no `&` needed
+**Child classes**: nested _inside_ the parent selector (native CSS nesting — no `&` needed
 for a plain descendant), named `{initials}__{role}`, where `{initials}` is formed by
 taking the first letter of each hyphen-separated word in the parent class name:
 
-| Parent class | Initials | Example children |
-|---|---|---|
-| `card-dashboard-container` | `cdc` | `.cdc__content`, `.cdc__card-glow` |
-| `label-value-container` | `lvc` | `.lvc__label`, `.lvc__value` |
-| `cost-center-container` | `ccc` | `.ccc__card`, `.ccc__card-title` |
-| `stepper-preticket-header` | `sph` | `.sph__indicator`, `.sph__title` |
-| `classification-form-container` | `cfc` | `.cfc__countries`, `.cfc__options` |
-| `description-form-container` | `df` | `.df__inputs-row` |
+| Parent class                    | Initials | Example children                   |
+| ------------------------------- | -------- | ---------------------------------- |
+| `card-dashboard-container`      | `cdc`    | `.cdc__content`, `.cdc__card-glow` |
+| `label-value-container`         | `lvc`    | `.lvc__label`, `.lvc__value`       |
+| `cost-center-container`         | `ccc`    | `.ccc__card`, `.ccc__card-title`   |
+| `stepper-preticket-header`      | `sph`    | `.sph__indicator`, `.sph__title`   |
+| `classification-form-container` | `cfc`    | `.cfc__countries`, `.cfc__options` |
+| `description-form-container`    | `df`     | `.df__inputs-row`                  |
 
 Note `description-form-container` → `df`, not `dfc` — the trailing `container` word is
 sometimes dropped from the initials when the resulting prefix would otherwise collide or
@@ -63,7 +63,7 @@ the TSX template literal that builds it — a single-dash vs double-dash mismatc
 bug found in production (`card-dashboard`'s footer classes): the style silently never
 applies because the selectors don't match.
 
-**Cross-component theming**: a parent component may reach into a *child* component's own
+**Cross-component theming**: a parent component may reach into a _child_ component's own
 class namespace and re-nest it to override context-specific styling, instead of adding
 props or CSS variables:
 
@@ -92,17 +92,18 @@ concern per line, in this order:
 
 ```css
 .el {
-  @apply <structure>;    /* 1: layout, size, spacing, position, typography, shape */
+  @apply <structure>; /* 1: layout, size, spacing, position, typography, shape */
   @apply <light colors>; /* 2: unprefixed color/bg/border-color utilities (light = default) */
-  @apply <dark colors>;  /* 3: same tokens, dark:-prefixed (dark = override) */
+  @apply <dark colors>; /* 3: same tokens, dark:-prefixed (dark = override) */
 
   /* States */
-  @apply <light state colors>;   /* 4a: data-[state=...]:, hover:, etc — light first */
-  @apply <dark state colors>;    /* 4b: dark:data-[state=...]: — dark second */
+  @apply <light state colors>; /* 4a: data-[state=...]:, hover:, etc — light first */
+  @apply <dark state colors>; /* 4b: dark:data-[state=...]: — dark second */
 }
 ```
 
 Rules:
+
 - **Structure line always present** if the element has any layout/sizing/typography at
   all. Omit it only for a class that is purely a color/state override.
 - **Light and dark lines are added only when the element has color.** A purely structural
@@ -182,7 +183,7 @@ Opacity modifiers are used heavily for dark-mode surfaces to keep them subtle:
     }
   }
   ```
-  Use `> [data-slot='...']` when you need to scope to a *direct* child slot rather than
+  Use `> [data-slot='...']` when you need to scope to a _direct_ child slot rather than
   any descendant.
 - Raw CSS declarations are acceptable inside a nested block when no Tailwind utility
   fits cleanly (`width: fit-content;`), and arbitrary values are fine for one-off needs
