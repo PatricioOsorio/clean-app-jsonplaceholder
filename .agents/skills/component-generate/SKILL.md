@@ -1,116 +1,109 @@
 ---
 name: component-generate
-description: Generar, crear, maquetar o editar componentes UI en React usando los estándares de Clean Architecture del proyecto. Se activa ante cualquier acción relacionada con componentes, vistas o elementos UI.
+description: >
+  Scaffolds React components, compound components, hooks, and pages/forms following
+  the exact conventions used across the simba monorepo (mfe-dashboard-uxui-simba,
+  mfe-folio-uxui-simba, mfe-preticket-uxui-simba, mfe-host-uxui-simba,
+  mfe-auth-uxui-simba): kebab-case folders, the canonical 4-file structure
+  (`.tsx` / `.interfaces.ts` / `.css` / `index.ts`), the `IWithRootProps<T>` /
+  `IButtonWithCustomOnClick<TData>` shared typing from `lib-styleguide-simba/interfaces`,
+  the `Parent.Child` compound-component pattern (with initials-prefixed children,
+  e.g. `CardDashboard.Skeleton`), logic-in-hooks (`use-<name>.config`), and the
+  form-builder pattern for pages (`createFormConfig` + `useFormBuilder`). Use whenever
+  the user asks to create, scaffold, add, or generate a new React component, compound
+  component, sub-component, form, or page in any MFE of the simba monorepo — or in
+  Spanish: "crear componente", "generar componente", "agregar componente", "nuevo
+  componente", "scaffolding de componente", "crear formulario", "crear pagina". This
+  skill does NOT cover CSS/styling — for that, always defer to `.agents/skills/css-formatter`.
 ---
 
-# Component Generator Skill
+# component-generate
 
-Esta skill dicta cómo los agentes de IA deben generar o editar componentes en el frontend, siguiendo rígidamente los estándares arquitectónicos y de estilo del proyecto.
+Documents and enforces the author's real, observed React component conventions in the
+simba monorepo. Reverse-engineered from actual shipped code (`card-dashboard`,
+`table-recent-folios`, `card-preticket`, `confirmation-section`, `label-value`,
+`steppper-preticket`, `new-preticket-page` and its forms) — not invented. Follow these
+exactly, even where a shortcut looks reasonable, because consistency with sibling files
+is the entire point: another developer (or Claude) will read this component next to ten
+others and expects the same shape.
 
-## Reglas Irrompibles
+**Styling is explicitly out of scope for this skill.** Never describe CSS classes,
+tokens, `@apply` order, or dark-mode variants here — that is `.agents/skills/css-formatter`'s
+job. Whenever a `.css` file needs to be written for a component generated with this
+skill, invoke `css-formatter` for it.
 
-- **Directiva CSS Obligatoria**: TODO archivo `.css` de componente DEBE comenzar con `@reference "@presentation/App.css";` en la primera línea.
-- **Tailwind v4 y CSS Nesting**: No uses utilidades ad-hoc en el HTML (`className="flex flex-col p-4"`). Usa CSS nesting nativo junto con directivas `@apply` de Tailwind CSS v4 exclusivamente dentro del archivo `.css` del componente.
-- **Named Exports**: Todos los componentes se exportan como constantes de flecha (`export const MyComponent = ...`). NUNCA uses `export default` ni la palabra clave `function`.
-- **Tipado de Elementos Raíz**: Todos los componentes deben tipar sus props extendiendo `IWithRootProps<'tag'>` de `lib-styleguide-simba/interfaces`, y propagar `{...rootProps}` en el elemento contenedor raíz.
-- **Estilos Encapsulados (BEM)**: El elemento contenedor raíz siempre lleva la clase `[kebab-case-componente]-container`. Los elementos descendientes usan la clase abreviada del contenedor más el doble guion bajo (BEM elements), ej. `mcc__title`, `mcc__wrapper`.
+## Core principles (always read)
 
----
+1. **Everything is built from `lib-styleguide-simba` primitives.** shadcn-based
+   primitives (`Card`, `Sidebar`, etc.) use **flat named exports**, never dot-notation —
+   `import { Card, CardHeader, CardTitle, CardContent } from 'lib-styleguide-simba/shadcn/card'`,
+   `import { Sidebar, SidebarContent, SidebarGroup } from 'lib-styleguide-simba/shadcn/sidebar'`.
+   There is no `Card.Header` or `Sidebar.Content` — that pattern does not exist in this
+   codebase. The `Parent.Child` **dot-notation compound pattern is reserved for
+   components authored in this repo** (`StepperPreticket.Header`, `CardDashboard.Skeleton`,
+   `ConfirmationSection.Summary`) — see principle 5 and `references/patterns.md`.
+2. **Shared typing comes from `lib-styleguide-simba/interfaces`** — `IWithRootProps<T>`,
+   `IWithChildren`, `IButtonWithCustomOnClick<TData>`, `IWithLoading`/`IWithEmpty`/
+   `IWithError`, `IWithTestId`. Read `references/interfaces-and-typing.md` before
+   writing any `.interfaces.ts` file — guessing the shape of `IWithRootProps` instead
+   of reading it is the single most common mistake.
+3. **`rootProps` spreads first, then `className` merges via `cn()`**: import `cn` from
+   `lib-styleguide-simba/utils` and always write
+   `className={cn('<name>-container', rootProps?.className)}` so the caller's override
+   composes instead of clobbering.
+4. **Logic lives in `use-<name>.config` hooks, not in the `.tsx`.** If a component needs
+   table columns, form fields, or any non-trivial derived state, that goes in a hook
+   file the view calls into. See `references/patterns.md` §3.
+5. **Compound children attach as static properties** (`Parent.Child = Child`), live in
+   kebab-case subfolders, and are named with the full parent prefix
+   (`CardDashboardSkeleton`, `ConfirmationSectionSummary`). See `references/patterns.md` §1.
+6. **No `memo`, `forwardRef`, `displayName`, or `enum`.** Variants are string-literal
+   unions; defaults are expressed via destructuring defaults, not `defaultProps`.
 
-## Árbol de Decisión para Scaffold
+## References (read when needed)
 
-Antes de escribir código o generar archivos, evalúa el requerimiento con este árbol:
+- **`references/structure.md`** — file/folder layout, naming rules, import path
+  conventions, and `index.ts` barrel patterns. Read this first for any new component.
+- **`references/interfaces-and-typing.md`** — the full shared-type catalogue from
+  `lib-styleguide-simba/interfaces` plus local `.interfaces.ts` conventions (VM,
+  FormModel, indexed access types). Read before writing any interface.
+- **`references/patterns.md`** — the `Parent.Child` compound pattern, the Context
+  variant for shared parent→children state, hook/logic separation, and the recurring
+  React idioms (prop-spread precedence, button `onClick` composition, optional slots).
+- **`references/pages-and-forms.md`** — only when the request is a page or a form: the
+  `form-builder` pattern (`createFormConfig` + `useFormBuilder`), the page-level `steps`
+  orchestration, and default-export page barrels.
+- **`references/examples.md`** — three ready-to-adapt full templates (leaf, compound,
+  form) to copy from instead of writing from scratch.
 
-```
-                  ¿Es un componente en 'features/' o en 'shared/'?
-                                     /             \
-                                    /               \
-                            (features)            (shared)
-                                  /                   \
-        ¿Es una Entidad Unitaria?                      [Shared Component Scaffold]
-         (ej. Post, Comment, PostDetail)               - Sin Skeleton
-                /               \                      - Sin StatusContent por defecto
-             (Sí)               (No)
-              /                   \
-  [Feature Entity Scaffold]   [Feature List Scaffold]
-  - Con --skeleton            - Sin Skeleton propio
-  - Con StatusContent         - Delega skeleton al hijo
-                              - Con StatusContent
-```
+## Generation process
 
-Además, evalúa si es un Formulario:
+1. **Ask if unclear**: component name, what it does, root element or underlying
+   `lib-styleguide-simba` primitive, whether it owns data (needs a `VM` interface), and
+   which shape it is — leaf, compound (has variants/sub-parts), or form/page.
+2. **Read `references/structure.md`** to confirm the file set for that shape, then
+   **`references/interfaces-and-typing.md`** for the exact types to extend.
+3. If compound or stateful-across-children, read **`references/patterns.md`**. If a
+   page or form, read **`references/pages-and-forms.md`**.
+4. **Generate files in order**: `.interfaces.ts` → `.tsx` → `index.ts`. For the `.css`,
+   hand off to `css-formatter` rather than writing it yourself.
+5. **Do not create test files** unless explicitly requested.
+6. **No extra abstractions** — no wrappers, no HOCs, no Context — unless the shape
+   genuinely calls for one (see `references/patterns.md` §2) or the user asks.
+7. Show the complete generated files, ready to be written to disk.
 
-- **¿Es Formulario?** → **STOP**. No generes estados de inputs ni validaciones manuales. Pídele al usuario que use la skill `/form-generate` para manejar la lógica de `use*.config.ts` y sus validadores.
+## Pre-delivery checklist
 
----
-
-## Flujo de Trabajo Mandatorio
-
-1. **Clasificación**: Identifica el tipo de componente usando el árbol de decisión anterior.
-2. **Andamiaje Inicial**: Ejecuta el script de scaffold en el directorio correspondiente:
-   - Para entidades complejas en features:
-     ```bash
-     bash ./scripts/generate.sh <DirectorioPadre> <NombreComponente> --skeleton
-     ```
-   - Para listas o compartidos simples:
-     ```bash
-     bash ./scripts/generate.sh <DirectorioPadre> <NombreComponente>
-     ```
-3. **Lectura de Referencias Obligatoria**:
-   - Lee `./references/patterns.md` para dominar BEM, interfaces VM, callbacks y control optimista.
-   - Si creaste un Skeleton, lee `./references/skeleton-patterns.md` para implementar el compound component API correcto.
-   - Lee `./references/import-map.md` para resolver los path aliases y estructurar los imports en el orden correcto.
-4. **Implementación y Detalle**: Abre los archivos generados y añade la lógica visual requerida usando mappers y hooks de forma presentacional.
-
----
-
-## Estructura de Archivos Esperada
-
-### Componente Estándar (Sin Skeleton)
-
-```
-MyComponent/
-├── MyComponent.css           # Estilos con nesting y @apply
-├── MyComponent.interfaces.ts  # Interfaces extendiendo IWithRootProps
-├── MyComponent.tsx           # Componente presentacional puro
-└── index.ts                  # Re-exports (barrel file)
-```
-
-### Componente de Entidad Complejo (Con Skeleton)
-
-```
-MyComponent/
-├── MyComponent.css
-├── MyComponent.interfaces.ts
-├── MyComponent.tsx
-├── index.ts
-└── Skeleton/
-    ├── Skeleton.css
-    ├── Skeleton.interfaces.ts
-    └── Skeleton.tsx          # Exporta MyComponentSkeleton
-```
-
-## 3. `ComponentName.css`
-
-- La primera línea siempre debe ser: `@reference "@presentation/App.css";`
-- Priorizar el uso de tokens semánticos de shadcn definidos en [styles-and-tokens.md](file:///Users/1147839/Documents/dev/labs/clean-app-new/.agents/skills/component-generate/references/styles-and-tokens.md).
-- Dark mode es el **default** — no usar el prefijo `dark:`.
-- Light mode usa la variante `light:`.
-- Tailwind v4: usar `@apply` para aplicar utilidades.
-- CSS anidado: las clases hijas deben estar dentro del contenedor padre.
-- Nombre del contenedor en kebab-case: `component-name-container`.
-- Variantes semánticas: `variant-primary`, `variant-success`, etc.
-
-### Orden del bloque `@apply` (obligatorio)
-
-Cada clase CSS sigue **3 reglas de `@apply` en este orden estricto**:
-
-```text
-1. @apply <structure>   → sizes, spacing, layout, position, base typography
-2. @apply <dark styles> → colors, shadows, borders — dark theme (default)
-3. @apply <light styles> → mismos tokens con prefijo light: — light theme
-```
-
-Si un bloque no tiene estilos de color, omitir `@apply` 2 y 3. Si no tiene estructura, omitir 1. Nunca mezclar utilidades de estructura y color en el mismo `@apply`.
-
-- **Sin Comentarios**: No incluir comentarios aclaratorios o etiquetas de bloque en el archivo CSS (ej. evitar `/* 1. Structure */` o `/* 2. Dark styles */`). Las directivas `@apply` deben estar limpias de anotaciones de este tipo.
+- [ ] Folder and every filename kebab-case, matching the component name.
+- [ ] Exactly `<name>.tsx`, `<name>.interfaces.ts`, `<name>.css`, `index.ts` (+ optional
+      `use-<name>.config.ts(x)`, + optional kebab-case child subfolders).
+- [ ] Props interface extends `IWithRootProps<T>` (or the right `IWith*` mixin) from
+      `lib-styleguide-simba/interfaces` — not reinvented locally.
+- [ ] Named export in `.tsx`, no `React.FC`, no `memo`/`forwardRef`/`displayName`.
+- [ ] `rootProps` spread first, `className` merged with `cn('<name>-container', rootProps?.className)`.
+- [ ] Compound children (if any) attached as `Parent.Child = Child`, full-name-prefixed,
+      each in its own kebab-case subfolder with its own 3 files + barrel.
+- [ ] Non-trivial logic extracted into a `use-<name>.config` hook, not inline in the view.
+- [ ] `index.ts` barrel: `export * from './<name>'` + `export * from './<name>.interfaces'`
+      (+ child interfaces for compounds, + `.config` for forms, default export for pages).
+- [ ] `.css` handed off to `css-formatter` — this skill did not author styling.

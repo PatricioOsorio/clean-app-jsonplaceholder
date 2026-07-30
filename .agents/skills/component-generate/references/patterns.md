@@ -1,163 +1,142 @@
-# Patrones de Clean Architecture en Componentes UI
+# Patterns
 
-Esta referencia es mandatoria al implementar componentes React del proyecto.
+## 1. Compound component — `Parent.Child`
 
-## 1. CSS y BEM (Nesting & Tailwind v4)
-
-- **Contenedor Principal**: Formato `kebab-case` + el sufijo `-container`. Ej: `.post-detail-container`.
-- **Elementos Descendientes**: Iniciales abreviadas del contenedor principal + `__` + nombre del elemento. Ej: `PostDetail` -> contenedor `.post-detail-container` -> hijos `.pdc__title`, `.pdc__header`.
-- **Regla de No Anidación**: BEM no se anida. Nunca escribas `.pdc__header__title`. Usa un nivel plano bajo el contenedor: `.pdc__title`.
-- **Modificadores**: Se anexan con `--`. Ej: `nc__link--active`, `optimistic-working`.
-
-### Estructura de CSS con Nesting Nativo
-
-```css
-@reference "@styles/app.css";
-
-.post-detail-container {
-  @apply flex w-full flex-col gap-6;
-
-  .pdc__header {
-    @apply border-border space-y-4 border-b pb-6;
-  }
-
-  .pdc__title {
-    @apply text-foreground text-3xl leading-tight font-extrabold;
-  }
-
-  /* Modificador condicional */
-  &.optimistic-deleting {
-    @apply pointer-events-none opacity-60;
-  }
-}
-```
-
-### Tabla de Prefijos BEM Reales en el Proyecto
-
-Usa las iniciales del componente base como prefijo para mantener consistencia:
-
-- `Post` -> `.post-container` -> `pc__`
-- `PostDetail` -> `.post-detail-container` -> `pdc__`
-- `PostForm` -> `.post-form-container` -> `pfc__`
-- `Comment` -> `.comment-container` -> `cc__`
-- `CommentsList` -> `.comments-list-container` -> `clc__`
-- `Empty` / `Error` -> `.empty-container` / `.error-container` -> `ec__` (Comparten ec__ pero se aíslan por su contenedor)
-
----
-
-## 2. Tipado de Props y View Models (VM)
-
-El proyecto separa el contrato de datos del dominio (View Model) del contrato de propiedades de React.
-
-### Caso A: Componente de Entidad Unitaria (ej. `Post`, `Comment`)
-
-No extienden el VM completo como propiedades directas; reciben el VM encapsulado en una prop dedicada.
-
-```ts
-import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
-import type { IPostVM } from '../../models/post';
-
-export interface IPostProps extends IWithRootProps<'article'> {
-  post: IPostVM;
-  isOptimistic?: boolean;
-  onEdit?: (post: IPostVM, e: React.MouseEvent) => void;
-  onDelete?: (id: number, e: React.MouseEvent) => void;
-}
-```
-
-### Caso B: Componente Contenedor o Listas (ej. `Posts`, `CommentsList`)
-
-Extienden una interfaz VM que declara la colección de datos.
-
-```ts
-import type {
-  IWithRootProps,
-  IWithLoading,
-  IWithError,
-  IWithEmpty,
-} from 'lib-styleguide-simba/interfaces';
-import type { IPostVM } from '../../models/post';
-
-export interface IPostsVM {
-  posts?: IPostVM[];
-}
-
-export interface IPostsProps extends IWithRootProps<'section'>, IPostsVM {
-  status?: IWithLoading & IWithError & IWithEmpty;
-  onPostClick?: (id: number) => void;
-}
-```
-
-### Caso C: Componente Compartido Simple (ej. `Empty`, `Error`)
-
-Definen las propiedades de datos directamente en el VM de manera opcional.
-
-```ts
-export interface IEmptyVM {
-  title?: string;
-  description?: string;
-}
-export interface IEmptyProps extends IWithRootProps<'div'>, IEmptyVM {}
-```
-
----
-
-## 3. rootProps Pattern y `cn()`
-
-El contenedor raíz del componente React debe propagar el spread de `rootProps` y combinar su clase BEM nativa con la clase del consumidor usando `cn`:
+The parent is a plain arrow-function component. Children are standalone components
+imported from their own kebab-case subfolder and attached as static properties **after**
+the parent's declaration. Children are named with the full parent prefix so the
+attachment reads unambiguously.
 
 ```tsx
-import { cn } from 'lib-styleguide-simba/utils';
-import type { IPostProps } from './Post.interfaces';
+// confirmation-section.tsx
+import { ConfirmationSectionCostCenter } from './cost-center/cost-center';
+import { ConfirmationSectionCosts } from './costs/costs';
+import { ConfirmationSectionSummary } from './summary/summary';
 
-export const Post = ({ rootProps, post, isOptimistic }: IPostProps) => (
-  <article
-    {...rootProps}
-    className={cn('post-container', { 'optimistic-working': isOptimistic }, rootProps?.className)}
-  >
-    {/* Contenido */}
-  </article>
+export const ConfirmationSection = ({ children }: IConfirmationSectionProps) => {
+  return <section className="confirmation-section-container">{children}</section>;
+};
+
+ConfirmationSection.Summary = ConfirmationSectionSummary;
+ConfirmationSection.Costs = ConfirmationSectionCosts;
+ConfirmationSection.CostCenter = ConfirmationSectionCostCenter;
+```
+
+Consumed as:
+```tsx
+<ConfirmationSection>
+  <ConfirmationSection.Summary items={itemsSummary} />
+  <ConfirmationSection.Costs items={itemsCosts} />
+  <ConfirmationSection.CostCenter {...costCenterProps} />
+</ConfirmationSection>
+```
+
+No `Object.assign`, no `forwardRef`, no `displayName` — just a plain static-property
+assignment.
+
+## 2. Context variant — shared parent → children state
+
+Use this only when children need data the parent computed/owns, not just for the sake
+of it (no unrequested Context). `createContext` + a guard-throw consumer hook:
+
+```tsx
+const StepperPreticketContext = createContext<IStepperPreticketVM | null>(null);
+
+export const useStepperPreticketContext = () => {
+  const ctx = useContext(StepperPreticketContext);
+  if (!ctx) throw new Error('useStepperPreticketContext must be used within StepperPreticket');
+  return ctx;
+};
+
+export const StepperPreticket = ({ steps, children, rootProps, ...props }: IStepperPreticketProps) => (
+  <StepperPreticketContext.Provider value={{ steps }}>
+    <Stepper {...rootProps} {...props}>{children}</Stepper>
+  </StepperPreticketContext.Provider>
 );
+
+StepperPreticket.Header = StepperPreticketHeader;
+StepperPreticket.Content = StepperPreticketContent;
+StepperPreticket.Footer = StepperPreticketFooter;
 ```
 
----
+Children then take almost no props, reading shared data from context instead:
+```tsx
+export const StepperPreticketHeader = ({ className }: { className?: string }) => {
+  const { steps } = useStepperPreticketContext();
+  // ...
+};
+```
 
-## 4. StatusContent y Default Status
+## 3. Logic separation — `use-<name>.config` hooks
 
-Cualquier componente que muestre datos provenientes de llamadas asíncronas debe encapsular su renderizado en `<StatusContent>`.
-
-- Siempre defaultea `status = {}` para evitar errores de desestructuración.
-- Calcula de manera segura el estado vacío: `isEmpty={status.isEmpty || data.length === 0}`.
+Non-trivial logic (table columns, form fields, derived config) lives in a hook; the
+`.tsx` stays presentational and just calls it.
 
 ```tsx
-import { StatusContent, Empty, Error } from '@presentation/shared/components';
-
-export const Posts = ({ posts, status = {} }: IPostsProps) => (
-  <StatusContent
-    {...status}
-    isEmpty={status.isEmpty || !posts || posts.length === 0}
-    emptyTemplate={status.emptyTemplate ?? <Empty title="Sin publicaciones" />}
-    errorTemplate={status.errorTemplate ?? <Error description={status.errorDescription} />}
-    loadingTemplate={status.loadingTemplate ?? <Post.Skeleton items={6} />}
-  >
-    {/* Renderizar lista */}
-  </StatusContent>
-);
+// table-recent-folios.tsx
+export const TableRecentFolios = ({ values, isLoading, rootProps, btnActionProps }: ITableRecentFoliosProps) => {
+  const { columnsConfig, tableConfig } = useTableRecentFoliosConfig({ btnActionProps });
+  return (
+    <section {...rootProps} className={cn('table-recent-folios-container', rootProps?.className)}>
+      <DataTable columnConfig={columnsConfig()} data={values} isLoading={isLoading} {...tableConfig} />
+    </section>
+  );
+};
 ```
 
----
-
-## 5. Callbacks y Eventos
-
-Cuando agregues manejadores de eventos como botones edit/delete sobre elementos interactivos contenedores (tarjetas clickeables), evita la propagación del evento para no disparar acciones del contenedor:
-
+The hook is `.tsx` (not `.ts`) precisely because it returns JSX cell renderers:
 ```tsx
-<Button
-  onClick={(e) => {
-    e.stopPropagation(); // Detener burbujeo hacia el onClick de rootProps
-    onEdit?.(post, e);
-  }}
->
-  Editar
-</Button>
+// use-table-recent-folios.config.tsx
+export const useTableRecentFoliosConfig = ({ btnActionProps }: IUseTableRecentFoliosConfigProps) => {
+  const columnsConfig = (): IColumnConfig<IRecentFoliosItemVM>[] => [
+    { key: 'col-id', header: 'Folio', body: (row) => <span>{row.folio}</span> },
+    {
+      key: 'col-actions',
+      header: '',
+      body: (row) => (
+        <Button {...btnActionProps} onClick={(e) => btnActionProps?.onClick?.(row, e)}>
+          <IconEye />
+        </Button>
+      ),
+    },
+  ];
+  const tableConfig = { paginator: true, rows: 5 };
+  return { columnsConfig, tableConfig };
+};
 ```
+
+For forms, the hook wraps `createFormConfig` + `useFormBuilder` and spreads the result —
+see `pages-and-forms.md`.
+
+## 4. Recurring React idioms
+
+- **Props spread then override**, so the caller's props apply but the component's own
+  container class always wins the merge:
+  ```tsx
+  <CardPreticket title="Costos" {...props}
+    rootProps={{ className: 'costs-container', ...props.rootProps }} />
+  ```
+  and at the DOM level:
+  ```tsx
+  <section {...rootProps} className={cn('label-value-container', rootProps?.className)} />
+  ```
+  `cn(<own-class>, rootProps?.className)` — own class first, caller's merges in after —
+  is universal across every component.
+- **Button `onClick` composition** — spread the caller's button props, then wrap
+  `onClick` to run internal logic *and* call through to the caller's handler, with
+  `children`/`disabled` fallbacks:
+  ```tsx
+  <Button variant="outline" {...btnNextProps}
+    disabled={activeStep === stepsCount || btnNextProps?.disabled}
+    onClick={(e) => { setActiveStep(activeStep + 1); btnNextProps?.onClick?.(e); }}>
+    {btnNextProps?.children || (activeStep === stepsCount ? 'Confirmar y generar folio' : 'Siguiente')}
+  </Button>
+  ```
+- **Optional slots guarded inline**: `{headerEndSlot && <div>{headerEndSlot}</div>}`.
+- **Empty-state fallbacks inline**: `value ? value : <span>Dato no proporcionado</span>`,
+  `notes || <span className="italic">Sin observaciones</span>`.
+- **Composite template-literal keys** when mapping: `key={\`${label}-${i}\`}`.
+- **Function components only** — `export const Name = (props: IProps) => {...}`, never
+  `React.FC`, class components, `memo`, `forwardRef`, or `displayName`.
+- **Default values via destructuring**, not `defaultProps`: `variant = 'primary'`,
+  `status = {}`, `items = 1`.
