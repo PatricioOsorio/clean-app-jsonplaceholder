@@ -11,7 +11,7 @@ import { mapIssuesToForm } from '@presentation/utils';
 
 const USER_ID = 1; // TODO: replace with auth logic when implemented
 
-export const usePostPage = () => {
+export const usePostFormPage = () => {
   const navigate = useNavigate();
 
   const { Input, hookForm } = usePostFormConfig();

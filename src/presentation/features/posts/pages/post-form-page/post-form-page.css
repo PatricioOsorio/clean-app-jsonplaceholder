@@ -1,13 +1,13 @@
 @reference "@styles/app.css";
 
-.post-page {
+.post-form-page {
   @apply bg-background relative flex w-full flex-col gap-8 py-8;
 
-  .pp__header {
+  .pfp__header {
     @apply border-border border-b pb-8;
   }
 
-  .pp__system-tag {
+  .pfp__system-tag {
     @apply text-primary relative mb-2 pl-3 text-[11px] font-semibold tracking-[0.2em] uppercase;
 
     &::before {
@@ -16,11 +16,11 @@
     }
   }
 
-  .pp__title {
+  .pfp__title {
     @apply text-foreground text-3xl font-bold tracking-tight md:text-5xl;
   }
 
-  .pp__subtitle {
+  .pfp__subtitle {
     @apply text-muted-foreground mt-4 w-full text-sm;
   }
 }

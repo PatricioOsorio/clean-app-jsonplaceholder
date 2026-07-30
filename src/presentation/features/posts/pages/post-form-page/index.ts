@@ -1,3 +1,3 @@
-import { PostPage } from './post-page';
+import { PostFormPage } from './post-form-page';
 
-export default PostPage;
+export default PostFormPage;

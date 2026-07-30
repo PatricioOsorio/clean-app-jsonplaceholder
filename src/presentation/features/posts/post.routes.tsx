@@ -6,7 +6,9 @@ import { ProtectedRouteGuard } from '@presentation/shared/guards';
 const PostDetailPage = lazyWithFallback(
   () => import('@presentation/features/posts/pages/post-detail-page'),
 );
-const PostPage = lazyWithFallback(() => import('@presentation/features/posts/pages/post-page'));
+const PostFormPage = lazyWithFallback(
+  () => import('@presentation/features/posts/pages/post-form-page'),
+);
 const PostsPage = lazyWithFallback(() => import('@presentation/features/posts/pages/posts-page'));
 
 export const postRoutes: RouteObject[] = [
@@ -23,11 +25,11 @@ export const postRoutes: RouteObject[] = [
       },
       {
         element: <ProtectedRouteGuard requiredPermission="posts:create" />,
-        children: [{ path: 'create', element: <PostPage /> }],
+        children: [{ path: 'create', element: <PostFormPage /> }],
       },
       {
         element: <ProtectedRouteGuard requiredPermission="posts:update" />,
-        children: [{ path: 'edit/:id', element: <PostPage /> }],
+        children: [{ path: 'edit/:id', element: <PostFormPage /> }],
       },
     ],
   },

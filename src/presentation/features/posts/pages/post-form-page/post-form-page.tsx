@@ -1,9 +1,9 @@
 import { PostForm } from '../../components/post-form';
-import { usePostPage } from './use-post-page';
+import { usePostFormPage } from './use-post-form-page';
 
-import './post-page.css';
+import './post-form-page.css';
 
-export const PostPage = () => {
+export const PostFormPage = () => {
   const {
     // props
     isLoadingForm,
@@ -16,14 +16,14 @@ export const PostPage = () => {
     // computed
     TITLE,
     SUBTITLE,
-  } = usePostPage();
+  } = usePostFormPage();
 
   return (
-    <section className="post-page">
-      <header className="pp__header">
-        <p className="pp__system-tag">Post editor</p>
-        <h1 className="pp__title">{TITLE}</h1>
-        <p className="pp__subtitle">{SUBTITLE}</p>
+    <section className="post-form-page">
+      <header className="pfp__header">
+        <p className="pfp__system-tag">Post editor</p>
+        <h1 className="pfp__title">{TITLE}</h1>
+        <p className="pfp__subtitle">{SUBTITLE}</p>
       </header>
 
       <PostForm
