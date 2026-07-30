@@ -26,9 +26,9 @@ export const AvatarHeader = ({ rootProps, user, onLogout, onLoginClick }: IAvata
   if (!user) {
     return (
       <div {...rootProps} className={cn('avatar-header-container', rootProps?.className)}>
-        <Button variant="text" className="ahc__login-btn" onClick={onLoginClick}>
+        <Button variant="text" className="ahc__login-btn" title="Sign In" onClick={onLoginClick}>
           <IconLogin />
-          <span>Sign In</span>
+          <span className="ahc__login-text">Sign In</span>
         </Button>
       </div>
     );

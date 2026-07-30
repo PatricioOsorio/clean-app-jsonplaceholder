@@ -43,7 +43,12 @@
   }
 
   .ahc__login-btn {
-    @apply w-full;
+    @apply flex w-full items-center justify-center gap-2;
+    @apply group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0;
+
+    .ahc__login-text {
+      @apply group-data-[state=collapsed]:hidden;
+    }
   }
 }
 

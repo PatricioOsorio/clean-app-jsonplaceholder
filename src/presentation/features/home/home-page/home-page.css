@@ -1,52 +1,46 @@
 @reference "@styles/app.css";
 
 .home-page-container {
-  @apply bg-background relative flex h-full flex-col items-center justify-center overflow-hidden py-8;
+  @apply relative flex w-full flex-col gap-6 p-4 sm:p-6 lg:p-8;
 
-  .hpc__grid-bg {
-    @apply pointer-events-none absolute inset-0;
-    background: radial-gradient(
-      ellipse 60% 50% at 50% 40%,
-      rgba(45, 212, 191, 0.16),
-      transparent 70%
-    );
+  /* Header Section */
+  .hpc__header {
+    @apply flex flex-col justify-between gap-4 md:flex-row md:items-end;
   }
 
-  .hpc__content {
-    @apply relative z-10 flex max-w-3xl flex-col items-center gap-8 text-center;
-  }
-
-  .hpc__title-wrapper {
-    @apply border-border bg-card/50 rounded-4xl border p-8 backdrop-blur-xl sm:p-10;
-  }
-
-  .hpc__system-tag {
-    @apply text-primary relative mb-3 inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] uppercase;
-
-    &::before {
-      content: '';
-      @apply bg-primary h-2 w-0.5 rounded-full;
-    }
+  .hpc__header-text {
+    @apply flex flex-col gap-1;
   }
 
   .hpc__title {
-    @apply text-foreground text-4xl font-bold tracking-tight md:text-6xl;
+    @apply text-foreground text-3xl font-extrabold tracking-tight sm:text-4xl;
   }
 
-  .hpc__title-highlight {
-    @apply text-primary;
+  .hpc__subtitle {
+    @apply text-muted-foreground max-w-xl text-sm font-normal;
   }
 
-  .hpc__description {
-    @apply text-muted-foreground max-w-xl text-lg;
+  .hpc__header-actions {
+    @apply flex flex-wrap items-center gap-2;
   }
 
-  .hpc__cta-button {
-    @apply text-primary-foreground bg-primary focus:ring-ring focus:ring-offset-background inline-flex items-center justify-center rounded-full px-8 py-4 text-sm font-semibold transition-all hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:outline-none active:scale-95;
-    box-shadow: 0 0 24px rgba(45, 212, 191, 0.35);
+  .hpc__status-pill {
+    @apply flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold shadow-xs select-none;
+    @apply bg-emerald-500/10 text-emerald-600;
+    @apply dark:bg-emerald-500/20 dark:text-emerald-400;
+  }
 
-    &:hover {
-      background-color: color-mix(in srgb, var(--primary) 90%, transparent);
-    }
+  .hpc__status-dot {
+    @apply h-2 w-2 rounded-full;
+  }
+
+  .hpc__arch-pill {
+    @apply text-muted-foreground rounded-full px-3 py-1 text-xs font-semibold shadow-xs select-none;
+    @apply bg-card/60;
+  }
+
+  /* Main Grid Layout (2-Column) */
+  .hpc__main-grid {
+    @apply grid w-full grid-cols-1 gap-6 lg:grid-cols-3;
   }
 }

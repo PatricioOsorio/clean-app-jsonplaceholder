@@ -1,0 +1,55 @@
+@reference "@styles/app.css";
+
+.home-gallery-container {
+  @apply flex flex-col gap-4 rounded-3xl p-6 shadow-xl backdrop-blur-xl lg:col-span-1;
+  @apply bg-card/50 text-card-foreground;
+  @apply dark:bg-slate-950/50;
+
+  .hg__section-header {
+    @apply flex items-center justify-between gap-4 px-1;
+  }
+
+  .hg__section-title-group {
+    @apply flex items-center gap-2.5;
+  }
+
+  .hg__section-icon {
+    @apply text-primary h-5 w-5 shrink-0;
+  }
+
+  .hg__section-title {
+    @apply text-foreground text-lg font-bold tracking-tight;
+  }
+
+  .hg__gallery-grid {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .hg__gallery-card {
+    @apply relative aspect-square overflow-hidden rounded-2xl shadow-sm transition-all duration-300;
+    @apply bg-muted/50;
+
+    /* States */
+    @apply hover:scale-[1.02] hover:shadow-xl;
+
+    &:hover .hg__gallery-img {
+      @apply scale-105;
+    }
+
+    &:hover .hg__gallery-overlay {
+      @apply opacity-100;
+    }
+  }
+
+  .hg__gallery-img {
+    @apply h-full w-full object-cover transition-transform duration-500;
+  }
+
+  .hg__gallery-overlay {
+    @apply absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/30 to-transparent p-3 opacity-0 transition-opacity duration-200;
+  }
+
+  .hg__gallery-title {
+    @apply truncate text-[11px] font-medium text-white;
+  }
+}
