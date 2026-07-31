@@ -9,23 +9,16 @@ import {
   PostEntity,
 } from '@domain/post';
 import {
-  resolveDelay,
   runDataCommand,
   withDelay,
   LocalDb,
   applyPaginationAndSorting,
 } from '@infrastructure/utils';
-import { simulateFaultPost } from './post.dev';
+import { SEED_POST, simulateFaultPost } from './post.dev';
 import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';
 import type { IGetPostsParams } from '@domain/post';
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
-
-const SEED: PostEntity[] = [
-  { id: 1, idUser: 1, title: 'Post 1', content: 'Content of post 1' },
-  { id: 2, idUser: 1, title: 'Post 2', content: 'Content of post 2' },
-  { id: 3, idUser: 2, title: 'Post 3', content: 'Content of post 3' },
-];
 
 @injectable()
 export class PostRepositoryLocal implements PostRepository {
@@ -35,7 +28,7 @@ export class PostRepositoryLocal implements PostRepository {
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
     @inject(PostEntity.TOKEN) private readonly validator: IValidatorEntity<PostEntity>,
   ) {
-    this.db = new LocalDb<PostEntity>(this.storage, LOCAL_STORAGE_KEYS.posts, SEED);
+    this.db = new LocalDb<PostEntity>(this.storage, LOCAL_STORAGE_KEYS.posts, SEED_POST);
   }
 
   async getAll(params?: IGetPostsParams): Promise<IPaginatedResult<PostEntity>> {
@@ -44,7 +37,7 @@ export class PostRepositoryLocal implements PostRepository {
       onEmpty: () => this.db.clear(),
     });
 
-    await simulateFaultPost(undefined, 'getAll');
+    await simulateFaultPost('getAll');
 
     const allPosts = this.db.getAll().map((post) => this.validator.validate(post));
     const total = allPosts.length;
@@ -56,48 +49,48 @@ export class PostRepositoryLocal implements PostRepository {
       total,
     };
 
-    return withDelay(paginatedResult, resolveDelay());
+    return withDelay(paginatedResult);
   }
 
   async getById(id: number): Promise<PostEntity> {
-    await simulateFaultPost(id, 'getById');
+    await simulateFaultPost('getById', id);
 
     const post = this.db.getById(id);
     if (!post) throw new PostNotFoundError(id);
 
-    return withDelay(this.validator.validate(post), resolveDelay());
+    return withDelay(this.validator.validate(post));
   }
 
   async create(post: CreatePostDto): Promise<PostEntity> {
-    await simulateFaultPost(undefined, 'create');
+    await simulateFaultPost('create');
     const newPost = this.db.create(post);
-    return withDelay(this.validator.validate(newPost), resolveDelay());
+    return withDelay(this.validator.validate(newPost));
   }
 
   async update(id: number, post: UpdatePostDto): Promise<PostEntity> {
-    await simulateFaultPost(id, 'update');
+    await simulateFaultPost('update', id);
 
     const updated = this.db.update(id, post);
     if (!updated) throw new PostNotFoundError(id);
 
-    return withDelay(this.validator.validate(updated), resolveDelay());
+    return withDelay(this.validator.validate(updated));
   }
 
   async patch(id: number, fields: PatchPostDto): Promise<PostEntity> {
-    await simulateFaultPost(id, 'patch');
+    await simulateFaultPost('patch', id);
 
     const patched = this.db.update(id, fields);
     if (!patched) throw new PostNotFoundError(id);
 
-    return withDelay(this.validator.validate(patched), resolveDelay());
+    return withDelay(this.validator.validate(patched));
   }
 
   async delete(id: number): Promise<boolean> {
-    await simulateFaultPost(id, 'delete');
+    await simulateFaultPost('delete', id);
 
     const deleted = this.db.delete(id);
     if (!deleted) throw new PostNotFoundError(id);
 
-    return withDelay(true, resolveDelay());
+    return withDelay(true);
   }
 }

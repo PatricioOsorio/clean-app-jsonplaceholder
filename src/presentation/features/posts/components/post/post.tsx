@@ -55,7 +55,6 @@ export const Post = ({
               aria-label="Delete post"
               size="sm"
               type="button"
-              severity="danger"
               onClick={(e) => {
                 e.stopPropagation();
                 btnDeleteProps?.onClick?.(post.id, e);

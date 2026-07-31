@@ -10,40 +10,16 @@ import {
   type IGetCommentsParams,
 } from '@domain/comment';
 import {
-  resolveDelay,
   withDelay,
   LocalDb,
   runDataCommand,
   applyPaginationAndSorting,
 } from '@infrastructure/utils';
-import { simulateFaultComment } from './comment.dev';
+import { SEED_COMMENT, simulateFaultComment } from './comment.dev';
 import { StorageClient, LOCAL_STORAGE_KEYS } from '@infrastructure/storage';
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
 import type { IPaginatedResult } from '@domain/shared';
 
-const SEED: CommentEntity[] = [
-  {
-    id: 1,
-    idPost: 1,
-    name: 'Comment 1',
-    email: 'comment1@example.com',
-    content: 'This is the first comment.',
-  },
-  {
-    id: 2,
-    idPost: 1,
-    name: 'Comment 2',
-    email: 'comment2@example.com',
-    content: 'This is the second comment.',
-  },
-  {
-    id: 3,
-    idPost: 1,
-    name: 'Comment 3',
-    email: 'comment3@example.com',
-    content: 'This is the third comment.',
-  },
-];
 @injectable()
 export class CommentRepositoryLocal implements CommentRepository {
   private readonly db: LocalDb<CommentEntity>;
@@ -53,7 +29,7 @@ export class CommentRepositoryLocal implements CommentRepository {
     @inject(CommentEntity.VALIDATOR_TOKEN)
     private readonly validator: IValidatorEntity<CommentEntity>,
   ) {
-    this.db = new LocalDb<CommentEntity>(this.storage, LOCAL_STORAGE_KEYS.comments, SEED);
+    this.db = new LocalDb<CommentEntity>(this.storage, LOCAL_STORAGE_KEYS.comments, SEED_COMMENT);
   }
 
   async getAll(params?: IGetCommentsParams): Promise<IPaginatedResult<CommentEntity>> {
@@ -62,7 +38,7 @@ export class CommentRepositoryLocal implements CommentRepository {
       onEmpty: () => this.db.clear(),
     });
 
-    await simulateFaultComment(undefined, 'getAll');
+    await simulateFaultComment('getAll');
 
     const allComments = this.db.getAll().map((comment) => this.validator.validate(comment));
     const total = allComments.length;
@@ -74,58 +50,58 @@ export class CommentRepositoryLocal implements CommentRepository {
       total,
     };
 
-    return withDelay(paginatedResult, resolveDelay());
+    return withDelay(paginatedResult);
   }
 
   async getById(id: number): Promise<CommentEntity> {
-    await simulateFaultComment(id, 'getById');
+    await simulateFaultComment('getById', id);
 
     const comment = this.db.getById(id);
     if (!comment) throw new CommentNotFoundError(id);
 
-    return withDelay(this.validator.validate(comment), resolveDelay());
+    return withDelay(this.validator.validate(comment));
   }
 
   async getByPostId(id: number): Promise<CommentEntity[]> {
-    await simulateFaultComment(id, 'getByPostId');
+    await simulateFaultComment('getByPostId', id);
 
     const comments = this.db.getBy((c) => c.idPost === id).map((c) => this.validator.validate(c));
 
-    return withDelay(comments, resolveDelay());
+    return withDelay(comments);
   }
 
   async create(comment: CreateCommentDto): Promise<CommentEntity> {
-    await simulateFaultComment(undefined, 'create');
+    await simulateFaultComment('create');
 
     const newComment = this.db.create(comment);
 
-    return withDelay(this.validator.validate(newComment), resolveDelay());
+    return withDelay(this.validator.validate(newComment));
   }
 
   async update(id: number, comment: UpdateCommentDto): Promise<CommentEntity> {
-    await simulateFaultComment(id, 'update');
+    await simulateFaultComment('update', id);
 
     const updated = this.db.update(id, comment);
     if (!updated) throw new CommentNotFoundError(id);
 
-    return withDelay(this.validator.validate(updated), resolveDelay());
+    return withDelay(this.validator.validate(updated));
   }
 
   async patch(id: number, fields: PatchCommentDto): Promise<CommentEntity> {
-    await simulateFaultComment(id, 'patch');
+    await simulateFaultComment('patch', id);
 
     const patched = this.db.update(id, fields);
     if (!patched) throw new CommentNotFoundError(id);
 
-    return withDelay(this.validator.validate(patched), resolveDelay());
+    return withDelay(this.validator.validate(patched));
   }
 
   async delete(id: number): Promise<boolean> {
-    await simulateFaultComment(id, 'delete');
+    await simulateFaultComment('delete', id);
 
     const deleted = this.db.delete(id);
     if (!deleted) throw new CommentNotFoundError(id);
 
-    return withDelay(true, resolveDelay());
+    return withDelay(true);
   }
 }

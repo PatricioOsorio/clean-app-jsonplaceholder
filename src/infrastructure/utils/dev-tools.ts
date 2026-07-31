@@ -49,7 +49,7 @@ export type ICustomFaultMapper = (fault: string, resourceId?: number) => Error |
  * - ?fault=...        => feature-specific faults via CustomFaultMapper
  */
 export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
-  return async (id?: number, operation?: string): Promise<void> => {
+  return async (operation: string, id?: number): Promise<void> => {
     const fault = getQueryParam('fault');
     if (!fault) return;
 
