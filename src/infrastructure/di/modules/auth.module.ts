@@ -1,7 +1,13 @@
 import { container, type ClassProvider } from 'tsyringe';
 
 import { AuthRepository, AuthEntity, LoginDto } from '@domain/auth';
-import { AuthRepositoryApi, ZodLoginValidator, ZodAuthEntityValidator } from '@infrastructure/auth';
+import {
+  AuthRepositoryApi,
+  AuthRepositoryLocal,
+  AuthRepositoryMock,
+  ZodLoginValidator,
+  ZodAuthEntityValidator,
+} from '@infrastructure/auth';
 import { ENV } from '@infrastructure/utils';
 
 const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
@@ -10,8 +16,8 @@ type IAuthRepositoryCtor = ClassProvider<AuthRepository>['useClass'];
 
 const AUTH_REPOSITORIES: Record<typeof DATA_SOURCE, IAuthRepositoryCtor> = {
   api: AuthRepositoryApi,
-  mock: AuthRepositoryApi,
-  localstorage: AuthRepositoryApi,
+  mock: AuthRepositoryMock,
+  localstorage: AuthRepositoryLocal,
 };
 
 const VALIDATORS_REPOSITORIES = {

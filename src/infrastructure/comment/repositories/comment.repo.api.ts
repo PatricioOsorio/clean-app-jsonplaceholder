@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { CommentMapper } from '@infrastructure/comment/comment.mapper';
 import { HttpRepository, type IHttpResponse } from '@domain/http';
-import { createApiErrorHandler } from '@infrastructure/http';
+import { createApiErrorHandler, toPaginatedResult } from '@infrastructure/http';
 import { CommentEntity } from '@domain/comment';
 import type {
   CommentRepository,
@@ -34,22 +34,6 @@ export class CommentRepositoryApi implements CommentRepository {
     return commentErrorHandler(error, commentId);
   }
 
-  private toPaginatedResult<TResponse, TEntity>(
-    response: IHttpResponse<TResponse[]>,
-    mapper: (response: TResponse[]) => TEntity[],
-  ): IPaginatedResult<TEntity> {
-    const headerCount = response.headers?.['x-total-count'];
-    const dataCount = Array.isArray(response.data) ? response.data.length : 0;
-
-    const total = Number(headerCount ?? dataCount ?? 0);
-    const entities = mapper(response.data);
-
-    return {
-      data: entities,
-      total,
-    };
-  }
-
   async getAll(params?: IGetCommentsParams): Promise<IPaginatedResult<CommentEntity>> {
     try {
       const queryParams = CommentMapper.toQueryParams(params);
@@ -58,7 +42,7 @@ export class CommentRepositoryApi implements CommentRepository {
         params: queryParams,
       });
 
-      return this.toPaginatedResult<ICommentResponse, CommentEntity>(response, (responses) =>
+      return toPaginatedResult<ICommentResponse, CommentEntity>(response, (responses) =>
         CommentMapper.toEntities(responses).map((comment) => this.validator.validate(comment)),
       );
     } catch (error) {

@@ -6,9 +6,11 @@ import {
 import { useAuthContext } from '@presentation/shared/providers';
 import { mapIssuesToForm } from '@presentation/utils';
 import { toastService } from 'lib-styleguide-simba/toast';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const useLoginPage = () => {
+  const { isAuthenticated } = useAuthContext();
   const { Input, hookForm } = useLoginFormConfig();
   const { login, isAuthenticating } = useAuthContext();
   const navigate = useNavigate();
@@ -46,6 +48,10 @@ export const useLoginPage = () => {
   const btnForgotPasswordProps: ILoginFormProps['btnForgotPasswordProps'] = {
     onClick: handleForgotPassword,
   };
+
+  useEffect(() => {
+    if (isAuthenticated) navigate('/');
+  }, [isAuthenticated, navigate]);
 
   return {
     // props

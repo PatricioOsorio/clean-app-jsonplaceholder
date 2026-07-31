@@ -1,5 +1,6 @@
 import { DomainError, NetworkError } from '@domain/errors';
 import { DEFAULT_DELAY, withDelay } from './delay';
+import type { StringQueryType } from 'vite/types/importGlob.js';
 
 export const getQueryParam = (key: string): string | null =>
   new URLSearchParams(window.location.search).get(key);
@@ -40,7 +41,7 @@ export const runDataCommand = (handlers: IDataCommandHandlers): void => {
   window.history.replaceState({}, '', url);
 };
 
-export type ICustomFaultMapper = (fault: string, resourceId?: number) => Error | undefined;
+export type ICustomFaultMapper = (fault: string, resourceId?: string) => Error | undefined;
 
 /**
  * Dev-only: inject errors via `?fault=` to simulate failures.
@@ -49,7 +50,7 @@ export type ICustomFaultMapper = (fault: string, resourceId?: number) => Error |
  * - ?fault=...        => feature-specific faults via CustomFaultMapper
  */
 export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
-  return async (operation: string, id?: number): Promise<void> => {
+  return async (operation: string, id?: string): Promise<void> => {
     const fault = getQueryParam('fault');
     if (!fault) return;
 

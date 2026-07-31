@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import { createApiErrorHandler } from '@infrastructure/http';
+import { createApiErrorHandler, toPaginatedResult } from '@infrastructure/http';
 import { DomainError } from '@domain/errors/domain.error';
 import { HttpRepository, type IHttpResponse } from '@domain/http/http.repo';
 import { PostMapper } from '../post.mapper';
@@ -46,28 +46,6 @@ export class PostRepositoryApi implements PostRepository {
     return postErrorHandler(error, postId);
   }
 
-  /*
-   * Converts the HTTP response to a paginated result.
-   * @param response - The HTTP response containing the data and headers.
-   * @param mapper - A function that maps the response data to the desired entity type.
-   * @returns An object containing the mapped entities and the total count.
-   */
-  private toPaginatedResult<TResponse, TEntity>(
-    response: IHttpResponse<TResponse[]>,
-    mapper: (response: TResponse[]) => TEntity[],
-  ): IPaginatedResult<TEntity> {
-    const headerCount = response.headers?.['x-total-count'];
-    const dataCount = Array.isArray(response.data) ? response.data.length : 0;
-
-    const total = Number(headerCount ?? dataCount ?? 0);
-    const entities = mapper(response.data);
-
-    return {
-      data: entities,
-      total,
-    };
-  }
-
   async getAll(params?: IGetPostsParams): Promise<IPaginatedResult<PostEntity>> {
     try {
       const queryParams = PostMapper.toQueryParams(params);
@@ -76,7 +54,7 @@ export class PostRepositoryApi implements PostRepository {
         params: queryParams,
       });
 
-      return this.toPaginatedResult<IPostResponse, PostEntity>(response, (responses) =>
+      return toPaginatedResult<IPostResponse, PostEntity>(response, (responses) =>
         PostMapper.toEntities(responses).map((post) => this.validator.validate(post)),
       );
     } catch (error) {

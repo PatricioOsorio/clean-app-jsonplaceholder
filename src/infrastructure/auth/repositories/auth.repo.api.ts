@@ -12,38 +12,7 @@ import { DomainError } from '@domain/errors';
 import { UserRepository } from '@domain/user';
 import { LOCAL_STORAGE_KEYS, StorageClient } from '@infrastructure/storage';
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
-
-interface IUserWithRolesAndPermissions {
-  userId: number;
-  email: string;
-  password: string;
-  roles: AuthEntity['roles'];
-  permissions: AuthEntity['permissions'];
-}
-
-const USERS_WITH_ROLES_AND_PERMISSIONS: IUserWithRolesAndPermissions[] = [
-  {
-    userId: 1,
-    email: 'Sincere@april.biz',
-    password: 'pass',
-    roles: ['admin'],
-    permissions: ['posts:read'],
-  },
-  {
-    userId: 2,
-    email: 'Shanna@melissa.tv',
-    password: 'pass',
-    roles: ['user'],
-    permissions: ['posts:read', 'posts:create'],
-  },
-  {
-    userId: 3,
-    email: 'Nathan@yesenia.net',
-    password: 'pass',
-    roles: ['guest'],
-    permissions: ['posts:read'],
-  },
-];
+import { SEED_USERS_ROLES_PERMISSIONS } from './auth.dev';
 
 const authErrorHandler = createApiErrorHandler((error, email) => {
   if (error.gatewayCode !== 'NOT_FOUND') {
@@ -75,9 +44,7 @@ export class AuthRepositoryApi implements AuthRepository {
       if (!userFromApi) throw new AuthNotFoundError(loginDto.email);
 
       // search from local simulation
-      const userMock = USERS_WITH_ROLES_AND_PERMISSIONS.find(
-        (user) => user.email === loginDto.email,
-      );
+      const userMock = SEED_USERS_ROLES_PERMISSIONS.find((user) => user.email === loginDto.email);
       if (!userMock) throw new AuthNotFoundError(loginDto.email);
 
       // validate mock password
