@@ -26,7 +26,7 @@ const USERS_WITH_ROLES_AND_PERMISSIONS: IUserWithRolesAndPermissions[] = [
     userId: 1,
     email: 'Sincere@april.biz',
     password: 'pass',
-    roles: ['admin', 'user'],
+    roles: ['admin'],
     permissions: ['posts:read'],
   },
   {

@@ -4,7 +4,7 @@ import { usePermission } from '@presentation/features/auth/hooks';
 import type { IPermissionsVM, IRolesVM } from '@presentation/features/auth/models';
 
 interface IProtectedRouteProps {
-  requiredPermission?: IPermissionsVM;
+  requiredPermission: IPermissionsVM;
   allowedRoles?: IRolesVM[];
   redirectTo?: string;
 }
@@ -28,7 +28,11 @@ export const ProtectedRouteGuard = ({
   }
 
   // 3. Validación por Rol (opcional)
-  if (allowedRoles && !allowedRoles.some((role) => userSession.roles?.includes(role))) {
+  if (
+    allowedRoles &&
+    !userSession.roles?.includes('admin') &&
+    !allowedRoles.some((role) => userSession.roles?.includes(role))
+  ) {
     return <Navigate replace to="/unauthorized" />;
   }
 

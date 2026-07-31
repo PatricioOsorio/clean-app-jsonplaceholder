@@ -10,6 +10,7 @@ export abstract class AuthMapper {
       userName: entity.userName,
       roles: entity.roles,
       permissions: entity.permissions,
+      hasPermission: (permission) => entity.hasPermission(permission),
     };
   }
 

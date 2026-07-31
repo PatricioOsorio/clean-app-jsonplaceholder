@@ -23,36 +23,32 @@ export const usePostsPage = () => {
   const canEdit = hasPermission('posts:update');
   const canDelete = hasPermission('posts:delete');
 
-  const page = useMemo(
-    () => Number(searchParams.get('page') ?? DEFAULT_PARAMS.page),
+  const params = useMemo(
+    () => ({
+      page: Number(searchParams.get('page') ?? DEFAULT_PARAMS.page),
+      limit: Number(searchParams.get('limit') ?? DEFAULT_PARAMS.limit),
+      sort: (searchParams.get('sort') ?? DEFAULT_PARAMS.sort) as keyof PostEntity,
+      sortOrder: (searchParams.get('sortOrder') ??
+        DEFAULT_PARAMS.sortOrder) as IGetPostsParams['sortOrder'],
+    }),
     [searchParams],
   );
 
-  const limit = useMemo(
-    () => Number(searchParams.get('limit') ?? DEFAULT_PARAMS.limit),
-    [searchParams],
-  );
+  const { page, limit, sort, sortOrder } = params;
 
-  const sort = useMemo(
-    () => (searchParams.get('sort') ?? DEFAULT_PARAMS.sort) as keyof PostEntity,
-    [searchParams],
-  );
-
-  const sortOrder = useMemo(
-    () =>
-      (searchParams.get('sortOrder') ?? DEFAULT_PARAMS.sortOrder) as IGetPostsParams['sortOrder'],
-    [searchParams],
-  );
-
-  const { data: postsData, isLoading, isError, error } = usePosts({ page, limit, sort, sortOrder });
+  const {
+    data: postsData,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+    error: errorPosts,
+  } = usePosts({ page, limit, sort, sortOrder });
 
   const posts = postsData?.data ?? [];
   const totalPosts = postsData?.total ?? 0;
-
   const totalPages = useMemo(() => Math.ceil(totalPosts / limit), [totalPosts, limit]);
+  const isEmpty = !isLoadingPosts && !isErrorPosts && !posts?.length;
 
-  const isEmpty = !isLoading && !isError && !posts?.length;
-  const { errorTitle, errorMessage } = formatError(error);
+  const { errorTitle, errorMessage } = formatError(errorPosts);
 
   const { mutate: deletePost } = useDeletePost();
 
@@ -89,8 +85,8 @@ export const usePostsPage = () => {
   return {
     // props
     posts,
-    isLoading,
-    isError,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
     errorTitle,
     errorMessage,
     isEmpty,
@@ -98,6 +94,7 @@ export const usePostsPage = () => {
     // paginator
     page,
     totalPages,
+    totalPosts,
     handlePageChange,
 
     // components

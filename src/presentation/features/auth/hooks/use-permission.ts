@@ -10,9 +10,7 @@ export const usePermission = () => {
     (requiredPermission: IPermissionsVM): boolean => {
       if (!userSession) return false;
 
-      if (userSession.roles?.includes('admin')) return true;
-
-      return userSession.permissions?.includes(requiredPermission) ?? false;
+      return userSession.hasPermission(requiredPermission);
     },
     [userSession],
   );

@@ -1,8 +1,11 @@
+import { Badge } from 'lib-styleguide-simba/badge';
+import { IconArticle } from 'lib-styleguide-simba/icons';
+
 import { Posts } from '../../components';
 import { usePostsPage } from './use-posts-page';
+import { PaginationCustom } from '@presentation/shared/components';
 
 import './posts-page.css';
-import { PaginationCustom } from '@presentation/shared/components';
 
 export const PostsPage = () => {
   const {
@@ -17,6 +20,7 @@ export const PostsPage = () => {
     // paginator
     page,
     totalPages,
+    totalPosts,
     handlePageChange,
 
     // components
@@ -28,16 +32,31 @@ export const PostsPage = () => {
   } = usePostsPage();
 
   return (
-    <section className="posts-page-container">
+    <div className="posts-page-container">
       <header className="ppc__header">
-        <p className="ppc__system-tag">Publications</p>
-        <h1 className="ppc__title">SYSTEM POSTS</h1>
-        <p className="ppc__subtitle">
-          Data fetched via TanStack Query + Clean Architecture Use Cases.
-        </p>
+        <div className="ppc__header-text">
+          <h1 className="ppc__title">Posts</h1>
+          <p className="ppc__subtitle">
+            Browse, edit and manage the posts synced from JSONPlaceholder.
+          </p>
+        </div>
+
+        <div className="ppc__header-actions">
+          <Badge className="ppc__count-pill" variant="primary">
+            <span className="ppc__count-dot" />
+            <span>{totalPosts} posts</span>
+          </Badge>
+        </div>
       </header>
 
-      <div className="ppc__content">
+      <section className="ppc__panel">
+        <div className="ppc__panel-header">
+          <div className="ppc__panel-title-group">
+            <IconArticle className="ppc__panel-icon" />
+            <h2 className="ppc__panel-title">All Posts</h2>
+          </div>
+        </div>
+
         <Posts
           status={{
             errorDescription: errorMessage,
@@ -60,7 +79,7 @@ export const PostsPage = () => {
           siblingCount={5}
           onPageChange={handlePageChange}
         />
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };

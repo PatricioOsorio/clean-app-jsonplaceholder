@@ -21,4 +21,11 @@ export class AuthEntity {
     public permissions: IPermissions[],
     public createdAt: Date,
   ) {}
+
+  public hasPermission(permission: IPermissions): boolean {
+    if (this.roles.includes('admin')) {
+      return true;
+    }
+    return this.permissions.includes(permission);
+  }
 }

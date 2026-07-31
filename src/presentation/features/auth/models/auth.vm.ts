@@ -11,4 +11,6 @@ export interface IAuthVM {
 
   roles?: IRolesVM[];
   permissions?: IPermissionsVM[];
+
+  hasPermission: (permission: IPermissionsVM) => boolean;
 }

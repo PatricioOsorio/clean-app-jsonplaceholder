@@ -4,10 +4,14 @@
   @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
 
   .psc__item {
-    @apply border-border bg-card text-card-foreground pointer-events-none flex flex-col gap-4 rounded-2xl border p-6 shadow-xs;
+    @apply border-border bg-card text-card-foreground pointer-events-none flex flex-col gap-0 overflow-hidden rounded-2xl border shadow-xs;
   }
 
-  .psc__footer {
-    @apply border-border flex items-center justify-between border-t pt-3;
+  .psc__cover {
+    @apply aspect-video w-full rounded-none;
+  }
+
+  .psc__body {
+    @apply flex flex-col gap-4 p-5;
   }
 }

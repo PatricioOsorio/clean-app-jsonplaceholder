@@ -1,33 +1,71 @@
 @reference "@styles/app.css";
 
 .post-container {
-  @apply border-border bg-card text-card-foreground flex flex-col gap-4 rounded-2xl border p-6 shadow-xs transition-shadow duration-200 hover:shadow-md;
+  @apply border-border bg-card/60 text-card-foreground relative flex flex-col gap-0 overflow-hidden rounded-2xl border shadow-xs backdrop-blur-md transition-shadow duration-200 hover:shadow-md;
+
+  .pc__cover {
+    @apply from-primary/20 via-card to-background relative aspect-video w-full overflow-hidden bg-gradient-to-br;
+    background-image:
+      linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--primary) 18%, transparent),
+        transparent 60%
+      ),
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--primary) 10%, transparent) 0 1px,
+        transparent 1px 32px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        color-mix(in oklab, var(--primary) 10%, transparent) 0 1px,
+        transparent 1px 32px
+      );
+
+    &[data-variant='1'] {
+      @apply from-primary/30;
+    }
+    &[data-variant='2'] {
+      @apply from-secondary/30;
+    }
+    &[data-variant='3'] {
+      @apply from-accent/30;
+    }
+  }
+
+  .pc__cover-glow {
+    @apply bg-primary/40 absolute -top-8 -right-8 h-24 w-24 rounded-full blur-2xl;
+  }
+
+  .pc__body {
+    @apply flex flex-1 flex-col gap-2 p-5;
+  }
+
+  .pc__byline {
+    @apply flex items-center gap-2 text-xs;
+  }
+
+  .pc__user {
+    @apply text-primary font-medium;
+  }
+
+  .pc__id {
+    @apply text-muted-foreground;
+  }
 
   .pc__title {
-    @apply text-foreground self-start text-start text-xl leading-snug font-semibold;
+    @apply text-foreground self-start text-start text-lg leading-snug font-semibold;
   }
 
   .pc__content {
-    @apply text-muted-foreground line-clamp-3 self-start text-start text-sm leading-relaxed;
+    @apply text-muted-foreground line-clamp-2 self-start text-start text-sm leading-relaxed;
   }
 
   .pc__footer {
-    @apply border-border text-muted-foreground mt-auto flex items-center justify-between border-t pt-3 text-xs;
-  }
-
-  .pc__meta {
-    @apply flex items-center gap-3;
+    @apply border-border text-muted-foreground flex items-center justify-end gap-2 border-t px-5 py-3 text-xs;
   }
 
   .pc__actions {
     @apply flex items-center gap-2;
-  }
-
-  .pc__user {
-    @apply text-foreground font-medium;
-  }
-
-  .pc__id {
-    @apply bg-muted text-muted-foreground rounded-full px-2.5 py-0.5 text-[11px];
   }
 }

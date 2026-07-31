@@ -17,46 +17,56 @@ export const Post = ({
     {...rootProps}
     className={cn('post-container', { 'optimistic-working': isOptimistic }, rootProps?.className)}
   >
-    <h2 className="pc__title">{post.title}</h2>
-    <p className="pc__content">{post.content}</p>
-
-    <div className="pc__footer">
-      <div className="pc__meta">
-        {post.idUser !== undefined && <span className="pc__user">User ID: {post.idUser}</span>}
-        <span className="pc__id">Post #{post.id}</span>
-      </div>
-
-      <div className="pc__actions">
-        {btnEditProps && (
-          <Button
-            aria-label="Edit post"
-            size="sm"
-            type="button"
-            variant="outlined"
-            onClick={(e) => {
-              e.stopPropagation();
-              btnEditProps?.onClick?.(post, e);
-            }}
-          >
-            Edit
-          </Button>
-        )}
-        {btnDeleteProps && (
-          <Button
-            aria-label="Delete post"
-            size="sm"
-            type="button"
-            severity="danger"
-            onClick={(e) => {
-              e.stopPropagation();
-              btnDeleteProps?.onClick?.(post.id, e);
-            }}
-          >
-            Delete
-          </Button>
-        )}
-      </div>
+    <div className="pc__cover" data-variant={post.id % 6}>
+      <span className="pc__cover-glow" />
     </div>
+
+    <div className="pc__body">
+      {post.idUser !== undefined && (
+        <div className="pc__byline">
+          <span className="pc__user">@user-{post.idUser}</span>
+          <span className="pc__id">Post #{post.id}</span>
+        </div>
+      )}
+
+      <h2 className="pc__title">{post.title}</h2>
+      <p className="pc__content">{post.content}</p>
+    </div>
+
+    {(btnEditProps || btnDeleteProps) && (
+      <div className="pc__footer">
+        <div className="pc__actions">
+          {btnEditProps && (
+            <Button
+              aria-label="Edit post"
+              size="sm"
+              type="button"
+              variant="outlined"
+              onClick={(e) => {
+                e.stopPropagation();
+                btnEditProps?.onClick?.(post, e);
+              }}
+            >
+              Edit
+            </Button>
+          )}
+          {btnDeleteProps && (
+            <Button
+              aria-label="Delete post"
+              size="sm"
+              type="button"
+              severity="danger"
+              onClick={(e) => {
+                e.stopPropagation();
+                btnDeleteProps?.onClick?.(post.id, e);
+              }}
+            >
+              Delete
+            </Button>
+          )}
+        </div>
+      </div>
+    )}
   </article>
 );
 
