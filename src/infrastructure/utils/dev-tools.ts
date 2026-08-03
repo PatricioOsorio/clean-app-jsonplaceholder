@@ -41,7 +41,7 @@ export const runDataCommand = (handlers: IDataCommandHandlers): void => {
   window.history.replaceState({}, '', url);
 };
 
-export type ICustomFaultMapper = (fault: string, resourceId?: string) => Error | undefined;
+export type ICustomFaultMapper = (fault: string, resourceId?: string | number) => Error | undefined;
 
 /**
  * Dev-only: inject errors via `?fault=` to simulate failures.
@@ -50,7 +50,7 @@ export type ICustomFaultMapper = (fault: string, resourceId?: string) => Error |
  * - ?fault=...        => feature-specific faults via CustomFaultMapper
  */
 export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
-  return async (operation: string, id?: string): Promise<void> => {
+  return async (operation: string, id?: string | number): Promise<void> => {
     const fault = getQueryParam('fault');
     if (!fault) return;
 

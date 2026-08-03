@@ -1,7 +1,7 @@
 import { AuthInvalidDataError, AuthNotFoundError, type AuthEntity } from '@domain/auth';
 import { createFaultSimulator } from '@infrastructure/utils';
 
-export interface UserRolesPermissions {
+export interface IUserRolesPermissions {
   userId: number;
   email: string;
   password: string;
@@ -9,7 +9,7 @@ export interface UserRolesPermissions {
   permissions: AuthEntity['permissions'];
 }
 
-export const SEED_USERS_ROLES_PERMISSIONS: UserRolesPermissions[] = [
+export const SEED_USERS_ROLES_PERMISSIONS: IUserRolesPermissions[] = [
   {
     userId: 1,
     email: 'Sincere@april.biz',
@@ -34,6 +34,6 @@ export const SEED_USERS_ROLES_PERMISSIONS: UserRolesPermissions[] = [
 ];
 
 export const simulateFaultAuth = createFaultSimulator((fault, email) => {
-  if (fault === 'not-found') return new AuthNotFoundError(email ?? 'unknown');
+  if (fault === 'not-found') return new AuthNotFoundError(String(email ?? 'uknown'));
   if (fault === 'invalid') return new AuthInvalidDataError('Simulated invalid data');
 });

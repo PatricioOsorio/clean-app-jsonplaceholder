@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { CommentMapper } from '@infrastructure/comment/comment.mapper';
-import { HttpRepository, type IHttpResponse } from '@domain/http';
+import { HttpRepository } from '@domain/http';
 import { createApiErrorHandler, toPaginatedResult } from '@infrastructure/http';
 import { CommentEntity } from '@domain/comment';
 import type {

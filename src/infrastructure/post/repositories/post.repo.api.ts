@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { createApiErrorHandler, toPaginatedResult } from '@infrastructure/http';
 import { DomainError } from '@domain/errors/domain.error';
-import { HttpRepository, type IHttpResponse } from '@domain/http/http.repo';
+import { HttpRepository } from '@domain/http/http.repo';
 import { PostMapper } from '../post.mapper';
 import {
   PostRepository,

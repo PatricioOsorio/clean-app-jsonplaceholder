@@ -29,7 +29,19 @@ export class ZodAuthEntityValidator implements IValidatorEntity<AuthEntity> {
     userName: z.string().min(1, 'Username cannot be empty'),
     email: z.email('Invalid email address'),
     roles: z.array(z.enum(['admin', 'user', 'guest'])),
-    permissions: z.array(z.enum(['read', 'write', 'delete', 'manage_roles'])),
+    permissions: z.array(
+      z.enum([
+        'posts:read',
+        'posts:create',
+        'posts:update',
+        'posts:delete',
+        'comments:read',
+        'comments:create',
+        'comments:update',
+        'comments:delete',
+        'users:manage',
+      ]),
+    ),
     createdAt: z.coerce.date(),
   });
 
