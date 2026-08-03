@@ -1,8 +1,8 @@
 import { UserNotFoundError, UserInvalidDataError, UserEntity } from '@domain/user';
 import { createFaultSimulator } from '@infrastructure/utils';
 
-export const simulateFaultUser = createFaultSimulator((fault, id) => {
-  if (fault === 'not-found') return new UserNotFoundError(Number(id ?? 0));
+export const simulateFaultUser = createFaultSimulator<number>((fault, id = 0) => {
+  if (fault === 'not-found') return new UserNotFoundError(id);
   if (fault === 'invalid') return new UserInvalidDataError('Simulated invalid data');
 });
 

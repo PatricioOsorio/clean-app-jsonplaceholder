@@ -33,7 +33,7 @@ export const SEED_USERS_ROLES_PERMISSIONS: IUserRolesPermissions[] = [
   },
 ];
 
-export const simulateFaultAuth = createFaultSimulator((fault, email) => {
-  if (fault === 'not-found') return new AuthNotFoundError(String(email ?? 'uknown'));
+export const simulateFaultAuth = createFaultSimulator<string>((fault, email = 'unknown') => {
+  if (fault === 'not-found') return new AuthNotFoundError(email);
   if (fault === 'invalid') return new AuthInvalidDataError('Simulated invalid data');
 });

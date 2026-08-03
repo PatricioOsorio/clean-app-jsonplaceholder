@@ -41,7 +41,10 @@ export const runDataCommand = (handlers: IDataCommandHandlers): void => {
   window.history.replaceState({}, '', url);
 };
 
-export type ICustomFaultMapper = (fault: string, resourceId?: string | number) => Error | undefined;
+export type CustomFaultMapper<TResource = unknown> = (
+  fault: string,
+  resource: TResource
+) => Error | undefined;
 
 /**
  * Dev-only: inject errors via `?fault=` to simulate failures.
@@ -49,8 +52,10 @@ export type ICustomFaultMapper = (fault: string, resourceId?: string | number) =
  * - ?fault=server     => DomainError('API Error', 500)
  * - ?fault=...        => feature-specific faults via CustomFaultMapper
  */
-export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
-  return async (operation: string, id?: string | number): Promise<void> => {
+export const createFaultSimulator = <TResource = unknown>(
+  customMapper?: CustomFaultMapper<TResource>
+) => {
+  return async (operation: string, resource?: TResource): Promise<void> => {
     const fault = getQueryParam('fault');
     if (!fault) return;
 
@@ -60,7 +65,7 @@ export const createFaultSimulator = (customMapper?: ICustomFaultMapper) => {
     await withDelay(null, resolveDelay()); // let the skeleton render before failing
 
     if (customMapper) {
-      const customError = customMapper(fault, id);
+      const customError = customMapper(fault, resource as TResource);
       if (customError) throw customError;
     }
 
