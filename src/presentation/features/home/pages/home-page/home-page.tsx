@@ -1,5 +1,7 @@
 import { Badge } from 'lib-styleguide-simba/badge';
 
+import { GuestGuard } from '@presentation/shared/guards';
+
 import { FeaturedPosts, HomeCtaBanner, HomeGallery, HomeMetricsStrip } from '../../components';
 import { useHomePage } from './use-home-page';
 import './home-page.css';
@@ -36,7 +38,9 @@ export const HomePage = () => {
       </div>
 
       {/* Bottom CTA Banner Component */}
-      <HomeCtaBanner {...ctaBannerData} />
+      <GuestGuard>
+        <HomeCtaBanner {...ctaBannerData} />
+      </GuestGuard>
     </div>
   );
 };
