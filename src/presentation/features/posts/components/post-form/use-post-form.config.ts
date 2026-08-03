@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { createFormConfig, useFormBuilder } from 'lib-styleguide-simba/form-builder';
+import { createFormConfig, FB, useFormBuilder } from 'lib-styleguide-simba/form-builder';
 import type { IPostFormModel } from './post-form.interfaces';
-import { FB } from 'form-builder';
 
 export const usePostFormConfig = () => {
   const configForm = useMemo(() => {
