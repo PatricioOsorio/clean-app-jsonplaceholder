@@ -16,7 +16,7 @@ import './card-preticket.css';
 The file's first line is always:
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 ```
 
 (followed by a blank line). This is the Tailwind v4 mechanism that makes `@apply` and

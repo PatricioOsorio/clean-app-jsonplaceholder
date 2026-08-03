@@ -9,7 +9,7 @@ Shows: structure→light→dark on the root, collapsed light+dark-only children,
 double-dash BEM modifiers, a mostly-structural glow element.
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .card-dashboard-container {
   @apply relative flex min-h-[10rem] justify-center overflow-hidden p-0;
@@ -44,7 +44,7 @@ double-dash BEM modifiers, a mostly-structural glow element.
 Shows: a container with no color of its own, children each fully themed.
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .label-value-container {
   .lvc__item {
@@ -77,7 +77,7 @@ Shows: `> [data-slot='...']` scoping, and re-nesting a reused child component
 (`label-value-container`) to theme it contextually instead of adding props.
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .cost-center-container {
   > [data-slot='card-content'] {
@@ -120,7 +120,7 @@ Shows: the optional `/* States */` 4th group, light-before-dark even within it, 
 arbitrary-value utilities for a glow shadow.
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .stepper-preticket-header {
   .sph__indicator {
@@ -150,7 +150,7 @@ Shows: `md:` used only here (page altitude), and a `[data-slot]` override nested
 directly under the page root.
 
 ```css
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .new-preticket-page {
   @apply flex h-full w-full flex-col items-center;
@@ -179,7 +179,7 @@ directly under the page root.
 
 ```css
 /* ✅ */
-@reference "@presentation/App.css";
+@reference "@styles/app.css";
 
 .table-recent-folios-container {
 }

@@ -3,7 +3,7 @@ name: css-formatter
 description: >
   Formats and reviews CSS following the exact conventions used across the simba monorepo
   (mfe-*): Tailwind v4 with mandatory
-  `@reference "@presentation/App.css";` header, strict `@apply` ordering
+  `@reference "@styles/app.css";` header, strict `@apply` ordering
   (structure → light-mode → dark-mode → data-state), and the "initials-BEM" naming
   scheme where a component's children are prefixed with the initials of its parent
   container (e.g. `card-preticket-container` → `cpc__title`). Use whenever the user asks
@@ -26,7 +26,7 @@ entire point.
 ## Core rules (always read)
 
 1. **Header**: every component `.css` file's first line is exactly
-   `@reference "@presentation/App.css";`, followed by a blank line. Never `@import` it —
+   `@reference "@styles/app.css";`, followed by a blank line. Never `@import` it —
    `@import` re-emits the whole stylesheet and duplicates output.
 2. **One file per component**, kebab-case, co-located with its `.tsx`, imported as a
    side effect: `import './card-preticket.css';`.
@@ -68,7 +68,7 @@ When asked to write or fix a component's CSS:
 
 ## Audit checklist (run on every file you write or review)
 
-- [ ] First line is `@reference "@presentation/App.css";` (not `@import`).
+- [ ] First line is `@reference "@styles/app.css";` (not `@import`).
 - [ ] Parent class matches the folder's component name; children nested inside it.
 - [ ] Every themed rule follows structure → light → dark line order; no mixed lines.
 - [ ] `dark:` used for dark-mode overrides — never a `light:` prefix, never dark-as-default.

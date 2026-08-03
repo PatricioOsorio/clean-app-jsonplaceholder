@@ -25,6 +25,17 @@ export type IWithError = {
   errorDescription?: string;
 };
 
+export type IWithNoMatch = {
+  noMatch?: boolean;
+  noMatchTemplate?: ReactNode;
+  noMatchTitle?: string;
+  noMatchDescription?: string;
+};
+
+export interface IStatusContentProps extends IWithLoading, IWithError, IWithEmpty, IWithNoMatch {
+  children: ReactNode;
+}
+
 export type IWithChildren = PropsWithChildren;
 
 export type IWithComponentProps<T extends ElementType> = ComponentProps<T>;

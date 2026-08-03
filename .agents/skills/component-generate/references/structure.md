@@ -19,6 +19,19 @@ Two variants extend this set:
   config, derived state): `use-<name>.config.ts`, or `.tsx` if it returns JSX (e.g. a
   cell renderer template). Not barrel-exported unless it's a form (see
   `pages-and-forms.md`).
+- **Páginas de Listado / Tabla**, compuestas por sub-carpetas de filtros (`filters-form/`), tablas (`<domain>-table/`), hook de estado de página (`use-<name>-page.tsx`), y opcionalmente mocks (`<name>.mock.json`):
+
+```
+folios-page/
+├── folios-page.tsx
+├── use-folios-page.tsx
+├── folios-page.css
+├── folios.mock.json
+├── index.ts                              # default export
+├── filters-form/
+└── folios-table/
+```
+
 - **Kebab-case child subfolders**, one per compound sub-part, each with its own 3 files
   (`.tsx`, `.interfaces.ts`, `.css`) + its own `index.ts`:
 

@@ -151,3 +151,43 @@ Unlike every other barrel in this repo, a page's `index.ts` is a **default expor
 import { NewPreticketPage } from './new-preticket-page';
 export default NewPreticketPage;
 ```
+
+## Listing / Table Pages Pattern
+
+For pages that manage data tables with search filters (e.g. `folios-page`, `my-pretickets-page`), follow this modular subfolder pattern:
+
+```
+folios-page/
+├── folios-page.tsx
+├── use-folios-page.tsx                   # Page-level state, handlers & data fetching
+├── folios-page.css
+├── folios.mock.json                      # Local mock dataset (if needed)
+├── index.ts                              # Default export barrel
+├── filters-form/                         # Embedded search/filter controls
+│   ├── filters-form.tsx
+│   ├── filters-form.config.ts
+│   ├── filters-form.interfaces.ts
+│   └── index.ts
+└── folios-table/                         # Encapsulated data table view
+    ├── folios-table.tsx
+    ├── use-folios-table.config.tsx       # Table columns definition & cell renders
+    ├── folios-table.interfaces.ts
+    └── index.ts
+```
+
+### Page Custom Hook (`use-<name>-page.tsx`)
+
+Extract page state (filter parameters, active tab, data list, pagination) into `use<Name>Page`:
+
+```tsx
+export const useFoliosPage = () => {
+  const [filters, setFilters] = useState({});
+  const [data, setData] = useState(MOCK_DATA);
+
+  const handleApplyFilters = (newFilters: Record<string, unknown>) => {
+    setFilters(newFilters);
+  };
+
+  return { data, filters, handleApplyFilters };
+};
+```

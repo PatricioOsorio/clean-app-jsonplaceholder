@@ -35,6 +35,37 @@ Consumed as:
 No `Object.assign`, no `forwardRef`, no `displayName` — just a plain static-property
 assignment.
 
+### 1.1 Attached Skeleton pattern (`Parent.Skeleton`)
+
+When a component provides its own loading skeleton, place it in a `skeleton/` subfolder, name the component `<ParentName>Skeleton`, import `Skeleton` from `lib-styleguide-simba/shadcn/skeleton`, and attach it as `Parent.Skeleton`:
+
+```tsx
+// card-dashboard.tsx
+import { CardDashboardSkeleton } from './skeleton';
+
+export const CardDashboard = ({ children, rootProps }: ICardDashboardProps) => (
+  <section {...rootProps} className={cn('card-dashboard-container', rootProps?.className)}>
+    {children}
+  </section>
+);
+
+CardDashboard.Skeleton = CardDashboardSkeleton;
+```
+
+```tsx
+// skeleton/skeleton.tsx
+import { Skeleton } from 'lib-styleguide-simba/shadcn/skeleton';
+import { cn } from 'lib-styleguide-simba/utils';
+import type { ICardDashboardSkeletonProps } from './skeleton.interfaces';
+
+export const CardDashboardSkeleton = ({ rootProps }: ICardDashboardSkeletonProps) => (
+  <div {...rootProps} className={cn('card-dashboard-skeleton-container', rootProps?.className)}>
+    <Skeleton className="bg-muted h-6 w-32 rounded" />
+    <Skeleton className="bg-muted h-20 w-full rounded" />
+  </div>
+);
+```
+
 ## 2. Context variant — shared parent → children state
 
 Use this only when children need data the parent computed/owns, not just for the sake
@@ -172,3 +203,62 @@ see `pages-and-forms.md`.
   `React.FC`, class components, `memo`, `forwardRef`, or `displayName`.
 - **Default values via destructuring**, not `defaultProps`: `variant = 'primary'`,
   `status = {}`, `items = 1`.
+
+## 5. Conditional State Wrapper (`StatusContent`)
+
+When a component needs to handle asynchronous state transitions (loading, error, empty data, no search match), use `StatusContent` from `lib-styleguide-simba/status-content`:
+
+```tsx
+import { StatusContent } from 'lib-styleguide-simba/status-content';
+import type { ITableRecentFoliosProps } from './table-recent-folios.interfaces';
+
+export const TableRecentFolios = ({
+  isLoading,
+  loadingTemplate,
+  isError,
+  errorTitle,
+  errorDescription,
+  errorTemplate,
+  isEmpty,
+  emptyTitle,
+  emptyDescription,
+  emptyTemplate,
+  noMatch,
+  noMatchTitle,
+  noMatchDescription,
+  noMatchTemplate,
+  values,
+  rootProps,
+}: ITableRecentFoliosProps) => {
+  return (
+    <section {...rootProps} className={cn('table-recent-folios-container', rootProps?.className)}>
+      <StatusContent
+        isLoading={isLoading}
+        loadingTemplate={loadingTemplate}
+        isError={isError}
+        errorTitle={errorTitle}
+        errorDescription={errorDescription}
+        errorTemplate={errorTemplate}
+        isEmpty={isEmpty}
+        emptyTitle={emptyTitle}
+        emptyDescription={emptyDescription}
+        emptyTemplate={emptyTemplate}
+        noMatch={noMatch}
+        noMatchTitle={noMatchTitle}
+        noMatchDescription={noMatchDescription}
+        noMatchTemplate={noMatchTemplate}
+      >
+        <DataTable columnConfig={columnsConfig()} data={values} />
+      </StatusContent>
+    </section>
+  );
+};
+```
+
+Priority order handled automatically by `<StatusContent>`:
+
+1. `isLoading` ➔ renders `loadingTemplate` or `<Loading />`
+2. `isError` ➔ renders `errorTemplate` or `<Error title description />`
+3. `noMatch` ➔ renders `noMatchTemplate` or `<NoMatch title description />`
+4. `isEmpty` ➔ renders `emptyTemplate` or `<Empty title description />`
+5. None active ➔ renders `children`
