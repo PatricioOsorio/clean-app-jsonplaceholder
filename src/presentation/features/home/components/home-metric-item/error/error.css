@@ -1,0 +1,17 @@
+@reference "@styles/app.css";
+
+.home-metric-item-error-container {
+  @apply flex flex-col gap-2;
+
+  .hmier__label-group {
+    @apply text-destructive flex items-center gap-2;
+  }
+
+  .hmier__name {
+    @apply truncate text-xs font-medium;
+  }
+
+  .hmier__value {
+    @apply text-destructive text-2xl font-bold tracking-tight;
+  }
+}

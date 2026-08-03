@@ -1,21 +1,22 @@
+import type { IGetCommentsParams } from '@domain/comment';
+import { useCommentsDependencies } from '@presentation/features/comments/hooks';
+import { CommentMapper } from '@presentation/features/comments/models';
+import { QUERY_KEYS } from '@presentation/libs/tanstack';
 import { useQuery } from '@tanstack/react-query';
 
-import { useCommentsDependencies } from '@presentation/features/comments/hooks';
-import { QUERY_KEYS } from '@presentation/libs/tanstack';
-import { CommentMapper, type ICommentVM } from '@presentation/features/comments/models';
-
-export const useComments = (id?: number) => {
+export const useComments = (params?: IGetCommentsParams) => {
   const { comments } = useCommentsDependencies();
 
-  const commentQuery = useQuery({
-    queryKey: QUERY_KEYS.comments.byPost(id),
+  const commentsQuery = useQuery({
+    queryKey: QUERY_KEYS.comments.all(params),
     queryFn: async () => {
-      if (!id) return [] as unknown as ICommentVM[];
-
-      return CommentMapper.toVMs(await comments.getByPostId(id));
+      const result = await comments.getAll(params);
+      return {
+        data: CommentMapper.toVMs(result.data),
+        total: result.total,
+      };
     },
-    enabled: !!id,
   });
 
-  return commentQuery;
+  return commentsQuery;
 };

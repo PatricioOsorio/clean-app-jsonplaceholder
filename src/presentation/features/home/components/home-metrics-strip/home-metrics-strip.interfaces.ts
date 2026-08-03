@@ -1,11 +1,13 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
+import type {
+  IWithEmpty,
+  IWithError,
+  IWithLoading,
+  IWithRootProps,
+} from 'lib-styleguide-simba/interfaces';
 
-export interface IHomeMetricItemVM {
-  label: string;
-  count: string | number;
-  iconName: 'posts' | 'comments' | 'albums' | 'photos' | 'users' | 'todos';
-}
+import type { IHomeMetricItemProps } from '../home-metric-item';
 
 export interface IHomeMetricsStripProps extends IWithRootProps<'section'> {
-  metrics: IHomeMetricItemVM[];
+  metrics?: IHomeMetricItemProps[];
+  status?: IWithLoading & IWithError & IWithEmpty;
 }

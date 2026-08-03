@@ -1,0 +1,17 @@
+@reference "@styles/app.css";
+
+.home-metric-item-empty-container {
+  @apply flex flex-col gap-2;
+
+  .hmie__label-group {
+    @apply text-muted-foreground flex items-center gap-2;
+  }
+
+  .hmie__name {
+    @apply truncate text-xs font-medium;
+  }
+
+  .hmie__value {
+    @apply text-muted-foreground text-2xl font-bold tracking-tight;
+  }
+}

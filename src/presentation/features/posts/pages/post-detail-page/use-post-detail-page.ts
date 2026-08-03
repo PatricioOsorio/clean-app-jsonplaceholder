@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { useComments } from '@presentation/features/comments/hooks';
+import { useComment } from '@presentation/features/comments/hooks';
 import { formatError } from '@presentation/utils';
 import { useDeletePost, usePost } from '../../hooks';
 
@@ -31,7 +31,7 @@ export const usePostDetailPage = () => {
     isLoading: isCommentsLoading,
     isError: isCommentsError,
     error: errorComments,
-  } = useComments(post ? post.id : undefined);
+  } = useComment(post ? post.id : undefined);
 
   const { errorTitle: errorCommentsTitle, errorMessage: errorCommentsMessage } = formatError(
     errorComments,

@@ -43,7 +43,7 @@ export const runDataCommand = (handlers: IDataCommandHandlers): void => {
 
 export type CustomFaultMapper<TResource = unknown> = (
   fault: string,
-  resource: TResource
+  resource: TResource,
 ) => Error | undefined;
 
 /**
@@ -53,7 +53,7 @@ export type CustomFaultMapper<TResource = unknown> = (
  * - ?fault=...        => feature-specific faults via CustomFaultMapper
  */
 export const createFaultSimulator = <TResource = unknown>(
-  customMapper?: CustomFaultMapper<TResource>
+  customMapper?: CustomFaultMapper<TResource>,
 ) => {
   return async (operation: string, resource?: TResource): Promise<void> => {
     const fault = getQueryParam('fault');

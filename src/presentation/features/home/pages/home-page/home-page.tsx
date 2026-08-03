@@ -7,7 +7,14 @@ import { useHomePage } from './use-home-page';
 import './home-page.css';
 
 export const HomePage = () => {
-  const { metricsData, featuredPostsData, galleryItemsData, ctaBannerData } = useHomePage();
+  const {
+    DATA_SOURCE,
+    // data
+    metricsData,
+    featuredPostsData,
+    galleryItemsData,
+    ctaBannerData,
+  } = useHomePage();
 
   return (
     <div className="home-page-container">
@@ -23,7 +30,7 @@ export const HomePage = () => {
         <div className="hpc__header-actions">
           <Badge className="hpc__status-pill">
             <span className="hpc__status-dot" />
-            <span>REST API Connected</span>
+            <span>Connected to {DATA_SOURCE}</span>
           </Badge>
         </div>
       </header>

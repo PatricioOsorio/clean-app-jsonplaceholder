@@ -2,29 +2,4 @@
 
 .home-metrics-strip-container {
   @apply grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6;
-
-  .hms__metric-item {
-    @apply flex flex-col gap-2 rounded-2xl p-4 shadow-sm backdrop-blur-md transition-all duration-200;
-    @apply bg-card/60 text-card-foreground;
-    @apply dark:bg-slate-900/60;
-
-    /* States */
-    @apply hover:bg-card hover:scale-[1.02] hover:shadow-md;
-  }
-
-  .hms__metric-label-group {
-    @apply text-muted-foreground flex items-center gap-2;
-  }
-
-  .hms__metric-icon {
-    @apply text-primary h-4 w-4 shrink-0;
-  }
-
-  .hms__metric-name {
-    @apply truncate text-xs font-medium;
-  }
-
-  .hms__metric-value {
-    @apply text-foreground text-2xl font-bold tracking-tight;
-  }
 }

@@ -11,6 +11,13 @@ export interface IPostsListCache {
   total: number;
 }
 
+export const DEFAULT_POSTS_PARAMS: IGetPostsParams = {
+  page: 1,
+  limit: 6,
+  sort: 'title',
+  sortOrder: 'asc',
+};
+
 export const usePosts = (params?: IGetPostsParams) => {
   const { posts } = usePostsDependencies();
 

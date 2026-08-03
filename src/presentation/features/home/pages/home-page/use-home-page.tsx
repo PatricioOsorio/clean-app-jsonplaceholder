@@ -1,18 +1,54 @@
-import {
-  type IFeaturedPostVM,
-  type IHomeGalleryItemVM,
-  type IHomeMetricItemVM,
-} from '../../components';
+import { DEFAULT_POSTS_PARAMS, usePosts } from '@presentation/features/posts/hooks';
+import { useMemo } from 'react';
+import type { IFeaturedPostVM, IHomeGalleryItemVM, IHomeMetricItemProps } from '../../components';
+import { useComments } from '@presentation/features/comments/hooks';
+import { ENV } from '@infrastructure/utils';
 
 export const useHomePage = () => {
-  const metricsData: IHomeMetricItemVM[] = [
-    { label: 'Posts', count: '100', iconName: 'posts' },
-    { label: 'Comments', count: '500', iconName: 'comments' },
-    { label: 'Albums', count: '100', iconName: 'albums' },
-    { label: 'Photos', count: '5,000', iconName: 'photos' },
-    { label: 'Users', count: '10', iconName: 'users' },
-    { label: 'Todos', count: '200', iconName: 'todos' },
-  ];
+  const {
+    data: postsData,
+    isLoading: isPostsLoading,
+    isError: isPostsError,
+  } = usePosts(DEFAULT_POSTS_PARAMS);
+
+  const {
+    data: commentsData,
+    isLoading: isCommentsLoading,
+    isError: isCommentsError,
+  } = useComments();
+
+  const { total: totalPosts } = postsData || { total: 0 };
+  const { total: totalComments } = commentsData || { total: 0 };
+
+  const metricsData: IHomeMetricItemProps[] = useMemo(
+    () => [
+      {
+        metric: { label: 'Posts', count: totalPosts, iconName: 'posts' },
+        status: { isLoading: isPostsLoading, isError: isPostsError },
+      },
+      {
+        metric: { label: 'Comments', count: totalComments, iconName: 'comments' },
+        status: { isLoading: isCommentsLoading, isError: isCommentsError },
+      },
+      {
+        metric: { label: 'Albums', count: '100', iconName: 'albums' },
+        status: { isLoading: false, isEmpty: true, isError: true },
+      },
+      {
+        metric: { label: 'Photos', count: '5,000', iconName: 'photos' },
+        status: { isLoading: false, isEmpty: true },
+      },
+      {
+        metric: { label: 'Users', count: '10', iconName: 'users' },
+        status: { isLoading: false, isEmpty: true },
+      },
+      {
+        metric: { label: 'Todos', count: '200', iconName: 'todos' },
+        status: { isLoading: false, isEmpty: true },
+      },
+    ],
+    [isPostsLoading, isPostsError, totalPosts],
+  );
 
   const featuredPostsData: IFeaturedPostVM[] = [
     {
@@ -72,7 +108,12 @@ export const useHomePage = () => {
     buttonHref: '/auth/login',
   };
 
+  const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
+
   return {
+    DATA_SOURCE,
+    // data
+
     metricsData,
     featuredPostsData,
     galleryItemsData,

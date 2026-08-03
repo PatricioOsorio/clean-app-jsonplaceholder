@@ -1,19 +1,12 @@
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { formatError } from '@presentation/utils';
-import { useDeletePost, usePosts } from '../../hooks';
+import { DEFAULT_POSTS_PARAMS, useDeletePost, usePosts } from '../../hooks';
 import type { IPostVM } from '../../models/post';
 import { useMemo, type ComponentProps } from 'react';
 import type { IGetPostsParams, PostEntity } from '@domain/post';
 import { usePermission } from '@presentation/features/auth/hooks';
 import type { Post } from '@presentation/features/posts/components';
-
-const DEFAULT_PARAMS: IGetPostsParams = {
-  page: 1,
-  limit: 6,
-  sort: 'title',
-  sortOrder: 'asc',
-};
 
 export const usePostsPage = () => {
   const navigate = useNavigate();
@@ -25,11 +18,11 @@ export const usePostsPage = () => {
 
   const params = useMemo(
     () => ({
-      page: Number(searchParams.get('page') ?? DEFAULT_PARAMS.page),
-      limit: Number(searchParams.get('limit') ?? DEFAULT_PARAMS.limit),
-      sort: (searchParams.get('sort') ?? DEFAULT_PARAMS.sort) as keyof PostEntity,
+      page: Number(searchParams.get('page') ?? DEFAULT_POSTS_PARAMS.page),
+      limit: Number(searchParams.get('limit') ?? DEFAULT_POSTS_PARAMS.limit),
+      sort: (searchParams.get('sort') ?? DEFAULT_POSTS_PARAMS.sort) as keyof PostEntity,
       sortOrder: (searchParams.get('sortOrder') ??
-        DEFAULT_PARAMS.sortOrder) as IGetPostsParams['sortOrder'],
+        DEFAULT_POSTS_PARAMS.sortOrder) as IGetPostsParams['sortOrder'],
     }),
     [searchParams],
   );

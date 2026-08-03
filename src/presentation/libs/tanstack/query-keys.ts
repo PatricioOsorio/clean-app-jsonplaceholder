@@ -1,3 +1,4 @@
+import type { IGetCommentsParams } from '@domain/comment';
 import type { IGetPostsParams } from '@domain/post/post.interfaces';
 
 export const QUERY_KEYS = {
@@ -8,6 +9,7 @@ export const QUERY_KEYS = {
     detail: (id?: number) => ['posts', id] as const,
   },
   comments: {
+    all: (params?: IGetCommentsParams) => ['comments', 'list', params] as const,
     byPost: (postId?: number) => ['comments', 'post', postId] as const,
   },
 } as const;

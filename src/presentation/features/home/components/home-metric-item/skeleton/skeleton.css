@@ -1,0 +1,9 @@
+@reference "@styles/app.css";
+
+.home-metric-item-skeleton-container {
+  @apply flex flex-col gap-2;
+
+  .hmis__label-group {
+    @apply flex items-center gap-2;
+  }
+}
