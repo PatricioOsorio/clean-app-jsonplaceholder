@@ -1,9 +1,21 @@
-import { CreatePhotoDto, type ICreatePhotoProps } from './create-photo';
+import type { ICreatePhotoProps } from './create-photo';
 
-export class UpdatePhotoDto extends CreatePhotoDto {
-  override static readonly VALIDATOR_TOKEN = Symbol('UpdatePhotoDto.Validator');
+export type IUpdatePhotoProps = ICreatePhotoProps;
 
-  static override create(data: ICreatePhotoProps): UpdatePhotoDto {
+export class UpdatePhotoDto implements IUpdatePhotoProps {
+  static readonly VALIDATOR_TOKEN = Symbol('UpdatePhotoDto.Validator');
+
+  readonly idAlbum!: number;
+  readonly title!: string;
+  readonly url!: string;
+  readonly thumbnailUrl!: string;
+
+  private constructor(props: IUpdatePhotoProps) {
+    Object.assign(this, props);
+  }
+
+  static create(data: IUpdatePhotoProps): UpdatePhotoDto {
     return new UpdatePhotoDto(data);
   }
 }
+

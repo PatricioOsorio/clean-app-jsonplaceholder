@@ -5,6 +5,7 @@ import {
   PatchAlbumDto,
   type AlbumRepository,
   type IGetAlbumsParams,
+} from '@domain/album';
 import { HttpRepository } from '@domain/http';
 import type { IPaginatedResult, IValidatorEntity } from '@domain/shared';
 import { AlbumMapper } from '@infrastructure/album/album.mapper';
