@@ -1,8 +1,8 @@
 import { DomainError } from '@domain/errors/domain.error';
 
-export class PhotoNotFoundError extends DomainError {
+export class TodoNotFoundError extends DomainError {
   constructor(id: number) {
-    super('Photo not found', `Photo with id ${id} not found`, 'NOT_FOUND');
+    super('Todo not found', `Todo with id ${id} not found`, 'NOT_FOUND');
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }

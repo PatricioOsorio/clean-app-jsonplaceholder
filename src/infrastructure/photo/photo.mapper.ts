@@ -1,46 +1,42 @@
-import type { CreatePhotoDto, IGetPhotosParams, PatchPhotoDto, PhotoEntity } from '@domain/photo';
+import { PhotoEntity, type IGetPhotosParams } from '@domain/photo';
 import type { IPhotoResponse } from './photo.response';
 
-export class PhotoMapper {
+export abstract class PhotoMapper {
   static toEntity(response: IPhotoResponse): PhotoEntity {
-    return {
-      id: response.id,
-      idAlbum: response.albumId,
-      title: response.title,
-      url: response.url,
-      thumbnailUrl: response.thumbnailUrl,
-    };
+    return new PhotoEntity(
+      response.id,
+      response.albumId,
+      response.title,
+      response.url,
+      response.thumbnailUrl,
+    );
   }
 
   static toEntities(responses: IPhotoResponse[]): PhotoEntity[] {
     return responses.map((response) => this.toEntity(response));
   }
 
-  static toResponse(photo: CreatePhotoDto | PatchPhotoDto): Partial<IPhotoResponse> {
+  static toResponse(entity: Partial<PhotoEntity>): Partial<IPhotoResponse> {
     const response: Partial<IPhotoResponse> = {};
 
-    if (photo.idAlbum !== undefined) response.albumId = photo.idAlbum;
-    if (photo.title !== undefined) response.title = photo.title;
-    if (photo.url !== undefined) response.url = photo.url;
-    if (photo.thumbnailUrl !== undefined) response.thumbnailUrl = photo.thumbnailUrl;
+    if (entity.id !== undefined) response.id = entity.id;
+    if (entity.idAlbum !== undefined) response.albumId = entity.idAlbum;
+    if (entity.title !== undefined) response.title = entity.title;
+    if (entity.url !== undefined) response.url = entity.url;
+    if (entity.thumbnailUrl !== undefined) response.thumbnailUrl = entity.thumbnailUrl;
 
     return response;
   }
 
-  static toQueryParams(params?: IGetPhotosParams): Record<string, unknown> | undefined {
-    if (!params) return undefined;
+  static toQueryParams(params?: IGetPhotosParams): URLSearchParams {
+    const queryParams = new URLSearchParams();
 
-    const { filter, pagination } = params;
-    const queryParams: Record<string, unknown> = {};
+    if (!params) return queryParams;
 
-    if (filter?.idAlbum !== undefined) {
-      queryParams.albumId = filter.idAlbum;
-    }
-
-    if (pagination) {
-      queryParams._page = pagination.page;
-      queryParams._limit = pagination.limit;
-    }
+    if (params.page !== undefined) queryParams.append('_page', params.page.toString());
+    if (params.limit !== undefined) queryParams.append('_limit', params.limit.toString());
+    if (params.sort !== undefined) queryParams.append('_sort', params.sort);
+    if (params.sortOrder !== undefined) queryParams.append('_order', params.sortOrder);
 
     return queryParams;
   }

@@ -5,4 +5,5 @@ export const LOCAL_STORAGE_KEYS = {
   users: 'clean-app:users',
   albums: 'clean-app:albums',
   photos: 'clean-app:photos',
+  todos: 'clean-app:todos',
 } as const;
