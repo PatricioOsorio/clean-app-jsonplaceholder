@@ -65,6 +65,7 @@ export class ZodPatchCommentValidator implements IValidatorEntity<PatchCommentDt
   validate(input: unknown): PatchCommentDto {
     try {
       const result = this.schema.parse(input);
+      
       return PatchCommentDto.create(result);
     } catch (error) {
       return handleValidationError(error, CommentInvalidDataError);

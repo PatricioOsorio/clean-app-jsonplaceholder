@@ -6,5 +6,6 @@ import './modules/http.module';
 import './modules/post.module';
 import './modules/storage.module';
 import './modules/user.module';
+import './modules/album.module';
 
 export { container };

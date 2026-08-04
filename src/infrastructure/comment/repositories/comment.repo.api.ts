@@ -55,7 +55,7 @@ export class CommentRepositoryApi implements CommentRepository {
       const response = await this.httpClient.get<ICommentResponse>(`/comments/${id}`);
       return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
-      this.handleError(error);
+      this.handleError(error, id);
     }
   }
 
@@ -92,7 +92,7 @@ export class CommentRepositoryApi implements CommentRepository {
 
       return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
-      this.handleError(error);
+      this.handleError(error, id);
     }
   }
 
@@ -105,7 +105,7 @@ export class CommentRepositoryApi implements CommentRepository {
 
       return this.validator.validate(CommentMapper.toEntity(response.data));
     } catch (error) {
-      this.handleError(error);
+      this.handleError(error, id);
     }
   }
 
@@ -115,7 +115,7 @@ export class CommentRepositoryApi implements CommentRepository {
 
       return true;
     } catch (error) {
-      this.handleError(error);
+      this.handleError(error, id);
     }
   }
 }
