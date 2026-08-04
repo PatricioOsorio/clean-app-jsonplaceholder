@@ -4,4 +4,5 @@ export const LOCAL_STORAGE_KEYS = {
   authSession: 'clean-app:auth-session',
   users: 'clean-app:users',
   albums: 'clean-app:albums',
+  photos: 'clean-app:photos',
 } as const;

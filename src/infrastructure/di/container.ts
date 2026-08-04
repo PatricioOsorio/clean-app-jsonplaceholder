@@ -7,5 +7,6 @@ import './modules/post.module';
 import './modules/storage.module';
 import './modules/user.module';
 import './modules/album.module';
+import './modules/photo.module';
 
 export { container };
