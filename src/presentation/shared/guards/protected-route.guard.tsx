@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet, useLocation } from 'react-router';
 import { useAuthContext } from '@presentation/shared/providers';
 import { usePermission } from '@presentation/features/auth/hooks';
 import type { IPermissionsVM, IRolesVM } from '@presentation/features/auth/models';
@@ -14,12 +14,13 @@ export const ProtectedRouteGuard = ({
   allowedRoles,
   redirectTo = '/auth/login',
 }: IProtectedRouteProps) => {
+  const location = useLocation();
   const { isAuthenticated, userSession } = useAuthContext();
   const { hasPermission } = usePermission();
 
   // 1. Redirección por falta de sesión activa
   if (!isAuthenticated || !userSession) {
-    return <Navigate replace to={redirectTo} />;
+    return <Navigate replace to={redirectTo} state={{ from: location }} />;
   }
 
   // 2. Validación por Permiso

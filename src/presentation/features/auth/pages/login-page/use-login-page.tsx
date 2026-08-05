@@ -3,24 +3,24 @@ import {
   type ILoginFormModel,
   type ILoginFormProps,
 } from '@presentation/features/auth/components';
+import { useRedirectAfterLogin } from '@presentation/features/auth/hooks';
 import { useAuthContext } from '@presentation/shared/providers';
 import { mapIssuesToForm } from '@presentation/utils';
 import { toastService } from 'lib-styleguide-simba/toast';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const useLoginPage = () => {
   const { isAuthenticated } = useAuthContext();
   const { Input, hookForm } = useLoginFormConfig();
   const { login, isAuthenticating } = useAuthContext();
-  const navigate = useNavigate();
+  const { redirectAfterLogin } = useRedirectAfterLogin();
 
   // ! handlers
   const handleSubmit = hookForm.handleSubmit(async (data) => {
     try {
       await login(data.email, data.password);
 
-      navigate('/');
+      redirectAfterLogin();
     } catch (error) {
       const isFormError = mapIssuesToForm<ILoginFormModel>(error, hookForm.setError);
       if (!isFormError) {
@@ -50,8 +50,8 @@ export const useLoginPage = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/');
-  }, [isAuthenticated, navigate]);
+    if (isAuthenticated) redirectAfterLogin();
+  }, [isAuthenticated, redirectAfterLogin]);
 
   return {
     // props
