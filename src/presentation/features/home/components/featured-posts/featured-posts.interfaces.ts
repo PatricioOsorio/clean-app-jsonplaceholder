@@ -1,4 +1,9 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
+import type {
+  IWithEmpty,
+  IWithError,
+  IWithLoading,
+  IWithRootProps,
+} from 'lib-styleguide-simba/interfaces';
 
 export interface IFeaturedPostVM {
   id: number;
@@ -8,5 +13,6 @@ export interface IFeaturedPostVM {
 }
 
 export interface IFeaturedPostsProps extends IWithRootProps<'section'> {
-  posts: IFeaturedPostVM[];
+  posts?: IFeaturedPostVM[];
+  status?: IWithLoading & IWithError & IWithEmpty;
 }

@@ -1,4 +1,9 @@
-import type { IWithRootProps } from 'lib-styleguide-simba/interfaces';
+import type {
+  IWithEmpty,
+  IWithError,
+  IWithLoading,
+  IWithRootProps,
+} from 'lib-styleguide-simba/interfaces';
 
 export interface IHomeGalleryItemVM {
   id: number;
@@ -7,5 +12,6 @@ export interface IHomeGalleryItemVM {
 }
 
 export interface IHomeGalleryProps extends IWithRootProps<'section'> {
-  items: IHomeGalleryItemVM[];
+  items?: IHomeGalleryItemVM[];
+  status?: IWithLoading & IWithError & IWithEmpty;
 }

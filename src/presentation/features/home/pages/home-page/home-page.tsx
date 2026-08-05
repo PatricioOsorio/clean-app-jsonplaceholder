@@ -11,8 +11,8 @@ export const HomePage = () => {
     DATA_SOURCE,
     // data
     metricsData,
-    featuredPostsData,
-    galleryItemsData,
+    featuredPostsProps,
+    homeGalleryProps,
     ctaBannerData,
   } = useHomePage();
 
@@ -40,8 +40,8 @@ export const HomePage = () => {
 
       {/* Main Grid Component Section */}
       <div className="hpc__main-grid">
-        <FeaturedPosts posts={featuredPostsData} />
-        <HomeGallery items={galleryItemsData} />
+        <FeaturedPosts {...featuredPostsProps} />
+        <HomeGallery {...homeGalleryProps} />
       </div>
 
       {/* Bottom CTA Banner Component */}

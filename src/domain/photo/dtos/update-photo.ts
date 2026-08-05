@@ -18,4 +18,3 @@ export class UpdatePhotoDto implements IUpdatePhotoProps {
     return new UpdatePhotoDto(data);
   }
 }
-

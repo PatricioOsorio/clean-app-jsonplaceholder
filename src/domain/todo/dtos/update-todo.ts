@@ -17,5 +17,3 @@ export class UpdateTodoDto implements IUpdateTodoProps {
     return new UpdateTodoDto(data);
   }
 }
-
-

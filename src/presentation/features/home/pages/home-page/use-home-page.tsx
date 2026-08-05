@@ -1,8 +1,19 @@
 import { DEFAULT_POSTS_PARAMS, usePosts } from '@presentation/features/posts/hooks';
-import { useMemo } from 'react';
-import type { IFeaturedPostVM, IHomeGalleryItemVM, IHomeMetricItemProps } from '../../components';
+import { useMemo, type ComponentProps } from 'react';
+import type {
+  FeaturedPosts,
+  HomeGallery,
+  IFeaturedPostVM,
+  IHomeGalleryItemVM,
+  IHomeMetricItemProps,
+} from '../../components';
 import { useComments } from '@presentation/features/comments/hooks';
 import { ENV } from '@infrastructure/utils';
+import { useTodos } from '@presentation/features/todos/hooks';
+import { useAlbums } from '@presentation/features/albums/hooks';
+import { usePhotos } from '@presentation/features/photos/hooks';
+import { useUsers } from '@presentation/features/users/hooks';
+import { FeaturedPostMapper, HomeGalleryMapper } from '@presentation/features/home/models';
 
 export const useHomePage = () => {
   const {
@@ -17,8 +28,17 @@ export const useHomePage = () => {
     isError: isCommentsError,
   } = useComments();
 
-  const { total: totalPosts } = postsData || { total: 0 };
+  const { data: todosData, isLoading: isTodosLoading, isError: isTodosError } = useTodos();
+  const { data: albumsData, isLoading: isAlbumsLoading, isError: isAlbumsError } = useAlbums();
+  const { data: photosData, isLoading: isPhotosLoading, isError: isPhotosError } = usePhotos();
+  const { data: usersData, isLoading: isUsersLoading, isError: isUsersError } = useUsers();
+
+  const { total: totalPosts, data: posts } = postsData || { total: 0, data: [] };
   const { total: totalComments } = commentsData || { total: 0 };
+  const { total: totalTodos } = todosData || { total: 0 };
+  const { total: totalAlbums } = albumsData || { total: 0 };
+  const { total: totalPhotos, data: photos } = photosData || { total: 0, data: [] };
+  const { total: totalUsers } = usersData || { total: 0 };
 
   const metricsData: IHomeMetricItemProps[] = useMemo(
     () => [
@@ -31,74 +51,71 @@ export const useHomePage = () => {
         status: { isLoading: isCommentsLoading, isError: isCommentsError },
       },
       {
-        metric: { label: 'Albums', count: '100', iconName: 'albums' },
-        status: { isLoading: false, isEmpty: true, isError: true },
+        metric: { label: 'Albums', count: totalAlbums, iconName: 'albums' },
+        status: { isLoading: isAlbumsLoading, isError: isAlbumsError },
       },
       {
-        metric: { label: 'Photos', count: '5,000', iconName: 'photos' },
-        status: { isLoading: false, isEmpty: true },
+        metric: { label: 'Photos', count: totalPhotos, iconName: 'photos' },
+        status: { isLoading: isPhotosLoading, isError: isPhotosError },
       },
       {
-        metric: { label: 'Users', count: '10', iconName: 'users' },
-        status: { isLoading: false, isEmpty: true },
+        metric: { label: 'Users', count: totalUsers, iconName: 'users' },
+        status: { isLoading: isUsersLoading, isError: isUsersError },
       },
       {
-        metric: { label: 'Todos', count: '200', iconName: 'todos' },
-        status: { isLoading: false, isEmpty: true },
+        metric: { label: 'Todos', count: totalTodos, iconName: 'todos' },
+        status: { isLoading: isTodosLoading, isError: isTodosError },
       },
     ],
-    [isPostsLoading, isPostsError, totalPosts],
+    [
+      isPostsLoading,
+      isPostsError,
+      totalPosts,
+      isCommentsLoading,
+      isCommentsError,
+      totalComments,
+      isAlbumsLoading,
+      isAlbumsError,
+      totalAlbums,
+      isPhotosLoading,
+      isPhotosError,
+      totalPhotos,
+      isUsersLoading,
+      isUsersError,
+      totalUsers,
+      isTodosLoading,
+      isTodosError,
+      totalTodos,
+    ],
   );
 
-  const featuredPostsData: IFeaturedPostVM[] = [
-    {
-      id: 1,
-      title: 'sunt aut facere repellat provident occaecati...',
-      body: 'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut...',
-      user: '@user_1',
-    },
-    {
-      id: 2,
-      title: 'qui est esse',
-      body: 'est rerum tempore vitae sequi sint nihil reprehenderit dolor beatae ea dolores neque fugiat blanditiis... voluptatem porro vel nihil molestiae',
-      user: '@user_1',
-    },
-    {
-      id: 3,
-      title: 'ea molestias quasi exercitationem repellat qui',
-      body: 'et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel...',
-      user: '@user_2',
-    },
-    {
-      id: 4,
-      title: 'eum et est occaecati',
-      body: 'ullam et saepe reiciendis voluptatem adipisci sit amet autem assumenda provident rerum culpa quis hic commodi nesciunt rem',
-      user: '@user_2',
-    },
-  ];
+  const featuredPosts: IFeaturedPostVM[] = useMemo(
+    () => (posts ? FeaturedPostMapper.toVMs(posts.slice(0, 4)) : []),
+    [posts],
+  );
 
-  const galleryItemsData: IHomeGalleryItemVM[] = [
-    {
-      id: 1,
-      title: 'accusamus beatae',
-      url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=80',
+  const featuredPostsProps: ComponentProps<typeof FeaturedPosts> = {
+    posts: featuredPosts,
+    status: {
+      isLoading: isPostsLoading,
+      isError: isPostsError,
+      isEmpty: featuredPosts.length === 0,
     },
-    {
-      id: 2,
-      title: 'reprehenderit est',
-      url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80',
+  };
+
+  const galleryItems = useMemo(
+    () => (photos ? HomeGalleryMapper.toVMs(photos.slice(0, 4)) : []),
+    [photos],
+  );
+
+  const homeGalleryProps: ComponentProps<typeof HomeGallery> = {
+    items: galleryItems,
+    status: {
+      isLoading: isPhotosLoading,
+      isError: isPhotosError,
+      isEmpty: galleryItems.length === 0,
     },
-    {
-      id: 3,
-      title: 'officia porro',
-      url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&q=80',
-    },
-    {
-      id: 4,
-      title: 'culpa odio',
-      url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=80',
-    },
-  ];
+  };
 
   const ctaBannerData = {
     title: 'Unlock Your Personal Dashboard',
@@ -115,8 +132,8 @@ export const useHomePage = () => {
     // data
 
     metricsData,
-    featuredPostsData,
-    galleryItemsData,
+    featuredPostsProps,
+    homeGalleryProps,
     ctaBannerData,
   };
 };

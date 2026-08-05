@@ -43,6 +43,10 @@
     }
   }
 
+  .fp__post-card--skeleton {
+    @apply hover:bg-background/80 hover:shadow-sm active:scale-100;
+  }
+
   .fp__post-card-header {
     @apply flex flex-col gap-2;
   }

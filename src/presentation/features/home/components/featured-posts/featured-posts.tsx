@@ -1,12 +1,16 @@
-import { Link } from 'react-router';
 import { Badge } from 'lib-styleguide-simba/badge';
-import { IconArticle, IconArrowRight } from 'lib-styleguide-simba/icons';
+import { IconArticle } from 'lib-styleguide-simba/icons';
+import { StatusContent } from 'lib-styleguide-simba/status-content';
 import { cn } from 'lib-styleguide-simba/utils';
 
 import type { IFeaturedPostsProps } from './featured-posts.interfaces';
+import { FeaturedPostItem } from './item/featured-post-item';
+import { FeaturedPostsSkeleton } from './skeleton/featured-posts-skeleton';
+import { FeaturedPostsEmpty } from './empty/featured-posts-empty';
+import { FeaturedPostsError } from './error/featured-posts-error';
 import './featured-posts.css';
 
-export const FeaturedPosts = ({ posts, rootProps }: IFeaturedPostsProps) => {
+export const FeaturedPosts = ({ posts, rootProps, status = {} }: IFeaturedPostsProps) => {
   return (
     <section {...rootProps} className={cn('featured-posts-container', rootProps?.className)}>
       <div className="fp__section-header">
@@ -17,21 +21,23 @@ export const FeaturedPosts = ({ posts, rootProps }: IFeaturedPostsProps) => {
         <Badge className="fp__live-badge">Live Feed</Badge>
       </div>
 
-      <div className="fp__posts-grid">
-        {posts.map((post) => (
-          <Link key={post.id} to="/posts" className="fp__post-card">
-            <div className="fp__post-card-header">
-              <h3 className="fp__post-title">{post.title}</h3>
-              <p className="fp__post-body">{post.body}</p>
-            </div>
-
-            <div className="fp__post-footer">
-              <span className="fp__post-author">{post.user}</span>
-              <IconArrowRight className="fp__post-arrow" />
-            </div>
-          </Link>
-        ))}
-      </div>
+      <StatusContent
+        {...status}
+        loadingTemplate={<FeaturedPostsSkeleton />}
+        emptyTemplate={<FeaturedPostsEmpty />}
+        errorTemplate={<FeaturedPostsError />}
+      >
+        <div className="fp__posts-grid">
+          {posts?.map((post) => (
+            <FeaturedPostItem key={post.id} post={post} />
+          ))}
+        </div>
+      </StatusContent>
     </section>
   );
 };
+
+FeaturedPosts.Skeleton = FeaturedPostsSkeleton;
+FeaturedPosts.Empty = FeaturedPostsEmpty;
+FeaturedPosts.Error = FeaturedPostsError;
+FeaturedPosts.Item = FeaturedPostItem;
