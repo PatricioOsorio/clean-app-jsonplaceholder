@@ -6,6 +6,9 @@
 
 @import '@fontsource-variable/plus-jakarta-sans';
 
+/* Shadow scale stays near-invisible by design (see DESIGN.md > Elevation): use
+   only on surfaces that actually float — modal, dropdown, dragged item. Static
+   in-flow cards get a border, not a shadow. */
 @theme {
   --shadow-xs: 0 1px 3px 0 rgba(0, 0, 0, 0.01), 0 1px 2px -1px rgba(0, 0, 0, 0.01);
   --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.015), 0 1px 4px -1px rgba(0, 0, 0, 0.01);
@@ -19,8 +22,8 @@
   --radius: 1rem;
   --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
   --default-font-family: 'Plus Jakarta Sans Variable', sans-serif;
-  --border: transparent;
 
+  /* Teal ramp is shared across themes (DESIGN.md) */
   --primary-50: #ecfdf5;
   --primary-100: #ccfbf1;
   --primary-200: #99f6e4;
@@ -32,6 +35,98 @@
   --primary-800: #115e59;
   --primary-900: #134e4a;
   --primary-950: #042f2e;
+}
+
+/* Nebula palette (see DESIGN.md) — overrides lib-styleguide-simba's dark theme defaults */
+[data-theme='dark'] {
+  --background: #0e1320;
+  --foreground: #ffffff;
+  --card: #141a28;
+  --card-foreground: #ffffff;
+  --popover: #141a28;
+  --popover-foreground: #ffffff;
+  --primary: #14b8a6;
+  --primary-foreground: #04231f;
+  --secondary: #141a28;
+  --secondary-foreground: #c7ced9;
+  --muted: #0e1320;
+  --muted-foreground: #909eb3;
+  --accent: #1e2636;
+  --accent-foreground: #5eead4;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #04231f;
+  --success: #22c55e;
+  --success-foreground: #04231f;
+  --info: #06b6d4;
+  --info-foreground: #04231f;
+  --help: #a855f7;
+  --help-foreground: #ffffff;
+  --border: #232b3d;
+  --input: #141a28;
+  --ring: #2dd4bf;
+  --chart-1: #14b8a6;
+  --chart-2: #5eead4;
+  --chart-3: #5b7fff;
+  --chart-4: #f59e0b;
+  --chart-5: #a855f7;
+  --sidebar: #0b0f18;
+  --sidebar-foreground: #909eb3;
+  --sidebar-primary: #14b8a6;
+  --sidebar-primary-foreground: #04231f;
+  --sidebar-accent: #141a28;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #232b3d;
+  --sidebar-ring: #2dd4bf;
+}
+
+/* Nebula, light mode — not specified in DESIGN.md (dark-first), derived: navy-slate inverted to a light surface, same teal accent */
+[data-theme='light'] {
+  --background: #f7f9fc;
+  --foreground: #0e1320;
+  --card: #ffffff;
+  --card-foreground: #0e1320;
+  --popover: #ffffff;
+  --popover-foreground: #0e1320;
+  --primary: #14b8a6;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #334155;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #ccfbf1;
+  --accent-foreground: #0f766e;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --info: #06b6d4;
+  --info-foreground: #ffffff;
+  --help: #a855f7;
+  --help-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #14b8a6;
+  --chart-1: #14b8a6;
+  --chart-2: #0f766e;
+  --chart-3: #5b7fff;
+  --chart-4: #f59e0b;
+  --chart-5: #a855f7;
+  --sidebar: #f1f5f9;
+  --sidebar-foreground: #475569;
+  --sidebar-primary: #14b8a6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #0e1320;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #14b8a6;
 }
 
 .rounded {
