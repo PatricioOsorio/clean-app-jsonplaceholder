@@ -26,7 +26,7 @@ export class CommentRepositoryLocal implements CommentRepository {
 
   constructor(
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
-    @inject(CommentEntity.VALIDATOR_TOKEN)
+    @inject(CommentEntity.TOKEN)
     private readonly validator: IValidatorEntity<CommentEntity>,
   ) {
     this.db = new LocalDb<CommentEntity>(this.storage, LOCAL_STORAGE_KEYS.comments, SEED_COMMENT);

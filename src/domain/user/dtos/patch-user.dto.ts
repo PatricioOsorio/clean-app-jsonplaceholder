@@ -10,7 +10,7 @@ export type IPatchUserProps = {
 };
 
 export class PatchUserDto implements IPatchUserProps {
-  static readonly VALIDATOR_TOKEN = Symbol('PatchUserDto.Validator');
+  static readonly TOKEN = Symbol('PatchUserDto.Validator');
 
   readonly name?: string;
   readonly userName?: string;

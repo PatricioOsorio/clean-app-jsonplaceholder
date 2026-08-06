@@ -1,7 +1,7 @@
 export type IUpdateAlbumProps = { idUser: number; title: string };
 
 export class UpdateAlbumDto implements IUpdateAlbumProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdateAlbumDto.Validator');
+  static readonly TOKEN = Symbol('UpdateAlbumDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

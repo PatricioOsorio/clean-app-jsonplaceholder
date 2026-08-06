@@ -10,7 +10,7 @@ export type IUpdateUserProps = {
 };
 
 export class UpdateUserDto implements IUpdateUserProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdateUserDto.Validator');
+  static readonly TOKEN = Symbol('UpdateUserDto.Validator');
 
   readonly name!: string;
   readonly userName!: string;

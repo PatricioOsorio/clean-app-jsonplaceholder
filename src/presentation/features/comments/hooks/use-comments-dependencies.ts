@@ -14,15 +14,9 @@ export const useCommentsDependencies = () => {
     () => ({
       comments: container.resolve<CommentRepository>(CommentRepository.TOKEN),
       validators: {
-        create: container.resolve<IValidatorEntity<CreateCommentDto>>(
-          CreateCommentDto.VALIDATOR_TOKEN,
-        ),
-        update: container.resolve<IValidatorEntity<UpdateCommentDto>>(
-          UpdateCommentDto.VALIDATOR_TOKEN,
-        ),
-        patch: container.resolve<IValidatorEntity<PatchCommentDto>>(
-          PatchCommentDto.VALIDATOR_TOKEN,
-        ),
+        create: container.resolve<IValidatorEntity<CreateCommentDto>>(CreateCommentDto.TOKEN),
+        update: container.resolve<IValidatorEntity<UpdateCommentDto>>(UpdateCommentDto.TOKEN),
+        patch: container.resolve<IValidatorEntity<PatchCommentDto>>(PatchCommentDto.TOKEN),
       },
     }),
     [],

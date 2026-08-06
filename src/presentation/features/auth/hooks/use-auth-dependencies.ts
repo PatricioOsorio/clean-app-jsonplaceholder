@@ -8,7 +8,7 @@ export const useAuthDependencies = () => {
     () => ({
       auth: container.resolve<AuthRepository>(AuthRepository.TOKEN),
       validators: {
-        login: container.resolve<IValidatorEntity<LoginDto>>(LoginDto.VALIDATOR_TOKEN),
+        login: container.resolve<IValidatorEntity<LoginDto>>(LoginDto.TOKEN),
       },
     }),
     [],

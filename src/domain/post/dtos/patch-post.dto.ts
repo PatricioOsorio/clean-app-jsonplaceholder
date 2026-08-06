@@ -1,7 +1,7 @@
 export type IPatchPostProps = { idUser?: number; title?: string; content?: string };
 
 export class PatchPostDto implements IPatchPostProps {
-  static readonly VALIDATOR_TOKEN = Symbol('PatchPostDto.Validator');
+  static readonly TOKEN = Symbol('PatchPostDto.Validator');
 
   readonly idUser?: number;
   readonly title?: string;

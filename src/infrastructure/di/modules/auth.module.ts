@@ -29,8 +29,8 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(AuthRepository.TOKEN, { useClass: AUTH_REPOSITORIES[DATA_SOURCE] });
 
-container.register(LoginDto.VALIDATOR_TOKEN, { useClass: VALIDATORS_REPOSITORIES.zod.login });
+container.register(LoginDto.TOKEN, { useClass: VALIDATORS_REPOSITORIES.zod.login });
 
-container.register(AuthEntity.VALIDATOR_TOKEN, { useClass: VALIDATORS_REPOSITORIES.zod.entity });
+container.register(AuthEntity.TOKEN, { useClass: VALIDATORS_REPOSITORIES.zod.entity });
 
 export { container };

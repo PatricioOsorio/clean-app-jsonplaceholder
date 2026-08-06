@@ -8,9 +8,9 @@ export const useUsersDependencies = () => {
     () => ({
       users: container.resolve<UserRepository>(UserRepository.TOKEN),
       validators: {
-        create: container.resolve<IValidatorEntity<CreateUserDto>>(CreateUserDto.VALIDATOR_TOKEN),
-        update: container.resolve<IValidatorEntity<UpdateUserDto>>(UpdateUserDto.VALIDATOR_TOKEN),
-        patch: container.resolve<IValidatorEntity<PatchUserDto>>(PatchUserDto.VALIDATOR_TOKEN),
+        create: container.resolve<IValidatorEntity<CreateUserDto>>(CreateUserDto.TOKEN),
+        update: container.resolve<IValidatorEntity<UpdateUserDto>>(UpdateUserDto.TOKEN),
+        patch: container.resolve<IValidatorEntity<PatchUserDto>>(PatchUserDto.TOKEN),
       },
     }),
     [],

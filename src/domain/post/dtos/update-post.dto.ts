@@ -1,7 +1,7 @@
 export type IUpdatePostProps = { idUser: number; title: string; content: string };
 
 export class UpdatePostDto implements IUpdatePostProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdatePostDto.Validator');
+  static readonly TOKEN = Symbol('UpdatePostDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

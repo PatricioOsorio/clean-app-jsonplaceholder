@@ -24,7 +24,7 @@ const photoErrorHandler = createApiErrorHandler((error, photoId) => {
 export class PhotoRepositoryApi implements PhotoRepository {
   constructor(
     @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
-    @inject(PhotoEntity.VALIDATOR_TOKEN)
+    @inject(PhotoEntity.TOKEN)
     private readonly validator: IValidatorEntity<PhotoEntity>,
   ) {}
 

@@ -23,7 +23,7 @@ const albumErrorHandler = createApiErrorHandler((error, albumId) => {
 export class AlbumRepositoryApi implements AlbumRepository {
   constructor(
     @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
-    @inject(AlbumEntity.VALIDATOR_TOKEN)
+    @inject(AlbumEntity.TOKEN)
     private readonly validator: IValidatorEntity<AlbumEntity>,
   ) {}
 

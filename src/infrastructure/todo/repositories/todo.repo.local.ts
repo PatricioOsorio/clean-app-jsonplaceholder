@@ -24,7 +24,7 @@ export class TodoRepositoryLocal implements TodoRepository {
 
   constructor(
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
-    @inject(TodoEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<TodoEntity>,
+    @inject(TodoEntity.TOKEN) private readonly validator: IValidatorEntity<TodoEntity>,
   ) {
     this.db = new LocalDb<TodoEntity>(this.storage, LOCAL_STORAGE_KEYS.todos, SEED_TODOS);
   }

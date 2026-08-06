@@ -1,7 +1,7 @@
 export type IPatchAlbumProps = { idUser?: number; title?: string };
 
 export class PatchAlbumDto implements IPatchAlbumProps {
-  static readonly VALIDATOR_TOKEN = Symbol('PatchAlbumDto.Validator');
+  static readonly TOKEN = Symbol('PatchAlbumDto.Validator');
 
   readonly idUser?: number;
   readonly title?: string;

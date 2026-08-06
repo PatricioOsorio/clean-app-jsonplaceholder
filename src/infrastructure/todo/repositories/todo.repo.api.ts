@@ -24,7 +24,7 @@ const todoErrorHandler = createApiErrorHandler((error, todoId) => {
 export class TodoRepositoryApi implements TodoRepository {
   constructor(
     @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
-    @inject(TodoEntity.VALIDATOR_TOKEN)
+    @inject(TodoEntity.TOKEN)
     private readonly validator: IValidatorEntity<TodoEntity>,
   ) {}
 

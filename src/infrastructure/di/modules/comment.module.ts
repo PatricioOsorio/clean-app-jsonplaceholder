@@ -41,19 +41,19 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(CommentRepository.TOKEN, { useClass: COMMENT_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreateCommentDto.VALIDATOR_TOKEN, {
+container.register(CreateCommentDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
 
-container.register(UpdateCommentDto.VALIDATOR_TOKEN, {
+container.register(UpdateCommentDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
 
-container.register(PatchCommentDto.VALIDATOR_TOKEN, {
+container.register(PatchCommentDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 
-container.register(CommentEntity.VALIDATOR_TOKEN, {
+container.register(CommentEntity.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });
 

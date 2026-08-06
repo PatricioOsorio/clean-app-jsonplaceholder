@@ -16,7 +16,7 @@ import { SEED_USERS_ROLES_PERMISSIONS, simulateFaultAuth } from './auth.dev';
 export class AuthRepositoryLocal implements AuthRepository {
   constructor(
     @inject(StorageClient.TOKEN) private readonly storageClient: StorageClient,
-    @inject(AuthEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<AuthEntity>,
+    @inject(AuthEntity.TOKEN) private readonly validator: IValidatorEntity<AuthEntity>,
   ) {}
 
   async login(loginDto: LoginDto): Promise<AuthEntity> {

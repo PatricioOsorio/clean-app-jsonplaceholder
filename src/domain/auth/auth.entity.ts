@@ -11,7 +11,7 @@ export type IPermissions =
   | 'users:manage';
 
 export class AuthEntity {
-  static readonly VALIDATOR_TOKEN = Symbol('AuthEntity.Validator');
+  static readonly TOKEN = Symbol('AuthEntity.Validator');
 
   constructor(
     public id: number,

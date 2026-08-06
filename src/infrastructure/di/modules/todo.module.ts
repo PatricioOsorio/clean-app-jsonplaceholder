@@ -40,19 +40,19 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(TodoRepository.TOKEN, { useClass: TODO_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreateTodoDto.VALIDATOR_TOKEN, {
+container.register(CreateTodoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
 
-container.register(UpdateTodoDto.VALIDATOR_TOKEN, {
+container.register(UpdateTodoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
 
-container.register(PatchTodoDto.VALIDATOR_TOKEN, {
+container.register(PatchTodoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 
-container.register(TodoEntity.VALIDATOR_TOKEN, {
+container.register(TodoEntity.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });
 

@@ -23,7 +23,7 @@ export class AlbumRepositoryLocal implements AlbumRepository {
 
   constructor(
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
-    @inject(AlbumEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<AlbumEntity>,
+    @inject(AlbumEntity.TOKEN) private readonly validator: IValidatorEntity<AlbumEntity>,
   ) {
     this.db = new LocalDb<AlbumEntity>(this.storage, LOCAL_STORAGE_KEYS.albums, SEED_ALBUM);
   }

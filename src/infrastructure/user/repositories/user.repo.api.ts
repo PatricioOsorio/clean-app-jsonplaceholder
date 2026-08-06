@@ -32,7 +32,7 @@ const userErrorHandler = createApiErrorHandler((error, userId) => {
 export class UserRepositoryApi implements UserRepository {
   constructor(
     @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
-    @inject(UserEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<UserEntity>,
+    @inject(UserEntity.TOKEN) private readonly validator: IValidatorEntity<UserEntity>,
   ) {}
 
   private handleError(error: unknown, userId?: number): never {

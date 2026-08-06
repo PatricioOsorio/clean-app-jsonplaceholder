@@ -1,7 +1,7 @@
 export type ICreateAlbumProps = { idUser: number; title: string };
 
 export class CreateAlbumDto implements ICreateAlbumProps {
-  static readonly VALIDATOR_TOKEN = Symbol('CreateAlbumDto.Validator');
+  static readonly TOKEN = Symbol('CreateAlbumDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

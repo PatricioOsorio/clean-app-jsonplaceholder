@@ -6,7 +6,7 @@ export type ICreatePhotoProps = {
 };
 
 export class CreatePhotoDto implements ICreatePhotoProps {
-  static readonly VALIDATOR_TOKEN = Symbol('CreatePhotoDto.Validator');
+  static readonly TOKEN = Symbol('CreatePhotoDto.Validator');
 
   readonly idAlbum!: number;
   readonly title!: string;

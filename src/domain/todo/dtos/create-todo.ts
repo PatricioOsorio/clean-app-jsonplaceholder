@@ -5,7 +5,7 @@ export type ICreateTodoProps = {
 };
 
 export class CreateTodoDto implements ICreateTodoProps {
-  static readonly VALIDATOR_TOKEN = Symbol('CreateTodoDto.Validator');
+  static readonly TOKEN = Symbol('CreateTodoDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

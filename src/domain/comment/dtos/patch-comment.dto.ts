@@ -6,7 +6,7 @@ export type IPatchCommentProps = {
 };
 
 export class PatchCommentDto implements IPatchCommentProps {
-  static readonly VALIDATOR_TOKEN = Symbol('PatchCommentDto.Validator');
+  static readonly TOKEN = Symbol('PatchCommentDto.Validator');
 
   readonly idPost?: number;
   readonly name?: string;

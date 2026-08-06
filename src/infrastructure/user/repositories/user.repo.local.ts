@@ -26,7 +26,7 @@ export class UserRepositoryLocal implements UserRepository {
 
   constructor(
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
-    @inject(UserEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<UserEntity>,
+    @inject(UserEntity.TOKEN) private readonly validator: IValidatorEntity<UserEntity>,
   ) {
     this.db = new LocalDb<UserEntity>(this.storage, LOCAL_STORAGE_KEYS.users, SEED_USER);
   }

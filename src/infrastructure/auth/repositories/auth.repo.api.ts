@@ -31,7 +31,7 @@ export class AuthRepositoryApi implements AuthRepository {
   constructor(
     @inject(UserRepository.TOKEN) private readonly userRepository: UserRepository,
     @inject(StorageClient.TOKEN) private readonly storageClient: StorageClient,
-    @inject(AuthEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<AuthEntity>,
+    @inject(AuthEntity.TOKEN) private readonly validator: IValidatorEntity<AuthEntity>,
   ) {}
 
   private handleError(error: unknown, authId?: number): never {

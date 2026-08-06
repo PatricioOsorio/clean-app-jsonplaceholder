@@ -40,18 +40,18 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(AlbumRepository.TOKEN, { useClass: ALBUM_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreateAlbumDto.VALIDATOR_TOKEN, {
+container.register(CreateAlbumDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
 
-container.register(UpdateAlbumDto.VALIDATOR_TOKEN, {
+container.register(UpdateAlbumDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
 
-container.register(PatchAlbumDto.VALIDATOR_TOKEN, {
+container.register(PatchAlbumDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 
-container.register(AlbumEntity.VALIDATOR_TOKEN, {
+container.register(AlbumEntity.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });

@@ -9,9 +9,9 @@ export const usePostsDependencies = () => {
     () => ({
       posts: container.resolve<PostRepository>(PostRepository.TOKEN),
       validators: {
-        create: container.resolve<IValidatorEntity<CreatePostDto>>(CreatePostDto.VALIDATOR_TOKEN),
-        update: container.resolve<IValidatorEntity<UpdatePostDto>>(UpdatePostDto.VALIDATOR_TOKEN),
-        patch: container.resolve<IValidatorEntity<PatchPostDto>>(PatchPostDto.VALIDATOR_TOKEN),
+        create: container.resolve<IValidatorEntity<CreatePostDto>>(CreatePostDto.TOKEN),
+        update: container.resolve<IValidatorEntity<UpdatePostDto>>(UpdatePostDto.TOKEN),
+        patch: container.resolve<IValidatorEntity<PatchPostDto>>(PatchPostDto.TOKEN),
       },
     }),
     [],

@@ -1,5 +1,5 @@
 export class CommentEntity {
-  static readonly VALIDATOR_TOKEN = Symbol('CommentEntity.Validator');
+  static readonly TOKEN = Symbol('CommentEntity.Validator');
 
   constructor(
     public id: number,

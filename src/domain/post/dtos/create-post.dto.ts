@@ -1,7 +1,7 @@
 export type ICreatePostProps = { idUser: number; title: string; content: string };
 
 export class CreatePostDto implements ICreatePostProps {
-  static readonly VALIDATOR_TOKEN = Symbol('CreatePostDto.Validator');
+  static readonly TOKEN = Symbol('CreatePostDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

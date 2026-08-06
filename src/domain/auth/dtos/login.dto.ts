@@ -4,7 +4,7 @@ export type ILoginProps = {
 };
 
 export class LoginDto {
-  static readonly VALIDATOR_TOKEN = Symbol('LoginDto.Validator');
+  static readonly TOKEN = Symbol('LoginDto.Validator');
 
   readonly email!: string;
   readonly password!: string;

@@ -3,7 +3,7 @@ import type { ICreatePhotoProps } from './create-photo';
 export type IUpdatePhotoProps = ICreatePhotoProps;
 
 export class UpdatePhotoDto implements IUpdatePhotoProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdatePhotoDto.Validator');
+  static readonly TOKEN = Symbol('UpdatePhotoDto.Validator');
 
   readonly idAlbum!: number;
   readonly title!: string;

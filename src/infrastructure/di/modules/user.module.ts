@@ -37,19 +37,19 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(UserRepository.TOKEN, { useClass: USER_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreateUserDto.VALIDATOR_TOKEN, {
+container.register(CreateUserDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES.zod.create,
 });
 
-container.register(UpdateUserDto.VALIDATOR_TOKEN, {
+container.register(UpdateUserDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES.zod.update,
 });
 
-container.register(PatchUserDto.VALIDATOR_TOKEN, {
+container.register(PatchUserDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES.zod.patch,
 });
 
-container.register(UserEntity.VALIDATOR_TOKEN, {
+container.register(UserEntity.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES.zod.entity,
 });
 

@@ -8,9 +8,9 @@ export const usePhotosDependencies = () => {
     () => ({
       photos: container.resolve<PhotoRepository>(PhotoRepository.TOKEN),
       validators: {
-        create: container.resolve<IValidatorEntity<CreatePhotoDto>>(CreatePhotoDto.VALIDATOR_TOKEN),
-        update: container.resolve<IValidatorEntity<UpdatePhotoDto>>(UpdatePhotoDto.VALIDATOR_TOKEN),
-        patch: container.resolve<IValidatorEntity<PatchPhotoDto>>(PatchPhotoDto.VALIDATOR_TOKEN),
+        create: container.resolve<IValidatorEntity<CreatePhotoDto>>(CreatePhotoDto.TOKEN),
+        update: container.resolve<IValidatorEntity<UpdatePhotoDto>>(UpdatePhotoDto.TOKEN),
+        patch: container.resolve<IValidatorEntity<PatchPhotoDto>>(PatchPhotoDto.TOKEN),
       },
     }),
     [],

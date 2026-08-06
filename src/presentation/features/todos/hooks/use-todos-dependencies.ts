@@ -9,9 +9,9 @@ export const useTodosDependencies = () => {
     () => ({
       todos: container.resolve<TodoRepository>(TodoRepository.TOKEN),
       validators: {
-        create: container.resolve<IValidatorEntity<CreateTodoDto>>(CreateTodoDto.VALIDATOR_TOKEN),
-        update: container.resolve<IValidatorEntity<UpdateTodoDto>>(UpdateTodoDto.VALIDATOR_TOKEN),
-        patch: container.resolve<IValidatorEntity<PatchTodoDto>>(PatchTodoDto.VALIDATOR_TOKEN),
+        create: container.resolve<IValidatorEntity<CreateTodoDto>>(CreateTodoDto.TOKEN),
+        update: container.resolve<IValidatorEntity<UpdateTodoDto>>(UpdateTodoDto.TOKEN),
+        patch: container.resolve<IValidatorEntity<PatchTodoDto>>(PatchTodoDto.TOKEN),
       },
     }),
     [],

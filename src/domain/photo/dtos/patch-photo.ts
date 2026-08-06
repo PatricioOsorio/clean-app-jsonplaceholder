@@ -3,7 +3,7 @@ import type { ICreatePhotoProps } from './create-photo';
 export type IPatchPhotoProps = Partial<ICreatePhotoProps>;
 
 export class PatchPhotoDto implements IPatchPhotoProps {
-  static readonly VALIDATOR_TOKEN = Symbol('PatchPhotoDto.Validator');
+  static readonly TOKEN = Symbol('PatchPhotoDto.Validator');
 
   readonly idAlbum?: number;
   readonly title?: string;

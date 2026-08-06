@@ -10,7 +10,7 @@ export type ICreateUserProps = {
 };
 
 export class CreateUserDto implements ICreateUserProps {
-  static readonly VALIDATOR_TOKEN = Symbol('CreateUserDto.Validator');
+  static readonly TOKEN = Symbol('CreateUserDto.Validator');
 
   readonly name!: string;
   readonly userName!: string;

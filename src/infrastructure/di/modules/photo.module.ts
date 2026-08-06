@@ -40,19 +40,19 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(PhotoRepository.TOKEN, { useClass: PHOTO_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreatePhotoDto.VALIDATOR_TOKEN, {
+container.register(CreatePhotoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
 
-container.register(UpdatePhotoDto.VALIDATOR_TOKEN, {
+container.register(UpdatePhotoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
 
-container.register(PatchPhotoDto.VALIDATOR_TOKEN, {
+container.register(PatchPhotoDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 
-container.register(PhotoEntity.VALIDATOR_TOKEN, {
+container.register(PhotoEntity.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].entity,
 });
 

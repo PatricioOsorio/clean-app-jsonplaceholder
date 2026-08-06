@@ -26,7 +26,7 @@ const commentErrorHandler = createApiErrorHandler((error, commentId) => {
 export class CommentRepositoryApi implements CommentRepository {
   constructor(
     @inject(HttpRepository.TOKEN) private readonly httpClient: HttpRepository,
-    @inject(CommentEntity.VALIDATOR_TOKEN)
+    @inject(CommentEntity.TOKEN)
     private readonly validator: IValidatorEntity<CommentEntity>,
   ) {}
 

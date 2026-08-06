@@ -1,5 +1,5 @@
 export class TodoEntity {
-  static readonly VALIDATOR_TOKEN = Symbol('TodoEntity.Validator');
+  static readonly TOKEN = Symbol('TodoEntity.Validator');
 
   constructor(
     public id: number,

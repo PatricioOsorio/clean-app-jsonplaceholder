@@ -1,5 +1,5 @@
 export class PhotoEntity {
-  static readonly VALIDATOR_TOKEN = Symbol('PhotoEntity.Validator');
+  static readonly TOKEN = Symbol('PhotoEntity.Validator');
 
   constructor(
     public id: number,

@@ -6,7 +6,7 @@ export type IUpdateCommentProps = {
 };
 
 export class UpdateCommentDto implements IUpdateCommentProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdateCommentDto.Validator');
+  static readonly TOKEN = Symbol('UpdateCommentDto.Validator');
 
   readonly idPost!: number;
   readonly name!: string;

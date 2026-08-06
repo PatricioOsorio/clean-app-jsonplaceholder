@@ -24,7 +24,7 @@ export class PhotoRepositoryLocal implements PhotoRepository {
 
   constructor(
     @inject(StorageClient.TOKEN) private readonly storage: StorageClient,
-    @inject(PhotoEntity.VALIDATOR_TOKEN) private readonly validator: IValidatorEntity<PhotoEntity>,
+    @inject(PhotoEntity.TOKEN) private readonly validator: IValidatorEntity<PhotoEntity>,
   ) {
     this.db = new LocalDb<PhotoEntity>(this.storage, LOCAL_STORAGE_KEYS.photos, SEED_PHOTOS);
   }

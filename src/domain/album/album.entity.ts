@@ -1,5 +1,5 @@
 export class AlbumEntity {
-  static readonly VALIDATOR_TOKEN = Symbol('AlbumEntity.Validator');
+  static readonly TOKEN = Symbol('AlbumEntity.Validator');
 
   constructor(
     public id: number,

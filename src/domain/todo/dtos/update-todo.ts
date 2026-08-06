@@ -3,7 +3,7 @@ import type { ICreateTodoProps } from './create-todo';
 export type IUpdateTodoProps = ICreateTodoProps;
 
 export class UpdateTodoDto implements IUpdateTodoProps {
-  static readonly VALIDATOR_TOKEN = Symbol('UpdateTodoDto.Validator');
+  static readonly TOKEN = Symbol('UpdateTodoDto.Validator');
 
   readonly idUser!: number;
   readonly title!: string;

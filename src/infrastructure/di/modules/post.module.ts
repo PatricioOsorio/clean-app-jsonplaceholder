@@ -51,13 +51,13 @@ const VALIDATORS_REPOSITORIES = {
 
 container.register(PostRepository.TOKEN, { useClass: POST_REPOSITORIES[DATA_SOURCE] });
 
-container.register(CreatePostDto.VALIDATOR_TOKEN, {
+container.register(CreatePostDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].create,
 });
-container.register(UpdatePostDto.VALIDATOR_TOKEN, {
+container.register(UpdatePostDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].update,
 });
-container.register(PatchPostDto.VALIDATOR_TOKEN, {
+container.register(PatchPostDto.TOKEN, {
   useClass: VALIDATORS_REPOSITORIES[VALIDATOR_PROVIDER].patch,
 });
 container.register(PostEntity.TOKEN, {
