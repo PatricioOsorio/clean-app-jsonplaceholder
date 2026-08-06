@@ -4,7 +4,6 @@ import type {
   FeaturedPosts,
   HomeGallery,
   IFeaturedPostVM,
-  IHomeGalleryItemVM,
   IHomeMetricItemProps,
 } from '../../components';
 import { useComments } from '@presentation/features/comments/hooks';
@@ -40,7 +39,7 @@ export const useHomePage = () => {
   const { total: totalPhotos, data: photos } = photosData || { total: 0, data: [] };
   const { total: totalUsers } = usersData || { total: 0 };
 
-  const metricsData: IHomeMetricItemProps[] = useMemo(
+  const metricsProps: IHomeMetricItemProps[] = useMemo(
     () => [
       {
         metric: { label: 'Posts', count: totalPosts, iconName: 'posts' },
@@ -117,23 +116,12 @@ export const useHomePage = () => {
     },
   };
 
-  const ctaBannerData = {
-    title: 'Unlock Your Personal Dashboard',
-    subtitle:
-      'Sign up to access personalized todos, detailed analytics, and full customization options for your workflow.',
-    buttonText: 'Create Free Account',
-    buttonHref: '/auth/login',
-  };
-
   const DATA_SOURCE = ENV.VITE_DATA_SOURCE;
 
   return {
     DATA_SOURCE,
-    // data
-
-    metricsData,
+    metricsProps,
     featuredPostsProps,
     homeGalleryProps,
-    ctaBannerData,
   };
 };

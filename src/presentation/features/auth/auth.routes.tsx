@@ -15,7 +15,7 @@ export const authRoutes: RouteObject[] = [
       },
       {
         path: '*',
-        element: <Navigate replace to="login" />,
+        element: <Navigate replace to="/auth/login" />,
       },
     ],
   },

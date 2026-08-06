@@ -5,16 +5,11 @@ import { GuestGuard } from '@presentation/shared/guards';
 import { FeaturedPosts, HomeCtaBanner, HomeGallery, HomeMetricsStrip } from '../../components';
 import { useHomePage } from './use-home-page';
 import './home-page.css';
+import { Link } from 'react-router-dom';
+import { IconArrowRight } from 'lib-styleguide-simba/icons';
 
 export const HomePage = () => {
-  const {
-    DATA_SOURCE,
-    // data
-    metricsData,
-    featuredPostsProps,
-    homeGalleryProps,
-    ctaBannerData,
-  } = useHomePage();
+  const { DATA_SOURCE, metricsProps, featuredPostsProps, homeGalleryProps } = useHomePage();
 
   return (
     <div className="home-page-container">
@@ -36,7 +31,7 @@ export const HomePage = () => {
       </header>
 
       {/* Metrics Bar Component */}
-      <HomeMetricsStrip metrics={metricsData} />
+      <HomeMetricsStrip metrics={metricsProps} />
 
       {/* Main Grid Component Section */}
       <div className="hpc__main-grid">
@@ -46,7 +41,18 @@ export const HomePage = () => {
 
       {/* Bottom CTA Banner Component */}
       <GuestGuard>
-        <HomeCtaBanner {...ctaBannerData} />
+        <HomeCtaBanner
+          title="Unlock Your Personal Dashboard"
+          subtitle="Sign up to access personalized todos, detailed analytics, and full customization options for your workflow."
+          btnActionProps={{
+            children: (
+              <Link to="/auth/register">
+                <span>Create Free Account</span>
+                <IconArrowRight className="h-4 w-4 shrink-0" />
+              </Link>
+            ),
+          }}
+        />
       </GuestGuard>
     </div>
   );
