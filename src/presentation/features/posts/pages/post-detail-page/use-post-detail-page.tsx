@@ -1,7 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import type { ComponentProps } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useComment } from '@presentation/features/comments/hooks';
+import type { CommentsList } from '@presentation/features/comments/components';
 import { formatError } from '@presentation/utils';
+import { PostDetail } from '../../components';
 import { useDeletePost, usePost } from '../../hooks';
 
 export const usePostDetailPage = () => {
@@ -51,29 +54,35 @@ export const usePostDetailPage = () => {
   const isPostEmpty = !isPostLoading && !isPostError && !post;
   const shouldShowComments = !isPostError && !isPostEmpty;
 
-  return {
-    // post
+  const postDetailProps: ComponentProps<typeof PostDetail> = {
     post,
-    isPostLoading,
-    isPostError,
-    errorPostTitle,
-    errorPostMessage,
-    isPostEmpty,
-    shouldShowComments,
-
-    // delete post
     isDeleting,
+    isOptimistic: isDeleting,
+    btnBackProps: { onClick: handleBack },
+    btnEditProps: { onClick: handleEdit },
+    btnDeleteProps: { onClick: handleDelete },
+    status: {
+      isLoading: isPostLoading,
+      isError: isPostError,
+      errorTitle: errorPostTitle,
+      errorDescription: errorPostMessage,
+      isEmpty: isPostEmpty,
+    },
+  };
 
-    // comments
+  const commentsListProps: ComponentProps<typeof CommentsList> = {
     comments: comments ?? [],
-    isCommentsLoading: isCommentsLoading || isPostLoading,
-    isCommentsError,
-    errorCommentsTitle,
-    errorCommentsMessage,
+    status: {
+      isLoading: isCommentsLoading || isPostLoading,
+      isError: isCommentsError,
+      errorTitle: errorCommentsTitle,
+      errorDescription: errorCommentsMessage,
+    },
+  };
 
-    // Handlers
-    handleBack,
-    handleDelete,
-    handleEdit,
+  return {
+    shouldShowComments,
+    postDetailProps,
+    commentsListProps,
   };
 };

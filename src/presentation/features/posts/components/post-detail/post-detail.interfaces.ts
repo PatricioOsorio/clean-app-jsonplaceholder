@@ -3,8 +3,10 @@ import type {
   IWithError,
   IWithLoading,
   IWithRootProps,
+  IButtonWithCustomOnClick,
 } from 'lib-styleguide-simba/interfaces';
 import type { IPostVM } from '../../models/post';
+import type { IButtonProps } from 'lib-styleguide-simba/button';
 
 export interface IPostDetailVM {
   post?: IPostVM;
@@ -12,9 +14,9 @@ export interface IPostDetailVM {
 }
 
 export interface IPostDetailProps extends IWithRootProps<'article'>, IPostDetailVM {
-  onBack?: () => void;
-  onEdit?: (post: IPostVM, e: React.MouseEvent<HTMLButtonElement>) => void;
-  onDelete?: (id: number, e: React.MouseEvent<HTMLButtonElement>) => void;
+  btnBackProps?: IButtonProps;
+  btnEditProps?: IButtonWithCustomOnClick<IPostVM>;
+  btnDeleteProps?: IButtonWithCustomOnClick<number>;
 
   isDeleting?: boolean;
   status?: IWithLoading & IWithError & IWithEmpty;
