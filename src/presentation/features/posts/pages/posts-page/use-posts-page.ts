@@ -13,8 +13,7 @@ export const usePostsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { hasPermission } = usePermission();
 
-  const canEdit = hasPermission('posts:update');
-  const canDelete = hasPermission('posts:delete');
+  const canEdit = hasPermission(['posts:update', 'posts:delete']);
 
   const params = useMemo(
     () => ({
@@ -71,7 +70,7 @@ export const usePostsPage = () => {
     ? { onClick: handleEdit }
     : undefined;
 
-  const btnDeleteProps: ComponentProps<typeof Post>['btnDeleteProps'] = canDelete
+  const btnDeleteProps: ComponentProps<typeof Post>['btnDeleteProps'] = canEdit
     ? { onClick: handleDelete }
     : undefined;
 

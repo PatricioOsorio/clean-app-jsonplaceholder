@@ -8,8 +8,10 @@ import { useAuthContext } from '@presentation/shared/providers';
 import { mapIssuesToForm } from '@presentation/utils';
 import { toastService } from 'lib-styleguide-simba/toast';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 export const useLoginPage = () => {
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuthContext();
   const { Input, hookForm } = useLoginFormConfig();
   const { login, isAuthenticating } = useAuthContext();
@@ -30,7 +32,7 @@ export const useLoginPage = () => {
   });
 
   const handleRegister = () => {
-    toastService.success('Register button clicked!');
+    navigate('/auth/register');
   };
   const handleForgotPassword = () => {
     toastService.success('Forgot Password button clicked!');

@@ -3,6 +3,9 @@ import { lazyWithFallback } from 'lib-styleguide-simba/remote-loader';
 import AuthLayout from '@presentation/features/auth/layouts';
 
 const LoginPage = lazyWithFallback(() => import('@presentation/features/auth/pages/login-page'));
+const RegisterPage = lazyWithFallback(
+  () => import('@presentation/features/auth/pages/register-page'),
+);
 
 export const authRoutes: RouteObject[] = [
   {
@@ -12,6 +15,10 @@ export const authRoutes: RouteObject[] = [
         index: true,
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
       },
       {
         path: '*',

@@ -1,4 +1,4 @@
-import type { PostEntity } from '@domain/post';
+import type { IPostEntity, PostEntity } from '@domain/post';
 import type { IPostVM } from './post.mv';
 
 export abstract class PostMapper {
@@ -16,7 +16,7 @@ export abstract class PostMapper {
   }
 
   static toEntity(vm: Partial<IPostVM>): Partial<PostEntity> {
-    const entity: Partial<PostEntity> = {};
+    const entity: Partial<IPostEntity> = {};
 
     if (vm.id !== undefined) entity.id = vm.id;
     if (vm.idUser !== undefined) entity.idUser = vm.idUser;

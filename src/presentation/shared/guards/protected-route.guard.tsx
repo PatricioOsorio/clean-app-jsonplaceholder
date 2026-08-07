@@ -4,7 +4,7 @@ import { usePermission } from '@presentation/features/auth/hooks';
 import type { IPermissionsVM, IRolesVM } from '@presentation/features/auth/models';
 
 interface IProtectedRouteProps {
-  requiredPermission: IPermissionsVM;
+  requiredPermission: IPermissionsVM[];
   allowedRoles?: IRolesVM[];
   redirectTo?: string;
 }

@@ -24,11 +24,11 @@ export const postRoutes: RouteObject[] = [
         element: <PostDetailPage />,
       },
       {
-        element: <ProtectedRouteGuard requiredPermission="posts:create" />,
+        element: <ProtectedRouteGuard requiredPermission={['posts:create']} />,
         children: [{ path: 'create', element: <PostFormPage /> }],
       },
       {
-        element: <ProtectedRouteGuard requiredPermission="posts:update" />,
+        element: <ProtectedRouteGuard requiredPermission={['posts:update']} />,
         children: [{ path: 'edit/:id', element: <PostFormPage /> }],
       },
     ],

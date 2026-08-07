@@ -19,7 +19,7 @@ export const PostForm = ({
       <Input.Content />
 
       <div className="pfc__actions">
-        <Button type="button" variant="ghost" {...btnCancelProps} />
+        <Button type="button" variant="text" {...btnCancelProps} />
         <Button type="button" {...btnOkProps} />
       </div>
     </StatusContent>

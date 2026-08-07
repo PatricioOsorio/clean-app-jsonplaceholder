@@ -7,7 +7,9 @@ export interface IAuthContext {
   userSession: IAuthVM | null;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
+  isRegistering: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (userName: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const [userSession, setUserSession] = useState<IAuthVM | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
   useEffect(() => {
     const loadUserSession = async () => {
@@ -42,7 +45,6 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         setUserSession(AuthMapper.toVM(userSession));
       } catch (error) {
         setUserSession(null);
-        console.error('Error loading user session:', error);
       } finally {
         setIsLoading(false);
       }
@@ -62,6 +64,17 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   };
 
+  const handleRegister = async (userName: string, email: string, password: string) => {
+    setIsRegistering(true);
+    try {
+      const dto = validators.register.validate({ userName, email, password });
+      const userSession = await auth.register(dto);
+      setUserSession(AuthMapper.toVM(userSession));
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+
   const handleLogout = async () => {
     await auth.logout();
 
@@ -73,10 +86,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       userSession: userSession,
       isAuthenticated: !!userSession,
       isAuthenticating: isLoading,
+      isRegistering,
       login: handleLogin,
+      register: handleRegister,
       logout: handleLogout,
     }),
-    [userSession, isLoading],
+    [userSession, isLoading, isRegistering],
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

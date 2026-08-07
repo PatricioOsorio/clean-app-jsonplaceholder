@@ -7,7 +7,7 @@ export const usePermission = () => {
   const { userSession } = useAuthContext();
 
   const hasPermission = useCallback(
-    (requiredPermission: IPermissionsVM): boolean => {
+    (requiredPermission: IPermissionsVM[]): boolean => {
       if (!userSession) return false;
 
       return userSession.hasPermission(requiredPermission);

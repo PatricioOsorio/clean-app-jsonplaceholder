@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { useTheme } from 'lib-styleguide-simba/theme-provider';
-import {
-  IconHome,
-  IconSquareRoundedPlus,
-  IconFileDescription,
-} from 'lib-styleguide-simba/icons-svg';
+import { IconHome, IconFileDescription } from 'lib-styleguide-simba/icons-svg';
 
 import { type IAsideItemsVM, type INotificationItemVM } from '@presentation/shared/components';
 import { useAuthContext } from '@presentation/shared/providers';

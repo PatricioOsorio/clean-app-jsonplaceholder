@@ -69,7 +69,7 @@ export const PostDetail = ({
                   disabled={isDeleting}
                   size="sm"
                   type="button"
-                  variant="outline"
+                  variant="outlined"
                   onClick={(e) => onEdit(post, e)}
                 >
                   Edit
@@ -81,7 +81,7 @@ export const PostDetail = ({
                   disabled={isDeleting}
                   size="sm"
                   type="button"
-                  variant="destructive"
+                  severity="danger"
                   onClick={(e) => onDelete(post.id, e)}
                 >
                   {isDeleting ? 'Deleting...' : 'Delete'}

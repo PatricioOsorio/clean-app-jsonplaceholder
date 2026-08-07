@@ -4,7 +4,7 @@ import type { IWithChildren } from 'lib-styleguide-simba/interfaces';
 import type { ReactNode } from 'react';
 
 interface IPermissionGuardProps extends IWithChildren {
-  permission: IPermissionsVM;
+  permission: IPermissionsVM[];
   fallback?: ReactNode;
 }
 
