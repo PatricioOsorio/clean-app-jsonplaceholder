@@ -1,10 +1,10 @@
 @reference "@styles/app.css";
 
 .post-container {
-  @apply border-border bg-card/60 text-card-foreground relative flex flex-col gap-0 overflow-hidden rounded-2xl border shadow-xs backdrop-blur-md transition-shadow duration-200 hover:shadow-md;
+  @apply border-border bg-card/60 text-card-foreground relative flex cursor-pointer flex-col gap-0 overflow-hidden rounded-2xl border shadow-xs backdrop-blur-md transition-transform duration-200 hover:shadow-md active:scale-[0.98];
 
   .pc__cover {
-    @apply from-primary/20 via-card to-background relative aspect-video w-full overflow-hidden bg-gradient-to-br;
+    @apply from-primary/20 via-card to-background relative aspect-video w-full overflow-hidden bg-linear-to-br;
     background-image:
       linear-gradient(
         135deg,
@@ -41,16 +41,24 @@
     @apply flex flex-1 flex-col gap-2 p-5;
   }
 
+  .pc__header {
+    @apply flex items-center gap-2;
+  }
+
   .pc__byline {
-    @apply flex items-center gap-2 text-xs;
+    @apply flex min-w-0 flex-1 flex-col gap-0 text-xs;
   }
 
   .pc__user {
-    @apply text-primary font-medium;
+    @apply text-primary truncate font-medium;
   }
 
   .pc__id {
-    @apply text-muted-foreground;
+    @apply text-muted-foreground truncate;
+  }
+
+  .pc__menu-trigger {
+    @apply text-muted-foreground shrink-0;
   }
 
   .pc__title {
@@ -62,10 +70,14 @@
   }
 
   .pc__footer {
-    @apply border-border text-muted-foreground flex items-center justify-end gap-2 border-t px-5 py-3 text-xs;
+    @apply border-border text-muted-foreground flex items-center justify-between gap-2 border-t px-5 py-3 text-xs;
   }
 
-  .pc__actions {
-    @apply flex items-center gap-2;
+  .pc__stats {
+    @apply flex items-center gap-4;
+  }
+
+  .pc__stat {
+    @apply flex items-center gap-1.5;
   }
 }

@@ -28,24 +28,6 @@
   }
 
   .ppc__panel {
-    @apply flex flex-col gap-5 rounded-3xl p-6 shadow-xl backdrop-blur-xl;
-    @apply bg-card/50 text-card-foreground;
-    @apply dark:bg-slate-950/50;
-  }
-
-  .ppc__panel-header {
-    @apply flex items-center justify-between gap-4 px-1;
-  }
-
-  .ppc__panel-title-group {
-    @apply flex items-center gap-2.5;
-  }
-
-  .ppc__panel-icon {
-    @apply text-primary h-5 w-5 shrink-0;
-  }
-
-  .ppc__panel-title {
-    @apply text-foreground text-lg font-bold tracking-tight;
+    @apply flex flex-col gap-5;
   }
 }

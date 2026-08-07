@@ -1,35 +1,12 @@
 import { Badge } from 'lib-styleguide-simba/badge';
-import { IconArticle } from 'lib-styleguide-simba/icons';
 
+import { PaginationCustom } from '@presentation/shared/components';
 import { Posts } from '../../components';
 import { usePostsPage } from './use-posts-page';
-import { PaginationCustom } from '@presentation/shared/components';
-
 import './posts-page.css';
 
 export const PostsPage = () => {
-  const {
-    // props
-    posts,
-    isLoading,
-    isError,
-    errorTitle,
-    errorMessage,
-    isEmpty,
-
-    // paginator
-    page,
-    totalPages,
-    totalPosts,
-    handlePageChange,
-
-    // components
-    btnEditProps,
-    btnDeleteProps,
-
-    // handlers
-    handlePostClick,
-  } = usePostsPage();
+  const { totalPosts, postsProps, paginationProps } = usePostsPage();
 
   return (
     <div className="posts-page-container">
@@ -50,35 +27,8 @@ export const PostsPage = () => {
       </header>
 
       <section className="ppc__panel">
-        <div className="ppc__panel-header">
-          <div className="ppc__panel-title-group">
-            <IconArticle className="ppc__panel-icon" />
-            <h2 className="ppc__panel-title">All Posts</h2>
-          </div>
-        </div>
-
-        <Posts
-          status={{
-            errorDescription: errorMessage,
-            errorTitle,
-            isEmpty,
-            isError,
-            isLoading,
-          }}
-          postProps={{
-            btnEditProps,
-            btnDeleteProps,
-          }}
-          posts={posts}
-          onPostClick={handlePostClick}
-        />
-
-        <PaginationCustom
-          page={page}
-          totalPages={totalPages}
-          siblingCount={5}
-          onPageChange={handlePageChange}
-        />
+        <Posts {...postsProps} />
+        <PaginationCustom {...paginationProps} />
       </section>
     </div>
   );

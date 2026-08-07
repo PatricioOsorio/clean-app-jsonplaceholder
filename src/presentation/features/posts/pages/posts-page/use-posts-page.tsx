@@ -1,12 +1,14 @@
+import { useMemo, type ComponentProps } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
+import type { IGetPostsParams, PostEntity } from '@domain/post';
 import { formatError } from '@presentation/utils';
+import { usePermission } from '@presentation/features/auth/hooks';
+import { PaginationCustom } from '@presentation/shared/components';
+import { Posts, type Post } from '../../components';
+import type { IPostProps } from '../../components/post/post.interfaces';
 import { DEFAULT_POSTS_PARAMS, useDeletePost, usePosts } from '../../hooks';
 import type { IPostVM } from '../../models/post';
-import { useMemo, type ComponentProps } from 'react';
-import type { IGetPostsParams, PostEntity } from '@domain/post';
-import { usePermission } from '@presentation/features/auth/hooks';
-import type { Post } from '@presentation/features/posts/components';
 
 export const usePostsPage = () => {
   const navigate = useNavigate();
@@ -65,7 +67,7 @@ export const usePostsPage = () => {
     deletePost(postId);
   };
 
-  // components
+  // components props
   const btnEditProps: ComponentProps<typeof Post>['btnEditProps'] = canEdit
     ? { onClick: handleEdit }
     : undefined;
@@ -74,26 +76,41 @@ export const usePostsPage = () => {
     ? { onClick: handleDelete }
     : undefined;
 
-  return {
-    // props
-    posts,
-    isLoading: isLoadingPosts,
-    isError: isErrorPosts,
-    errorTitle,
-    errorMessage,
-    isEmpty,
+  const postItems: IPostProps[] = useMemo(
+    () =>
+      posts.map((post) => ({
+        post,
+        isOptimistic: post.__optimistic,
+        btnEditProps,
+        btnDeleteProps,
+        rootProps: {
+          onClick: () => handlePostClick(post.id),
+        },
+      })),
+    [posts, btnEditProps, btnDeleteProps],
+  );
 
-    // paginator
+  const postsProps: ComponentProps<typeof Posts> = {
+    items: postItems,
+    status: {
+      isLoading: isLoadingPosts,
+      isError: isErrorPosts,
+      errorTitle,
+      errorDescription: errorMessage,
+      isEmpty,
+    },
+  };
+
+  const paginationProps: ComponentProps<typeof PaginationCustom> = {
     page,
     totalPages,
+    siblingCount: 2,
+    onPageChange: handlePageChange,
+  };
+
+  return {
     totalPosts,
-    handlePageChange,
-
-    // components
-    btnEditProps,
-    btnDeleteProps,
-
-    // handlers
-    handlePostClick,
+    postsProps,
+    paginationProps,
   };
 };

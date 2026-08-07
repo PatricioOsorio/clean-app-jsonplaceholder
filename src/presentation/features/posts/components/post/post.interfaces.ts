@@ -5,6 +5,7 @@ import type { IPostVM } from '../../models/post';
 export interface IPostProps extends IWithRootProps<'article'> {
   post: IPostVM;
   isOptimistic?: boolean;
+  commentsCount?: number;
   btnEditProps?: IButtonWithCustomOnClick<IPostVM>;
   btnDeleteProps?: IButtonWithCustomOnClick<number>;
 }
