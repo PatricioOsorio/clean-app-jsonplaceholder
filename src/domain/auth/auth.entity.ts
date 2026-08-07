@@ -10,22 +10,33 @@ export type IPermissions =
   | 'comments:delete'
   | 'users:manage';
 
+export interface IAuthEntity {
+  id: number;
+  userName: string;
+  email: string;
+  roles: IRoles[];
+  permissions: IPermissions[];
+  createdAt: Date;
+}
+
 export class AuthEntity {
   static readonly TOKEN = Symbol('AuthEntity.Validator');
 
-  constructor(
-    public id: number,
-    public userName: string,
-    public email: string,
-    public roles: IRoles[],
-    public permissions: IPermissions[],
-    public createdAt: Date,
-  ) {}
+  readonly id!: number;
+  readonly userName!: string;
+  readonly email!: string;
+  readonly roles!: IRoles[];
+  readonly permissions!: IPermissions[];
+  readonly createdAt!: Date;
 
-  public hasPermission(permission: IPermissions): boolean {
+  constructor(props: IAuthEntity) {
+    Object.assign(this, props);
+  }
+
+  public hasPermission(permissions: IPermissions[]): boolean {
     if (this.roles.includes('admin')) {
       return true;
     }
-    return this.permissions.includes(permission);
+    return this.permissions.some((p) => permissions.includes(p));
   }
 }
