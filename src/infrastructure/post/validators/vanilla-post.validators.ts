@@ -119,6 +119,6 @@ export class VanillaPostEntityValidator implements IValidatorEntity<PostEntity> 
       );
     }
 
-    return new PostEntity(id, idUser, title, content);
+    return new PostEntity({ id, idUser, title, content });
   }
 }

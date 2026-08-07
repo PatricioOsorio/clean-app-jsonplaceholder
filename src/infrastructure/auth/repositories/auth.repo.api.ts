@@ -5,14 +5,17 @@ import {
   AuthInvalidDataError,
   AuthNotFoundError,
   AuthRepository,
-  LoginDto,
+  ForgotPasswordDto,
+  RegisterDto,
+  type LoginDto,
 } from '@domain/auth';
 import { createApiErrorHandler } from '@infrastructure/http';
 import { DomainError } from '@domain/errors';
 import { UserRepository } from '@domain/user';
 import { LOCAL_STORAGE_KEYS, StorageClient } from '@infrastructure/storage';
 import type { IValidatorEntity } from '@domain/shared/validator.entity';
-import { SEED_USERS_ROLES_PERMISSIONS } from './auth.dev';
+import { SEED_USERS_ROLES_PERMISSIONS, simulateFaultAuth } from './auth.dev';
+import { withDelay } from '@infrastructure/utils';
 
 const authErrorHandler = createApiErrorHandler((error, email) => {
   if (error.gatewayCode !== 'NOT_FOUND') {
@@ -52,14 +55,16 @@ export class AuthRepositoryApi implements AuthRepository {
       if (!isPasswordValid) throw new AuthInvalidDataError('Invalid credentials');
 
       // create passport
-      const authEntity = new AuthEntity(
-        userMock.userId,
-        userFromApi.userName,
-        userMock.email,
-        userMock.roles,
-        userMock.permissions,
-        new Date(),
-      );
+      const authEntityRaw = new AuthEntity({
+        id: userFromApi.id,
+        email: userFromApi.email,
+        userName: userFromApi.userName,
+        roles: userMock.roles,
+        permissions: userMock.permissions,
+        createdAt: new Date(),
+      });
+
+      const authEntity = this.validator.validate(authEntityRaw);
 
       // store auth session in local storage
       this.storageClient.set(LOCAL_STORAGE_KEYS.authSession, authEntity);
@@ -79,5 +84,45 @@ export class AuthRepositoryApi implements AuthRepository {
     if (!session) return null;
 
     return this.validator.validate(session);
+  }
+
+  async register(registerDto: RegisterDto): Promise<AuthEntity> {
+    try {
+      await simulateFaultAuth('register', registerDto.email);
+
+      const authEntityRaw = new AuthEntity({
+        id: Date.now(),
+        email: registerDto.email,
+        userName: registerDto.userName,
+        roles: ['user'],
+        permissions: [
+          'comments:create',
+          'comments:delete',
+          'comments:read',
+          'comments:update',
+          'posts:create',
+          'posts:delete',
+          'posts:read',
+          'posts:update',
+        ],
+        createdAt: new Date(),
+      });
+
+      const authEntity = this.validator.validate(authEntityRaw);
+      this.storageClient.set(LOCAL_STORAGE_KEYS.authSession, authEntity);
+
+      return authEntity;
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto): Promise<void> {
+    try {
+      await simulateFaultAuth('forgotPassword', dto.email);
+      return withDelay(undefined);
+    } catch (error) {
+      this.handleError(error);
+    }
   }
 }

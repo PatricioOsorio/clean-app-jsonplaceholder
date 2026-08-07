@@ -3,7 +3,12 @@ import type { ITodoResponse } from './todo.response';
 
 export abstract class TodoMapper {
   static toEntity(response: ITodoResponse): TodoEntity {
-    return new TodoEntity(response.id, response.userId, response.title, response.completed);
+    return new TodoEntity({
+      id: response.id,
+      idUser: response.userId,
+      title: response.title,
+      completed: response.completed,
+    });
   }
 
   static toEntities(responses: ITodoResponse[]): TodoEntity[] {

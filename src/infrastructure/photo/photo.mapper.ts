@@ -3,13 +3,13 @@ import type { IPhotoResponse } from './photo.response';
 
 export abstract class PhotoMapper {
   static toEntity(response: IPhotoResponse): PhotoEntity {
-    return new PhotoEntity(
-      response.id,
-      response.albumId,
-      response.title,
-      response.url,
-      response.thumbnailUrl,
-    );
+    return new PhotoEntity({
+      id: response.id,
+      idAlbum: response.albumId,
+      title: response.title,
+      url: response.url,
+      thumbnailUrl: response.thumbnailUrl,
+    });
   }
 
   static toEntities(responses: IPhotoResponse[]): PhotoEntity[] {

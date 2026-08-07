@@ -5,6 +5,8 @@ import {
   AuthInvalidDataError,
   AuthNotFoundError,
   AuthRepository,
+  ForgotPasswordDto,
+  RegisterDto,
   type LoginDto,
 } from '@domain/auth';
 import { withDelay } from '@infrastructure/utils';
@@ -33,14 +35,14 @@ export class AuthRepositoryMock implements AuthRepository {
       throw new AuthInvalidDataError('Invalid credentials');
     }
 
-    const authEntity = new AuthEntity(
-      user.userId,
-      user.email,
-      user.email,
-      user.roles,
-      user.permissions,
-      new Date(),
-    );
+    const authEntity = new AuthEntity({
+      id: user.id,
+      email: user.email,
+      userName: user.email,
+      roles: user.roles,
+      permissions: user.permissions,
+      createdAt: new Date(),
+    });
 
     this.currentUser = authEntity;
 
@@ -53,5 +55,36 @@ export class AuthRepositoryMock implements AuthRepository {
 
   async getCurrentUser(): Promise<AuthEntity | null> {
     return withDelay(this.currentUser);
+  }
+
+  async register(registerDto: RegisterDto): Promise<AuthEntity> {
+    await simulateFaultAuth('register', registerDto.email);
+
+    const authEntity = new AuthEntity({
+      id: Date.now(),
+      email: registerDto.email,
+      userName: registerDto.userName,
+      roles: ['user'],
+      permissions: [
+        'comments:create',
+        'comments:delete',
+        'comments:read',
+        'comments:update',
+        'posts:create',
+        'posts:delete',
+        'posts:read',
+        'posts:update',
+      ],
+      createdAt: new Date(),
+    });
+
+    this.currentUser = authEntity;
+
+    return withDelay(authEntity);
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto): Promise<void> {
+    await simulateFaultAuth('forgotPassword', dto.email);
+    return withDelay(undefined);
   }
 }

@@ -48,14 +48,14 @@ export class ZodAuthEntityValidator implements IValidatorEntity<AuthEntity> {
   validate(input: unknown): AuthEntity {
     try {
       const result = this.schema.parse(input);
-      return new AuthEntity(
-        result.id,
-        result.userName,
-        result.email,
-        result.roles,
-        result.permissions,
-        result.createdAt,
-      );
+      return new AuthEntity({
+        id: result.id,
+        userName: result.userName,
+        email: result.email,
+        roles: result.roles,
+        permissions: result.permissions,
+        createdAt: result.createdAt,
+      });
     } catch (error) {
       return handleValidationError(error, AuthInvalidDataError);
     }

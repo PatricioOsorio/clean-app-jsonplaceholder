@@ -38,15 +38,15 @@ export abstract class UserMapper {
   }
 
   static toEntity(response: IUserResponse): UserEntity {
-    return new UserEntity(
-      response.id,
-      response.email,
-      response.name,
-      response.username,
-      this.mapAddress(response.address),
-      this.mapContact(response.phone, response.website),
-      this.mapCompany(response.company),
-    );
+    return new UserEntity({
+      id: response.id,
+      email: response.email,
+      name: response.name,
+      userName: response.username,
+      address: this.mapAddress(response.address),
+      contact: this.mapContact(response.phone, response.website),
+      company: this.mapCompany(response.company),
+    });
   }
 
   static toEntities(responses: IUserResponse[]): UserEntity[] {

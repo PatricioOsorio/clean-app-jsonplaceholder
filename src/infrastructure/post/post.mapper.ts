@@ -4,7 +4,12 @@ import type { IGetPostsParams } from '@domain/post';
 
 export abstract class PostMapper {
   static toEntity(response: IPostResponse): PostEntity {
-    return new PostEntity(response.id, response.userId, response.title, response.body);
+    return new PostEntity({
+      id: response.id,
+      idUser: response.userId,
+      title: response.title,
+      content: response.body,
+    });
   }
 
   static toEntities(responses: IPostResponse[]): PostEntity[] {

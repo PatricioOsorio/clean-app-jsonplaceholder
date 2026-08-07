@@ -1,6 +1,5 @@
 import { DomainError, NetworkError } from '@domain/errors';
 import { DEFAULT_DELAY, withDelay } from './delay';
-import type { StringQueryType } from 'vite/types/importGlob.js';
 
 export const getQueryParam = (key: string): string | null =>
   new URLSearchParams(window.location.search).get(key);

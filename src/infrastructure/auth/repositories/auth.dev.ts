@@ -2,7 +2,7 @@ import { AuthInvalidDataError, AuthNotFoundError, type AuthEntity } from '@domai
 import { createFaultSimulator } from '@infrastructure/utils';
 
 export interface IUserRolesPermissions {
-  userId: number;
+  id: number;
   email: string;
   password: string;
   roles: AuthEntity['roles'];
@@ -11,21 +11,21 @@ export interface IUserRolesPermissions {
 
 export const SEED_USERS_ROLES_PERMISSIONS: IUserRolesPermissions[] = [
   {
-    userId: 1,
+    id: 1,
     email: 'Sincere@april.biz',
     password: 'pass',
     roles: ['admin'],
     permissions: ['posts:read'],
   },
   {
-    userId: 2,
+    id: 2,
     email: 'Shanna@melissa.tv',
     password: 'pass',
     roles: ['user'],
     permissions: ['posts:read', 'posts:create'],
   },
   {
-    userId: 3,
+    id: 3,
     email: 'Nathan@yesenia.net',
     password: 'pass',
     roles: ['guest'],

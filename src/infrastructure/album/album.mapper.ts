@@ -3,7 +3,11 @@ import type { IAlbumResponse } from '@infrastructure/album/album.response';
 
 export abstract class AlbumMapper {
   static toEntity(response: IAlbumResponse): AlbumEntity {
-    return new AlbumEntity(response.id, response.userId, response.title);
+    return new AlbumEntity({
+      id: response.id,
+      idUser: response.userId,
+      title: response.title,
+    });
   }
 
   static toEntities(responses: IAlbumResponse[]): AlbumEntity[] {
